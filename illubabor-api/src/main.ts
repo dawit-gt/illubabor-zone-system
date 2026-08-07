@@ -11,8 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   const productionOrigin = process.env.FRONTEND_URL;
-  const vercelPreviewRegex = /^https:\/\/illubabor-web-.*\.vercel\.app$/;
-
+  const vercelPreviewRegex = /^https:\/\/illubabor-zone-system-.*\.vercel\.app$/;
   app.enableCors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);

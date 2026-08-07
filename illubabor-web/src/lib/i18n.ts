@@ -6,8 +6,6 @@ export const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'en', label: 'English' },
 ];
 
-// Illubabor Zone: Oromiffa is the working language (~91% first-language
-// speakers), so it's listed first and used as the default.
 export const DEFAULT_LANGUAGE: Language = 'om';
 
 /**
@@ -15,13 +13,14 @@ export const DEFAULT_LANGUAGE: Language = 'om';
  * to English, then to whatever is present, then to an empty string.
  * e.g. selectByLanguage(news, 'title', 'am') looks for titleAm -> title -> ''
  */
-export function selectByLanguage(
-  obj: Record<string, unknown>,
+export function selectByLanguage<T extends object>(
+  obj: T,
   field: string,
   lang: Language,
 ): string {
-  if (lang === 'en') return (obj[field] as string) ?? '';
+  const record = obj as Record<string, unknown>;
+  if (lang === 'en') return (record[field] as string) ?? '';
   const suffix = lang === 'om' ? 'Om' : 'Am';
   const localizedKey = `${field}${suffix}`;
-  return (obj[localizedKey] as string) || (obj[field] as string) || '';
+  return (record[localizedKey] as string) || (record[field] as string) || '';
 }

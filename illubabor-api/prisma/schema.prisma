@@ -1,0 +1,295 @@
+// Illubabor Zone Administration System — Prisma Schema
+// Zone-level platform: Zone -> Woreda -> Kebele hierarchy
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------- ENUMS ----------
+
+enum Role {
+  SUPER_ADMIN     // full zone-level system control
+  ZONE_ADMIN      // manages zone-wide content, departments, cross-woreda coordination
+  WOREDA_ADMIN    // manages content scoped to one woreda
+  DEPARTMENT_HEAD // manages one department's services/news
+  STAFF           // content contributor, limited permissions
+  PUBLIC          // registered public user (service applications, feedback)
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum NewsTag {
+  ANNOUNCEMENT
+  EVENT
+  PROJECT
+  AGRICULTURE
+  HEALTH
+  EDUCATION
+  INFRASTRUCTURE
+  SECURITY
+  ECONOMY
+  CULTURE
+}
+
+enum ServiceCategory {
+  CIVIL_REGISTRATION
+  LAND_ADMINISTRATION
+  BUSINESS_LICENSING
+  AGRICULTURE_SUPPORT
+  HEALTH_SERVICES
+  EDUCATION_SERVICES
+  SOCIAL_AFFAIRS
+  JUSTICE_LEGAL
+  INFRASTRUCTURE
+  OTHER
+}
+
+enum DocumentType {
+  POLICY
+  REPORT
+  BUDGET
+  PROCUREMENT
+  MEETING_MINUTES
+  FORM
+  LEGAL_NOTICE
+  OTHER
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+// ---------- ADMINISTRATIVE HIERARCHY ----------
+
+model Zone {
+  id          String   @id @default(cuid())
+  name        String   @unique // "Illubabor"
+  nameOm      String?  // Oromiffa name
+  nameAm      String?  // Amharic name
+  capital     String   // "Metu"
+  region      String   @default("Oromia")
+  population  Int?
+  areaKm2     Float?
+  description String?  @db.Text
+  descriptionOm String? @db.Text
+  descriptionAm String? @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  woredas     Woreda[]
+  departments Department[]
+  news        News[]
+  services    Service[]
+  documents   Document[]
+}
+
+model Woreda {
+  id          String   @id @default(cuid())
+  name        String
+  nameOm      String?
+  nameAm      String?
+  slug        String   @unique
+  population  Int?
+  isTown      Boolean  @default(false) // e.g. Metu Ketema town administration
+  description String?  @db.Text
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  zoneId      String
+  zone        Zone     @relation(fields: [zoneId], references: [id])
+
+  kebeles     Kebele[]
+  news        News[]
+  users       User[]
+}
+
+model Kebele {
+  id        String   @id @default(cuid())
+  name      String
+  nameOm    String?
+  nameAm    String?
+  isForested Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  woredaId  String
+  woreda    Woreda   @relation(fields: [woredaId], references: [id])
+}
+
+// ---------- USERS / AUTH ----------
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  password     String
+  fullName     String
+  role         Role      @default(PUBLIC)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  woredaId     String?
+  woreda       Woreda?   @relation(fields: [woredaId], references: [id])
+
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
+  applications  ServiceApplication[]
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
+}
+
+// ---------- CONTENT ----------
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String
+  nameOm      String?
+  nameAm      String?
+  slug        String   @unique
+  description String?  @db.Text
+  descriptionOm String? @db.Text
+  descriptionAm String? @db.Text
+  icon        String?
+  headName    String?
+  contactEmail String?
+  contactPhone String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  zoneId      String
+  zone        Zone     @relation(fields: [zoneId], references: [id])
+
+  users       User[]
+  services    Service[]
+  documents   Document[]
+}
+
+model News {
+  id          String     @id @default(cuid())
+  title       String
+  titleOm     String?
+  titleAm     String?
+  slug        String     @unique
+  excerpt     String?
+  excerptOm   String?
+  excerptAm   String?
+  content     String     @db.Text
+  contentOm   String?    @db.Text
+  contentAm   String?    @db.Text
+  coverImage  String?
+  status      NewsStatus @default(DRAFT)
+  tags        NewsTag[]
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  zoneId      String
+  zone        Zone       @relation(fields: [zoneId], references: [id])
+
+  woredaId    String?
+  woreda      Woreda?    @relation(fields: [woredaId], references: [id])
+}
+
+model Service {
+  id          String          @id @default(cuid())
+  name        String
+  nameOm      String?
+  nameAm      String?
+  slug        String          @unique
+  category    ServiceCategory
+  description String          @db.Text
+  descriptionOm String?       @db.Text
+  descriptionAm String?       @db.Text
+  requirements String?        @db.Text
+  processTime String?
+  fee         String?
+  isOnline    Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  zoneId       String
+  zone         Zone           @relation(fields: [zoneId], references: [id])
+
+  departmentId String
+  department   Department     @relation(fields: [departmentId], references: [id])
+
+  applications ServiceApplication[]
+}
+
+model ServiceApplication {
+  id          String            @id @default(cuid())
+  status      ApplicationStatus @default(SUBMITTED)
+  notes       String?           @db.Text
+  submittedAt DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  serviceId   String
+  service     Service           @relation(fields: [serviceId], references: [id])
+
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+}
+
+model Document {
+  id          String       @id @default(cuid())
+  title       String
+  titleOm     String?
+  titleAm     String?
+  type        DocumentType
+  fileUrl     String
+  fileSizeKb  Int?
+  isPublic    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+
+  zoneId       String
+  zone         Zone        @relation(fields: [zoneId], references: [id])
+
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+}
+
+model SiteConfig {
+  id            String   @id @default(cuid())
+  key           String   @unique
+  value         String   @db.Text
+  updatedAt     DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String   // e.g. "CREATE_NEWS", "DELETE_SERVICE"
+  entity    String   // e.g. "News", "Service"
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}

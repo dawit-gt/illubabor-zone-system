@@ -10,89 +10,89 @@ import { useSiteConfig } from '@/hooks/useSiteConfig';
 
 const HERO_COPY = {
   om: {
-    eyebrow: 'Godina Illubaabor',
+    eyebrow: 'Godina Illubaabor — Misooma, Aadaa fi Uumama',
     title: 'Bulchiinsa Godina Illubaabor',
-    sub: 'Naannawa Oromiyaa keessatti bosona magariisaa fi buna isaatiin beekamu — tajaajila, oduu fi ifa ta\'insa bulchiinsaa gara uummataatti dhiyeessina.',
-    cta: 'Tajaajila Ilaali',
+    sub: 'Illubaabor handhuura Oromiyaa gara dhihaa kan bosona magariisaa, madda buna Arabikaa addunyaa fi uumama keessummeessituu dha. Tajaajila mootummaa, oduu fi ifa ta\'insa bulchiinsaa kallattiin gara uummataatti dhiyeessina.',
+    cta: 'Tajaajila Mootummaa Ilaali',
   },
   am: {
-    eyebrow: 'ኢሉአባቦር ዞን',
+    eyebrow: 'ኢሉአባቦር ዞን — ልማት፣ ባህል እና ተፈጥሮ',
     title: 'የኢሉአባቦር ዞን አስተዳደር',
-    sub: 'በደን እና በቡና ምርት በምትታወቀው በኦሮሚያ ክልል ውስጥ ላለው ዞን — አገልግሎቶችን፣ ዜናዎችን እና ግልጽነትን ለህዝብ እናቀርባለን።',
+    sub: 'በደቡብ ምዕራብ ኦሮሚያ የምትገኘው ኢሉአባቦር በለምለም ደኗ፣ በዱር አረቢካ ቡናዋ እና በተፈጥሮ ሀብቷ ትታወቃለች። የመንግስት አገልግሎቶችን፣ ትኩስ ዜናዎችን እና ግልፅ የአስተዳደር መረጃዎችን ለህዝባችን እናቀርባለን።',
     cta: 'አገልግሎቶችን ይመልከቱ',
   },
   en: {
-    eyebrow: 'Illubabor Zone',
+    eyebrow: 'Illubabor Zone — Governance, Culture & Nature',
     title: 'Illubabor Zone Administration',
-    sub: 'A forested, coffee-growing zone in the Oromia Region — bringing public services, news, and transparency directly to residents.',
-    cta: 'View Services',
+    sub: 'Nestled in southwestern Oromia, Illubabor is renowned for its lush Afromontane rainforests, wild Arabica coffee gene bank, and vibrant cultural heritage. We deliver accessible public services, official updates, and transparent governance directly to citizens.',
+    cta: 'Explore Public Services',
   },
 };
 
 const HERITAGE_COPY = {
   om: {
-    title: 'Dhaabbii fi Uumama Godina Keenyaa',
-    yayoTitle: 'Bosona Buna Yaayoo',
+    title: 'Dhaabbii, Seenaa fi Badhaadhina Uumama Godina Keenyaa',
+    yayoTitle: 'Biyoosfeera Bosona Buna Yaayoo (UNESCO)',
     yayoBody:
-      "Bosonni Yaayoo, kan UNESCO waggaa 2010 galmeesse, iddoo jalqaba bunaa addunyaa keessatti guddaa fi barbaachisaa ta'e dha.",
-    sorTitle: 'Cascade Sooree',
+      'Bosonni Buna Yaayoo, kan UNESCOn waggaa 2010 galmeesse, iddoo jalqabaa fi madda buna Arabikaa (Coffea arabica) addunyaa keessatti madda jeneetikiitiin adda duree dha. Laga Gabbaa, Doogii fi Saakii kan genga Barootti madaalan dabalatee, biyyoosfeerri kun badhaadhina xos-uumamaa (biodiversity) addunyaaf gumaacha dhiyeessa.',
+    sorTitle: 'Cascade Sooree (Sor Waterfalls)',
     sorBody:
-      "Cascadeen Sooree, kan Aanaa Bachoo keessatti argamu, dhoksaa uumamaa Godina Illubaabor keessaa isa tokko dha.",
+      'Aanaa Bachoo keessatti kan argamu Cascadeen Sooree dhoksaa uumamaa bosona gurraacha keessatti argamu dha. Bisaniin sooraa fi fageenyi qillensa isaa ijaarsaa fi turizimiif hawwata addaa kan qabu yoo ta\'u, madda badhaadhina uumama Godina Illubaabor ta\'iinsa isaatiin beekama.',
   },
   am: {
-    title: 'የዞናችን ቅርስ እና ተፈጥሮ',
-    yayoTitle: 'የያዩ ቡና ደን',
+    title: 'የዞናችን ተፈጥሯዊና ባህላዊ ቅርሶች',
+    yayoTitle: 'የያዩ ቡና ደን ባዮስፌር ሪዘርቭ (UNESCO)',
     yayoBody:
-      'እ.አ.አ. በ2010 በዩኔስኮ የተመዘገበው የያዩ ቡና ደን ለዓለም የአረቢካ ቡና መገኛ ትልቅ ጠቀሜታ ያለው ስፍራ ነው።',
-    sorTitle: 'የሶር ፏፏቴ',
+      'እ.አ.አ. በ2010 በዩኔስኮ የተመዘገበው የያዩ ቡና ደን የዓለም አረቢካ ቡና (Coffea arabica) መገኛና ዋና የጄኔቲክ ሀብት ማከማቻ ነው። እንደ ገባ፣ ዶጊ እና ሳኪ ያሉ ወንዞች ባሮ ወንዝን የሚቀላቀሉበት ይህ ስፍራ ለብዝሃ-ሕይወት ጥበቃ ከፍተኛ ዓለም አቀፍ ድርሻ አለው።',
+    sorTitle: 'የሶር ፏፏቴ (Sor Falls)',
     sorBody:
-      'በባቾ ወረዳ የሚገኘው የሶር ፏፏቴ ከኢሉአባቦር ዞን የተፈጥሮ ውበቶች አንዱ ነው።',
+      'በባቾ ወረዳ በጥቅጥቅ ደን ውስጥ የሚገኘው የሶር ፏፏቴ ከኢሉአባቦር ዞን እጅግ አስደናቂ የተፈጥሮ ውበቶች አንዱ ነው። ከፍተኛ የውሃ ፍሰትና ማራኪ የተፈጥሮ ከባቢ ያለው ይህ ፏፏቴ ለዞናችን የቱሪዝም ዘርፍ ትልቅ አቅም ነው።',
   },
   en: {
-    title: "Our Zone's Heritage and Landscape",
-    yayoTitle: 'Yayu Coffee Forest Biosphere Reserve',
+    title: "Our Zone's Natural Heritage & Landscapes",
+    yayoTitle: 'Yayu Coffee Forest Biosphere Reserve (UNESCO)',
     yayoBody:
-      'The Yayu Coffee Forest Biosphere Reserve is recognized globally for its wild Coffea arabica populations and rich biodiversity.',
-    sorTitle: 'Sor Falls',
+      "Designated as a UNESCO Biosphere Reserve in 2010, Yayu is one of the last remaining Afromontane rainforests housing the world's richest wild Coffea arabica genetic diversity. Drained by rivers like Geba, Dogi, and Saki into the Baro River basin, it serves as a critical hotspot for global biodiversity and conservation research.",
+    sorTitle: 'Sor Waterfalls',
     sorBody:
-      "Hidden within dense forest in Bacho woreda, Sor Falls is one of the zone's natural landmarks.",
+      "Hidden within the dense evergreen rainforests of Bacho woreda, Sor Waterfalls is one of southwestern Ethiopia's most breathtaking natural wonders. Cascading from high cliffs into a serene forested basin, it offers tremendous potential for eco-tourism and environmental study.",
   },
 };
 
 const ECONOMY_COPY = {
   om: {
-    title: 'Diinagdee Bunaa',
-    body: "Godinni Illubaabor bunaa Oromiyaa keessaa dhibbeentaa 13 ol oomisha. Bunaan galii ijoo uummata hedduutiif ta'ee tajaajila.",
+    title: 'Diinagdee Bunaa, Qonnaa fi Badhaadhina Badhee',
+    body: 'Godinni Illubaabor qabeenya bunaa tiin Oromiyaa keessatti shoora olaanaa taphata. Oomisha buna bosonaa fi mantiisa (garden coffee) dabalatee, barbaree goda (korarima), damma bosonaa, qullubbii adiifi jinjibila madaaluun diinagdee uummataa fura. Kana malees, qonnaa agroforestry fi iddoowwan bunaa fi baala bunoota (tea estates) misoomsuun galii uummataa guddisaa jira.',
   },
   am: {
-    title: 'የቡና ኢኮኖሚ',
-    body: 'የኢሉአባቦር ዞን ከኦሮሚያ ቡና ምርት ውስጥ ከ13 በመቶ በላይ የሚያመርት ሲሆን ለብዙ ነዋሪዎች ዋና የገቢ ምንጭ ነው።',
+    title: 'የቡና፣ የግብርና እና የተፈጥሮ ሀብት ኢኮኖሚ',
+    body: 'የኢሉአባቦር ዞን በኦሮሚያ ክልል የቡና ምርት ውስጥ ከፍተኛ ድርሻ ይይዛል። በዱር ደን ቡና እና በጓሮ ቡና ምርት የሚታወቅ ሲሆን እንደ ኮረሪማ፣ የደን ማር እና ዝንጅብል ያሉ ቅመማ ቅመሞች የነዋሪዎች ዋና የገቢ ምንጭ ናቸው። بالإضافةም ዘመናዊ የአግሮ-ፎረስትሪ ልማትና የሻይ ቅጠል ማበጠሪያዎች ለዞኑ ኢኮኖሚ ዕድገት ትልቅ አስተዋጽኦ ያደርጋሉ።',
   },
   en: {
-    title: 'A Coffee Economy',
-    body: "Illubabor produces a significant share of Oromia's coffee, making coffee an important source of income for many residents.",
+    title: 'A Vibrant Coffee & Agro-Forestry Economy',
+    body: "Illubabor is a key economic driver in Oromia, producing a significant share of Ethiopia's premium forest and garden Arabica coffee. Beyond coffee, the region thrives on rich agro-forestry products, including high-grade forest honey, Ethiopian cardamom (korarima), ginger, spices, and commercial tea plantations, powering local livelihoods and national trade.",
   },
 };
 
 const PEOPLE_COPY = {
   om: {
-    title: 'Uummata fi Aadaa',
-    body: 'Godinni Illubaabor uummata fi aadaa Oromoo bal’aa kan qabu yoo ta’u, Afaan Oromoo afaan ijoo uummataati.',
+    title: 'Uummata, Aadaa fi Sirna Gadaa',
+    body: 'Uummanni Godina Illubaabor duudhaa fi aadaa Oromoo isa boonsa dhiheessa. Afaan Oromoo afaan isaanii jalqabaa yoo ta\'u, kabaja keessummaa, sirna buna dhiheessuu (coffee ceremony) fi duudhaa Waloo fi Aadaa Gadaa jabaatti fayyadamu. Misooma bosonaa keessatti immoo toftaa bosona eeguu (Participatory Forest Management) fayyadamuun uummataa fi uumama haala dinqisiisaa ta\'een walsimsiisu.',
   },
   am: {
-    title: 'ህዝብ እና ባህል',
-    body: 'የኢሉአባቦር ዞን የበለጸገ የኦሮሞ ባህልና ቋንቋ ያለው አካባቢ ነው።',
+    title: 'ህዝብ፣ ባህል እና ህብረተሰብ',
+    body: 'የኢሉአባቦር ዞን ህዝብ የበለፀገ የኦሮሞ ባህል፣ የገዳ ስርዓት እሴቶች እና ታዋቂ የኢትዮጵያዊያን እንግዳ ተቀባይነት ባለቤት ነው። አፋን ኦሮሞ የዞኑ ዋና ቋንቋ ሲሆን፣ ህዝቡ ባህላዊ የቡና አፈላል ስነ-ስርዓትንና ተፈጥሮን የመንከባከብ ባህልን አጣጥሞ ይኖራል። በማህበረሰብ አቀፍ የደን ጥበቃ (PFM) ተፈጥሮን ከትውልድ ወደ ትውልድ ማስተላለፍ የህዝቡ መገለጫ ነው።',
   },
   en: {
-    title: 'People and Culture',
-    body: 'Illubabor is home to a rich Oromo cultural heritage, with Afaan Oromoo widely spoken throughout the zone.',
+    title: 'People, Culture, and Living Traditions',
+    body: 'Illubabor is home to a rich Oromo cultural heritage rooted in the principles of the Gadaa system, community solidarity, and renowned hospitality. Afaan Oromoo is the principal language spoken. The local community maintains a deep, harmonious connection with nature, combining traditional coffee ceremonies with innovative participatory forest management (PFM) to preserve their pristine environment.',
   },
 };
 
 const HISTORY_COPY = {
-  om: 'Metuun magaalaa guddittii Godina Illubaabor yoo taatu, magaalaan kun seenaa dheeraa gabaa bunaa fi daldalaatiin beekamti.',
-  am: 'መቱ የኢሉአባቦር ዞን ዋና ከተማ ሲሆን ከተማዋ በቡና ገበያና ንግድ ረጅም ታሪክ አላት።',
-  en: 'Metu is the capital of Illubabor Zone and has a long history as a center for coffee trading and commerce.',
+  om: 'Metuun magaalaa guddittii Godina Illubaabor yoo taatu, bara dheeraa irraa eegalee handhuura daldala bunaa, qabeenya uumamaa fi walitti dhufeenya Oromiyaa gara dhihaa ti. Magaalaan kun seenaa dheeraa gabaa, daldala giddu-galeessaa fi misooma dinagdee rejiiniikoo agarsiisti.',
+  am: 'መቱ የኢሉአባቦር ዞን ዋና ከተማ ስትሆን ከረጅም ጊዜ ጀምሮ የደቡብ ምዕራብ ኢትዮጵያ የቡና ንግድ፣ የትራንስፖርት እና የኢኮኖሚ ማዕከል ሆና አገልግላለች። ከተማዋ ታሪካዊ የንግድ መስመሮችና የነዋሪዎች መስተጋብር የሚታይባት ውብ የዞኑ መዲና ናት።',
+  en: 'Metu (Mettu) serves as the vibrant capital of Illubabor Zone. Historically renowned as a major commercial crossroads and coffee trading hub in southwestern Ethiopia, Metu continues to grow as an administrative, educational, and economic center nestled along the scenic Sor River valley.',
 };
 
 export default function HomePage() {
@@ -170,7 +170,7 @@ export default function HomePage() {
 
               <Link
                 href="/services"
-                className="mt-6 inline-block rounded-lg bg-clay-600 px-6 py-3 text-sm font-semibold text-white hover:bg-clay-700"
+                className="mt-6 inline-block rounded-lg bg-clay-600 px-6 py-3 text-sm font-semibold text-white hover:bg-clay-700 transition-colors"
               >
                 {t.cta}
               </Link>
@@ -198,10 +198,10 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="font-display text-2xl font-semibold text-coffee-950">
           {language === 'om'
-            ? 'Waajjiraalee'
+            ? 'Waajjiraalee fi Tajaajiloota'
             : language === 'am'
-              ? 'መምሪያዎች'
-              : 'Departments'}
+              ? 'መምሪያዎች እና አገልግሎቶች'
+              : 'Departments & Services'}
         </h2>
 
         {deptLoading ? (
@@ -241,7 +241,7 @@ export default function HomePage() {
                 <img
                   src={contentImages.yayo}
                   alt={h.yayoTitle}
-                  className="h-48 w-full object-cover"
+                  className="h-56 w-full object-cover"
                 />
               )}
 
@@ -265,7 +265,7 @@ export default function HomePage() {
                 <img
                   src={contentImages.sor}
                   alt={h.sorTitle}
-                  className="h-48 w-full object-cover"
+                  className="h-56 w-full object-cover"
                 />
               )}
 
@@ -285,20 +285,29 @@ export default function HomePage() {
             </div>
           </div>
 
-          <p className="mt-8 max-w-3xl text-sm leading-relaxed text-coffee-800">
-            {HISTORY_COPY[language]}
-          </p>
+          <div className="mt-10 rounded-lg border border-coffee-950/10 bg-white p-6">
+            <h3 className="font-display text-lg font-semibold text-coffee-950">
+              {language === 'om'
+                ? 'Seenaa Magaalaa Metuu'
+                : language === 'am'
+                  ? 'የመቱ ከተማ ታሪክ'
+                  : 'Historical Significance of Metu'}
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-coffee-800">
+              {HISTORY_COPY[language]}
+            </p>
+          </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg border border-coffee-950/10">
             {contentImages.coffee && (
               <img
                 src={contentImages.coffee}
                 alt="Coffee economy"
-                className="h-64 w-full rounded-lg object-cover"
+                className="h-72 w-full rounded-lg object-cover"
               />
             )}
           </div>

@@ -14,6 +14,7 @@ const NAV = [
   { href: '/admin/documents', label: 'Documents' },
   { href: '/admin/users', label: 'Users' },
   { href: '/admin/messages', label: 'Messages' },
+  { href: '/admin/hero-images', label: 'Hero Images' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

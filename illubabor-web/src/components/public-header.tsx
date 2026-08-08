@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: '/services', label: { om: 'Tajaajila', am: 'አገልግሎቶች', en: 'Services' } },
   { href: '/news', label: { om: 'Oduu', am: 'ዜናዎች', en: 'News' } },
   { href: '/transparency', label: { om: 'Ifa Ta\'uu', am: 'ግልጽነት', en: 'Transparency' } },
+  { href: '/contact', label: { om: 'Qunnamtii', am: 'አድራሻ', en: 'Contact' } },
 ];
 
 export function PublicHeader() {

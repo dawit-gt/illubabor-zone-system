@@ -12,6 +12,7 @@ import { ServicesModule } from './services/services.module';
 import { DocumentsModule } from './documents/documents.module';
 import { UsersModule } from './users/users.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { ContactModule } from './contact/contact.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 
 @Module({
@@ -27,6 +28,7 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
     ServicesModule,
     DocumentsModule,
     UsersModule,
+    ContactModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

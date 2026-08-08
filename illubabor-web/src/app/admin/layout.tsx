@@ -13,6 +13,7 @@ const NAV = [
   { href: '/admin/services', label: 'Services' },
   { href: '/admin/documents', label: 'Documents' },
   { href: '/admin/users', label: 'Users' },
+  { href: '/admin/messages', label: 'Messages' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

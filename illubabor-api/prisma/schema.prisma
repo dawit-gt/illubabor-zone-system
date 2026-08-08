@@ -96,6 +96,7 @@ model Zone {
   news        News[]
   services    Service[]
   documents   Document[]
+  contactMessages ContactMessage[] 
 }
 
 model Woreda {
@@ -292,4 +293,22 @@ model AuditLog {
 
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  ARCHIVED
+}
+
+model ContactMessage {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  message   String        @db.Text
+  status    ContactStatus @default(NEW)
+  createdAt DateTime      @default(now())
+
+  zoneId    String
+  zone      Zone          @relation(fields: [zoneId], references: [id])
 }

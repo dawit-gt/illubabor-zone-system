@@ -66,7 +66,7 @@ const ECONOMY_COPY = {
   },
   am: {
     title: 'የቡና፣ የግብርና እና የተፈጥሮ ሀብት ኢኮኖሚ',
-    body: 'የኢሉአባቦር ዞን በኦሮሚያ ክልል የቡና ምርት ውስጥ ከፍተኛ ድርሻ ይይዛል። በዱር ደን ቡና እና በጓሮ ቡና ምርት የሚታወቅ ሲሆን እንደ ኮረሪማ፣ የደን ማር እና ዝንጅብል ያሉ ቅመማ ቅመሞች የነዋሪዎች ዋና የገቢ ምንጭ ናቸው። بالإضافةም ዘመናዊ የአግሮ-ፎረስትሪ ልማትና የሻይ ቅጠል ማበጠሪያዎች ለዞኑ ኢኮኖሚ ዕድገት ትልቅ አስተዋጽኦ ያደርጋሉ።',
+    body: 'የኢሉአባቦር ዞን በኦሮሚያ ክልል የቡና ምርት ውስጥ ከፍተኛ ድርሻ ይይዛል። በዱር ደን ቡና እና በጓሮ ቡና ምርት የሚታወቅ ሲሆን እንደ ኮረሪማ፣ የደን ማር እና ዝንጅብል ያሉ ቅመማ ቅመሞች የነዋሪዎች ዋና የገቢ ምንጭ ናቸው። በተጨማሪም ዘመናዊ የአግሮ-ፎረስትሪ ልማትና የሻይ ቅጠል ማበጠሪያዎች ለዞኑ ኢኮኖሚ ዕድገት ትልቅ አስተዋጽኦ ያደርጋሉ።',
   },
   en: {
     title: 'A Vibrant Coffee & Agro-Forestry Economy',
@@ -108,6 +108,10 @@ export default function HomePage() {
     sor?: string;
     coffee?: string;
   }>('content_images', {});
+
+  const { value: sections } = useSiteConfig<Record<string, boolean>>('homepage_sections', {
+    stats: true, departments: true, heritage: true, economy: true, people: true,
+  });
 
   const stats = [
     {
@@ -179,6 +183,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {sections.stats && (
       <section className="border-b border-coffee-950/10 bg-parchment-100">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:px-6 md:grid-cols-4 lg:px-8">
           {stats.map((s) => (
@@ -194,7 +199,9 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      )}
 
+      {sections.departments && (
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="font-display text-2xl font-semibold text-coffee-950">
           {language === 'om'
@@ -228,7 +235,9 @@ export default function HomePage() {
           </div>
         )}
       </section>
+      )}
 
+      {sections.heritage && (
       <section className="bg-parchment-100 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl font-semibold text-coffee-950">
@@ -299,7 +308,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
+      {sections.economy && (
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
           <div className="overflow-hidden rounded-lg border border-coffee-950/10">
@@ -323,7 +334,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
+      {sections.people && (
       <section className="bg-canopy-700 py-16 text-parchment-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl font-semibold">
@@ -335,6 +348,7 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+      )}
     </main>
   );
 }

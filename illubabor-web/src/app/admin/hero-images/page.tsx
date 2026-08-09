@@ -9,10 +9,18 @@ type ContentImages = {
   coffee?: string;
 };
 
+type AboutImages = {
+  about_overview?: string;
+  about_geography?: string;
+  about_economy?: string;
+  about_people?: string;
+};
+
 export default function AdminHeroImagesPage() {
   const [images, setImages] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState('');
   const [contentImages, setContentImages] = useState<ContentImages>({});
+  const [aboutImages, setAboutImages] = useState<AboutImages>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -20,14 +28,17 @@ export default function AdminHeroImagesPage() {
     Promise.all([
       api.get('/site-config/hero_images'),
       api.get('/site-config/content_images'),
+      api.get('/site-config/about_images'),
     ])
-      .then(([heroRes, contentRes]) => {
+      .then(([heroRes, contentRes, aboutRes]) => {
         setImages(JSON.parse(heroRes.data.value));
         setContentImages(JSON.parse(contentRes.data.value));
+        setAboutImages(JSON.parse(aboutRes.data.value));
       })
       .catch(() => {
         setImages([]);
         setContentImages({});
+        setAboutImages({});
       })
       .finally(() => setLoading(false));
   }, []);
@@ -55,6 +66,20 @@ export default function AdminHeroImagesPage() {
       });
 
       setContentImages(next);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const saveAboutImages = async (next: AboutImages) => {
+    setSaving(true);
+
+    try {
+      await api.put('/site-config/about_images', {
+        value: JSON.stringify(next),
+      });
+
+      setAboutImages(next);
     } finally {
       setSaving(false);
     }
@@ -189,6 +214,65 @@ export default function AdminHeroImagesPage() {
                     <div className="mt-4">
                       <img
                         src={contentImages[key]}
+                        alt={key}
+                        className="h-40 w-full rounded-md object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-12 border-t border-coffee-950/10 pt-8">
+            <h2 className="font-display text-xl font-semibold text-coffee-950">
+              About Page Images
+            </h2>
+
+            <p className="mt-1 text-sm text-coffee-600">
+              Images shown in each tab of the About page (Overview, Geography, Economy, People).
+            </p>
+
+            <div className="mt-6 space-y-4">
+              {(['about_overview', 'about_geography', 'about_economy', 'about_people'] as const).map((key) => (
+                <div
+                  key={key}
+                  className="rounded-lg border border-coffee-950/10 bg-white p-4"
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="w-32 text-sm font-medium text-coffee-950">
+                      {key.replace('about_', '')}
+                    </span>
+
+                    <input
+                      value={aboutImages[key] ?? ''}
+                      onChange={(e) =>
+                        setAboutImages({
+                          ...aboutImages,
+                          [key]: e.target.value,
+                        })
+                      }
+                      placeholder="https://..."
+                      className="flex-1 rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => saveAboutImages(aboutImages)}
+                      disabled={saving}
+                      className="rounded-md bg-clay-600 px-3 py-2 text-sm text-white hover:bg-clay-500 disabled:opacity-60"
+                    >
+                      Save
+                    </button>
+                  </div>
+
+                  {aboutImages[key] && (
+                    <div className="mt-4">
+                      <img
+                        src={aboutImages[key]}
                         alt={key}
                         className="h-40 w-full rounded-md object-cover"
                         onError={(e) => {

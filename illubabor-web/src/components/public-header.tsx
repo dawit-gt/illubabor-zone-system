@@ -23,18 +23,18 @@ export function PublicHeader() {
   const [langOpen, setLangOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-coffee-950 text-parchment-50 shadow-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="font-display text-lg font-semibold tracking-tight">
+    <header>
+      <div className="flex items-center justify-between">
+        <div className="text-xl font-bold">
           Illubabor Zone
-        </Link>
+        </div>
 
         <nav className="hidden items-center gap-6 lg:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-parchment-100/90 hover:text-clay-500 transition-colors"
+              className="text-sm font-medium text-parchment-100/90 transition-colors hover:text-clay-500"
             >
               {link.label[language]}
             </Link>
@@ -50,6 +50,7 @@ export function PublicHeader() {
               {LANGUAGES.find((l) => l.code === language)?.label}
               <ChevronDown size={14} />
             </button>
+
             {langOpen && (
               <div className="absolute right-0 mt-1 w-40 rounded-md bg-coffee-800 py-1 shadow-lg">
                 {LANGUAGES.map((l) => (
@@ -68,7 +69,11 @@ export function PublicHeader() {
             )}
           </div>
 
-          <button className="lg:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
+          <button
+            className="lg:hidden"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>

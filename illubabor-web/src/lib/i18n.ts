@@ -6,7 +6,7 @@ export const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'en', label: 'English' },
 ];
 
-export const DEFAULT_LANGUAGE: Language = 'om';
+export const DEFAULT_LANGUAGE: Language = 'en';
 
 /**
  * Picks the localized value for a given base field name, falling back

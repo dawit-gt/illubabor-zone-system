@@ -1,41 +1,64 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 
 const NAV = [
   { href: '/admin/dashboard', label: 'Dashboard' },
+  { href: '/admin/hero-images', label: 'Hero Images' },
   { href: '/admin/departments', label: 'Departments' },
   { href: '/admin/woredas', label: 'Woredas' },
   { href: '/admin/news', label: 'News' },
   { href: '/admin/services', label: 'Services' },
   { href: '/admin/documents', label: 'Documents' },
-  { href: '/admin/users', label: 'Users' },
   { href: '/admin/messages', label: 'Messages' },
-  { href: '/admin/hero-images', label: 'Hero Images' },
+  { href: '/admin/users', label: 'Users' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) router.replace('/auth/login');
   }, [loading, user, router]);
 
+  useEffect(() => {
+    setSidebarOpen(false); // close mobile sidebar on navigation
+  }, [pathname]);
+
   if (loading || !user) return null;
 
   return (
     <div className="flex min-h-screen bg-parchment-50">
-      <aside className="w-56 shrink-0 border-r border-coffee-950/10 bg-coffee-950 text-parchment-100">
-        <div className="px-5 py-5">
-          <p className="font-display text-sm font-semibold text-parchment-50">Illubabor Admin</p>
+      {/* Mobile top bar */}
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-coffee-950/10 bg-coffee-950 px-4 py-3 text-parchment-50 lg:hidden">
+        <p className="font-display text-sm font-semibold">Illubabor Admin</p>
+        <button onClick={() => setSidebarOpen((v) => !v)} aria-label="Toggle menu">
+          {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+
+      {/* Backdrop for mobile */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 w-56 shrink-0 border-r border-coffee-950/10 bg-coffee-950 text-parchment-100 transition-transform lg:static lg:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="px-5 py-5 pt-16 lg:pt-5">
+          <p className="hidden font-display text-sm font-semibold text-parchment-50 lg:block">Illubabor Admin</p>
           <p className="mt-1 text-xs text-parchment-100/60">{user.email}</p>
         </div>
-        <nav className="mt-2 flex flex-col">
+        <nav className="mt-2 flex flex-col overflow-y-auto">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -57,7 +80,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           Sign out
         </button>
       </aside>
-      <main className="flex-1 p-8">{children}</main>
+
+      <main className="flex-1 p-4 pt-20 sm:p-8 lg:pt-8">{children}</main>
     </div>
   );
 }

@@ -42,7 +42,7 @@ export function PublicHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="relative hidden lg:block">
+          <div className="relative">
             <button
               onClick={() => setLangOpen((v) => !v)}
               className="flex items-center gap-1 rounded-md border border-parchment-100/20 px-3 py-1.5 text-sm hover:border-clay-500"
@@ -91,19 +91,6 @@ export function PublicHeader() {
               {link.label[language]}
             </Link>
           ))}
-          <div className="mt-2 flex gap-2 border-t border-parchment-100/10 pt-3">
-            {LANGUAGES.map((l) => (
-              <button
-                key={l.code}
-                onClick={() => setLanguage(l.code)}
-                className={`rounded-md px-3 py-1.5 text-xs ${
-                  language === l.code ? 'bg-clay-600 text-white' : 'border border-parchment-100/20 text-parchment-100/80'
-                }`}
-              >
-                {l.label}
-              </button>
-            ))}
-          </div>
         </nav>
       )}
     </header>

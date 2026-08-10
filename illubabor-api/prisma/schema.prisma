@@ -77,26 +77,39 @@ enum ApplicationStatus {
 // ---------- ADMINISTRATIVE HIERARCHY ----------
 
 model Zone {
-  id          String   @id @default(cuid())
-  name        String   @unique // "Illubabor"
-  nameOm      String?  // Oromiffa name
-  nameAm      String?  // Amharic name
-  capital     String   // "Metu"
-  region      String   @default("Oromia")
-  population  Int?
-  areaKm2     Float?
-  description String?  @db.Text
-  descriptionOm String? @db.Text
-  descriptionAm String? @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  name            String   @unique
+  nameOm          String?
+  nameAm          String?
+  capital         String
+  region          String   @default("Oromia")
+  population      Int?
+  areaKm2         Float?
+  elevationMin    Int?
+  elevationMax    Int?
+  urbanKebeles    Int?
+  ruralKebeles    Int?
+  boundaryNorth   String?  @db.Text
+  boundarySouth   String?  @db.Text
+  boundaryEast    String?  @db.Text
+  boundaryWest    String?  @db.Text
+  officeAddress   String?
+  officePhones    String[] @default([])
+  officeHours     String?
+  logoUrl         String?
+  description     String?  @db.Text
+  descriptionOm   String?  @db.Text
+  descriptionAm   String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  woredas     Woreda[]
-  departments Department[]
-  news        News[]
-  services    Service[]
-  documents   Document[]
-  contactMessages ContactMessage[] 
+  woredas         Woreda[]
+  departments     Department[]
+  news            News[]
+  services        Service[]
+  documents       Document[]
+  contactMessages ContactMessage[]
+  contentEntries  ContentEntry[]
 }
 
 model Woreda {
@@ -311,4 +324,29 @@ model ContactMessage {
 
   zoneId    String
   zone      Zone          @relation(fields: [zoneId], references: [id])
+}
+
+enum ContentType {
+  HISTORY
+  HISTORICAL_SITE
+  CULTURAL_TOPIC
+  ORG_INFO
+}
+
+model ContentEntry {
+  id          String      @id @default(cuid())
+  type        ContentType
+  title       String
+  titleOm     String?
+  titleAm     String?
+  body        String      @db.Text
+  bodyOm      String?     @db.Text
+  bodyAm      String?     @db.Text
+  images      String[]    @default([])
+  order       Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  zoneId      String
+  zone        Zone        @relation(fields: [zoneId], references: [id])
 }

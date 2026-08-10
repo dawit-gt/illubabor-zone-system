@@ -1,6 +1,6 @@
 'use client';
 
-import { useLanguage, Language } from '@/lib/language-provider';
+import { useLanguage } from '@/lib/language-provider';
 type Lang = 'om' | 'am' | 'en';
 
 type SectorKey = 'education' | 'health' | 'water' | 'electricity' | 'agriculture';

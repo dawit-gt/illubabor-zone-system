@@ -7,6 +7,7 @@ import { useZone } from '@/hooks/useZone';
 import { useDepartments } from '@/hooks/useDepartments';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { useSiteConfig } from '@/hooks/useSiteConfig';
+import { SectorStats } from '@/components/sector-stats';
 
 const HERO_COPY = {
   om: {
@@ -110,7 +111,7 @@ export default function HomePage() {
   }>('content_images', {});
 
   const { value: sections } = useSiteConfig<Record<string, boolean>>('homepage_sections', {
-    stats: true, departments: true, heritage: true, economy: true, people: true,
+    stats: true, sector:true, departments: true, heritage: true, economy: true, people: true,
   });
 
   const stats = [
@@ -197,6 +198,20 @@ export default function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+      )}
+
+      {sections.sectors && (
+      <section className="bg-parchment-100 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="font-display text-2xl font-semibold text-coffee-950">Public Services at a Glance</h2>
+          <p className="mt-2 max-w-2xl text-sm text-coffee-800">
+            Current capacity and coverage across education, health, water and energy, and agriculture.
+          </p>
+          <div className="mt-8">
+            <SectorStats />
+          </div>
         </div>
       </section>
       )}

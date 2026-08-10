@@ -5,16 +5,18 @@ import { api } from '@/lib/api';
 
 interface Sections {
   stats: boolean;
+  sectors: boolean;
   departments: boolean;
   heritage: boolean;
   economy: boolean;
   people: boolean;
 }
 
-const DEFAULTS: Sections = { stats: true, departments: true, heritage: true, economy: true, people: true };
+const DEFAULTS: Sections = { stats: true, sectors:true, departments: true, heritage: true, economy: true, people: true };
 
 const LABELS: Record<keyof Sections, string> = {
   stats: 'Stats strip (woredas / population / area / departments)',
+  sectors: 'Public Services stats (education, health, water, agriculture)',
   departments: 'Departments grid',
   heritage: 'Yayu Biosphere & Sor Falls cards',
   economy: 'Coffee Economy section',

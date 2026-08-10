@@ -1,32 +1,32 @@
 import type { Config } from 'tailwindcss';
 
-// Illubabor Zone design tokens — grounded in what the zone actually is:
-// a forested, coffee-growing highland zone along the Sor River.
-// Distinct from the Hurumu Woreda site's forest-green + gold identity.
+// Illubabor Zone design tokens — retinted toward forest green as the
+// primary identity color, lighter overall than the original brown-led
+// palette, while keeping the same class names used across components.
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
         coffee: {
-          950: '#2B1D16', // roasted bean — primary dark, header/footer
-          800: '#4A3226',
-          600: '#6B4A38',
+          950: '#1C3226', // deep forest green — primary dark (header/footer/hero overlay)
+          800: '#2E4A38',
+          600: '#4E6F55',
         },
         clay: {
-          600: '#B8622E', // ripe coffee cherry — primary accent
-          500: '#CC7A45',
+          600: '#C1703A', // ripe coffee cherry — primary accent, CTAs
+          500: '#D08A54',
         },
         canopy: {
-          700: '#3F5233', // shade-grown forest canopy — secondary accent
-          500: '#5C7248',
+          700: '#3F6B45', // shade-grown forest canopy — secondary accent
+          500: '#5C8A62',
         },
         sor: {
-          600: '#2C5F6F', // Sor River — used sparingly for links/info
+          600: '#2C6F7F', // Sor River — used sparingly for links/info
         },
         parchment: {
-          50: '#F7F2E9', // background
-          100: '#EFE7D6',
+          50: '#FBF8F1', // lighter background than before
+          100: '#F2ECDF',
         },
         gold: {
           500: '#C99A2E', // ripe cherry gold — highlights, badges only

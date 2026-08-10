@@ -30,7 +30,7 @@ export function PublicFooter() {
 
   return (
     <footer className="bg-coffee-950 text-parchment-100/80">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
           <h3 className="font-display text-lg font-semibold text-parchment-50">Illubabor Zone</h3>
           <p className="mt-2 text-sm">{t.tagline}</p>

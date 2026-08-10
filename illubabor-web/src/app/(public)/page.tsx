@@ -185,7 +185,7 @@ export default function HomePage() {
 
       {sections.stats && (
       <section className="border-b border-coffee-950/10 bg-parchment-100">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:px-6 md:grid-cols-4 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
               <div className="font-display text-3xl font-semibold text-coffee-950">
@@ -202,7 +202,7 @@ export default function HomePage() {
       )}
 
       {sections.departments && (
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <h2 className="font-display text-2xl font-semibold text-coffee-950">
           {language === 'om'
             ? 'Waajjiraalee fi Tajaajiloota'
@@ -238,7 +238,7 @@ export default function HomePage() {
       )}
 
       {sections.heritage && (
-      <section className="bg-parchment-100 py-16">
+      <section className="bg-parchment-100 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl font-semibold text-coffee-950">
             {h.title}
@@ -311,7 +311,7 @@ export default function HomePage() {
       )}
 
       {sections.economy && (
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-2 md:items-center">
           <div className="overflow-hidden rounded-lg border border-coffee-950/10">
             {contentImages.coffee && (
@@ -337,7 +337,7 @@ export default function HomePage() {
       )}
 
       {sections.people && (
-      <section className="bg-canopy-700 py-16 text-parchment-50">
+      <section className="bg-canopy-700 py-20 text-parchment-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl font-semibold">
             {PEOPLE_COPY[language].title}

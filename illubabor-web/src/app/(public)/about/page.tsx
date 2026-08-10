@@ -55,7 +55,7 @@ export default function AboutPage() {
   const imageUrl = images[active.imageKey];
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
       <h1 className="font-display text-3xl font-semibold text-coffee-950">
         {language === 'om' ? "Waaʼee Godina Illubaabor" : language === 'am' ? 'ስለ ኢሉአባቦር ዞን' : 'About Illubabor Zone'}
       </h1>

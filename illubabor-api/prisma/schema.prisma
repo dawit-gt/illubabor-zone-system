@@ -330,10 +330,8 @@ model ContactMessage {
 }
 
 enum ContentType {
-  HISTORY
   HISTORICAL_SITE
   CULTURAL_TOPIC
-  ORG_INFO
 }
 
 model ContentEntry {
@@ -342,10 +340,13 @@ model ContentEntry {
   title       String
   titleOm     String?
   titleAm     String?
+  summary     String?     @db.Text
+  summaryOm   String?     @db.Text
+  summaryAm   String?     @db.Text
   body        String      @db.Text
   bodyOm      String?     @db.Text
   bodyAm      String?     @db.Text
-  images      String[]    @default([])
+  imageUrl    String?
   order       Int         @default(0)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt

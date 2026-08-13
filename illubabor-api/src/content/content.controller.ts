@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Query, UseGuards, NotFoundException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { PrismaService } from '../prisma/prisma.service';
 import { RolesGuard } from '../common/guards/roles.guard';
@@ -18,8 +18,10 @@ export class ContentController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.prisma.contentEntry.findUnique({ where: { id } });
+  async findOne(@Param('id') id: string) {
+    const entry = await this.prisma.contentEntry.findUnique({ where: { id } });
+    if (!entry) throw new NotFoundException('Not found');
+    return entry;
   }
 
   @Post()
@@ -27,7 +29,8 @@ export class ContentController {
   @Roles(Role.SUPER_ADMIN, Role.ZONE_ADMIN, Role.STAFF)
   create(@Body() body: {
     type: ContentType; title: string; titleOm?: string; titleAm?: string;
-    body: string; bodyOm?: string; bodyAm?: string; images?: string[]; zoneId: string;
+    summary?: string; summaryOm?: string; summaryAm?: string;
+    body: string; bodyOm?: string; bodyAm?: string; imageUrl?: string; zoneId: string;
   }) {
     return this.prisma.contentEntry.create({ data: body });
   }
@@ -37,7 +40,8 @@ export class ContentController {
   @Roles(Role.SUPER_ADMIN, Role.ZONE_ADMIN, Role.STAFF)
   update(@Param('id') id: string, @Body() body: Partial<{
     title: string; titleOm: string; titleAm: string;
-    body: string; bodyOm: string; bodyAm: string; images: string[]; order: number;
+    summary: string; summaryOm: string; summaryAm: string;
+    body: string; bodyOm: string; bodyAm: string; imageUrl: string; order: number;
   }>) {
     return this.prisma.contentEntry.update({ where: { id }, data: body });
   }

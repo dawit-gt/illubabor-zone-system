@@ -9,7 +9,7 @@ const config: Config = {
     extend: {
       colors: {
         coffee: {
-          950: '#1C3226', // deep forest green — primary dark (header/footer/hero overlay)
+          950: '#2E7A54', // deep forest green — primary dark (header/footer/hero overlay)
           800: '#2E4A38',
           600: '#4E6F55',
         },

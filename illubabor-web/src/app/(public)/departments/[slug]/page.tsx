@@ -5,6 +5,15 @@ import { useParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useLanguage } from '@/lib/language-provider';
 import { selectByLanguage } from '@/lib/i18n';
+import { SectorStats } from '@/components/sector-stats';
+
+const DEPARTMENT_SECTOR_MAP: Record<string, 'education' | 'health' | 'water' | 'electricity' | 'agriculture'> = {
+  education: 'education',
+  health: 'health',
+  agriculture: 'agriculture',
+  water: 'water',
+  electricity: 'electricity',
+};
 
 export default function DepartmentDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -20,11 +29,11 @@ export default function DepartmentDetailPage() {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  if (loading) return <div className="mx-auto max-w-7xl px-4 py-16 text-sm text-coffee-600">Loading…</div>;
-  if (error || !dept) return <div className="mx-auto max-w-7xl px-4 py-16 text-sm text-coffee-600">Department not found.</div>;
+  if (loading) return <div className="mx-auto max-w-3xl px-4 py-16 text-sm text-coffee-600">Loading…</div>;
+  if (error || !dept) return <div className="mx-auto max-w-3xl px-4 py-16 text-sm text-coffee-600">Department not found.</div>;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="font-display text-3xl font-semibold text-coffee-950">
         {selectByLanguage(dept, 'name', language)}
       </h1>
@@ -48,6 +57,15 @@ export default function DepartmentDetailPage() {
               <p className="mt-1 text-xs text-coffee-600">{s.category.replace(/_/g, ' ')}</p>
             </div>
           ))}
+        </div>
+      )}
+
+      {DEPARTMENT_SECTOR_MAP[dept.slug] && (
+        <div className="mt-10 border-t border-coffee-950/10 pt-8">
+          <h2 className="font-display text-xl font-semibold text-coffee-950">Sector Statistics</h2>
+          <div className="mt-6">
+            <SectorStats only={DEPARTMENT_SECTOR_MAP[dept.slug]} />
+          </div>
         </div>
       )}
     </div>

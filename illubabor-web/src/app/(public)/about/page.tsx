@@ -48,6 +48,7 @@ const TAB_CONTENT: Record<TabKey, Record<'om' | 'am' | 'en', { title: string; bo
 export default function AboutPage() {
   const { language } = useLanguage();
   const { zone, loading } = useZone();
+  const STATIC_DEPARTMENT_OFFSET = 5;
   const { value: images } = useSiteConfig<Record<string, string>>('about_images', {});
   const [tab, setTab] = useState<TabKey>('overview');
 
@@ -69,8 +70,8 @@ export default function AboutPage() {
               { label: STATS_LABELS.woredas[language], value: zone._count.woredas },
               { label: STATS_LABELS.population[language], value: zone.population?.toLocaleString() ?? '—' },
               { label: STATS_LABELS.area[language], value: zone.areaKm2?.toLocaleString() ?? '—' },
-              { label: STATS_LABELS.departments[language], value: zone._count.departments },
-            ].map((s) => (
+              { label: STATS_LABELS.departments[language], value: zone._count.departments + STATIC_DEPARTMENT_OFFSET }
+              ].map((s) => (
               <div key={s.label} className="rounded-lg border border-coffee-950/10 bg-white p-4 text-center">
                 <div className="font-display text-2xl font-semibold text-coffee-950">{s.value}</div>
                 <div className="mt-1 text-xs text-coffee-600">{s.label}</div>

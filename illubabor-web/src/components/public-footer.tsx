@@ -17,7 +17,7 @@ const COPY = {
     rights: 'መብቱ በህግ የተጠበቀ ነው።',
   },
   en: {
-    tagline: 'Official public portal of Illubabor Zone',
+    tagline: 'Official public portal of Ilu Abba bor Zone',
     contact: 'Contact',
     quickLinks: 'Quick Links',
     rights: 'All rights reserved.',
@@ -32,7 +32,14 @@ export function PublicFooter() {
     <footer className="bg-coffee-950 text-parchment-100/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
-          <h3 className="font-display text-lg font-semibold text-parchment-50">Illubabor Zone</h3>
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/logo.png"
+              alt="Ilu Abba Bor Zone logo"
+              className="h-10 w-10 shrink-0 rounded-full object-cover"
+            />
+            <h3 className="font-display text-lg font-semibold text-parchment-50">Ilu Abba bor Zone</h3>
+          </div>
           <p className="mt-2 text-sm">{t.tagline}</p>
         </div>
         <div>

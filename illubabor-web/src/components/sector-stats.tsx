@@ -1,6 +1,8 @@
 'use client';
 
 import { useLanguage } from '@/lib/language-provider';
+import { GraduationCap, HeartPulse, Droplet, Zap, Wheat, type LucideIcon } from 'lucide-react';
+
 type Lang = 'om' | 'am' | 'en';
 
 type SectorKey = 'education' | 'health' | 'water' | 'electricity' | 'agriculture';
@@ -17,9 +19,35 @@ const SECTOR_LABELS: Record<SectorKey, Record<Lang, string>> = {
 
 const SECTORS: SectorKey[] = ['education', 'health', 'water', 'electricity', 'agriculture'];
 
+// Icon + emoji + accent color per sector — used to give each section its
+// own visual identity instead of an identical plain heading.
+const SECTOR_ICON: Record<SectorKey, LucideIcon> = {
+  education: GraduationCap,
+  health: HeartPulse,
+  water: Droplet,
+  electricity: Zap,
+  agriculture: Wheat,
+};
+
+const SECTOR_EMOJI: Record<SectorKey, string> = {
+  education: '🎓',
+  health: '🏥',
+  water: '💧',
+  electricity: '⚡',
+  agriculture: '🌾',
+};
+
+const SECTOR_ACCENT: Record<SectorKey, { icon: string; ring: string }> = {
+  education: { icon: 'bg-clay-600/10 text-clay-600', ring: 'hover:ring-clay-600/30' },
+  health: { icon: 'bg-red-500/10 text-red-600', ring: 'hover:ring-red-500/30' },
+  water: { icon: 'bg-sor-600/10 text-sor-600', ring: 'hover:ring-sor-600/30' },
+  electricity: { icon: 'bg-gold-500/10 text-gold-500', ring: 'hover:ring-gold-500/30' },
+  agriculture: { icon: 'bg-canopy-700/10 text-canopy-700', ring: 'hover:ring-canopy-700/30' },
+};
+
 const UI = {
   male: L('Dhiira', 'ወንድ', 'Male'),
-  female: L('Dhalaa', 'ሴት', 'Female'),
+  female: L('Dhalaa', 'ጓድ', 'Female'),
   total: L('Waliigalaa', 'ጠቅላላ', 'Total'),
   certificate: L('Waraqaa Ragaa', 'ሰርተፍኬት', 'Certificate'),
   diploma: L('Dippiloomaa', 'ዲፕሎማ', 'Diploma'),
@@ -28,11 +56,11 @@ const UI = {
   level: L('Sadarkaa', 'ደረጃ', 'Level'),
   byQualification: L('Aadaan Ogummaa', 'በብቃት ደረጃ', 'By Qualification'),
 
-  basicSchools: L("Mana Barumsaa Bu'uuraa", 'አፀደ ህፃናት ትምህርት ቤቶች', 'Basic education schools'),
+  basicSchools: L("Mana Barumsaa Bu'uuraa", 'መሠረታዊ ትምህርት ቤቶች', 'Basic education schools'),
   primarySchools: L('Mana Barumsaa Sadarkaa 1ffaa', 'አንደኛ ደረጃ ትምህርት ቤቶች', 'Primary schools'),
   secondarySchools: L('Mana Barumsaa Sadarkaa 2ffaa', 'ሁለተኛ ደረጃ ትምህርት ቤቶች', 'Secondary schools'),
   studentData: L('Ragaa Baratootaa (2018)', 'የተማሪ መረጃ (2018)', 'Student Data (2018 E.C.)'),
-  basicEducation: L("Barnoota Bu'uuraa", 'አፀደ ህፃናት', 'Basic Education'),
+  basicEducation: L("Barnoota Bu'uuraa", 'መሠረታዊ ትምህርት', 'Basic Education'),
   primarySchool: L('Sadarkaa 1ffaa', 'አንደኛ ደረጃ', 'Primary School'),
   secondarySchool: L('Sadarkaa 2ffaa', 'ሁለተኛ ደረጃ', 'Secondary School'),
   teacherData: L('Ragaa Barsiisotaa', 'የመምህራን መረጃ', 'Teacher Data'),
@@ -71,29 +99,34 @@ const INTRO: Record<SectorKey, Record<Lang, string>> = {
     "Godinni Illubaabor mana barumsaa bu'uuraa 660, mana barumsaa sadarkaa tokkoffaa 440 fi mana barumsaa sadarkaa lammaffaa 45 qaba.",
     'ዞኑ 660 መሠረታዊ ትምህርት ቤቶች፣ 440 አንደኛ ደረጃ ትምህርት ቤቶች እና 45 ሁለተኛ ደረጃ ትምህርት ቤቶች አሉት።',
     'The zone operates 660 basic education schools, 440 primary schools, and 45 secondary schools.',
-  ) as any,
+  ),
   health: L(
     'Godina keenya keessatti dhaabbilee fayyaa sadarkaa garaagaraa ijaaruuf baasiin guddaan taasifameera.',
     'በዞናችን ውስጥ የተለያዩ ደረጃ ያላቸው የጤና ተቋማትን ለመገንባት ከፍተኛ ወጪ ወጥቷል።',
     'Significant investment has gone into constructing health facilities at various levels across the zone.',
-  ) as any,
+  ),
   water: L(
     'Waggoota shan darban keessatti, Waajjirri Bishaanii fi Anniisaa Godina Illubaabor pirojektoota gurguddaa fi xixiqqaa 1,250 ol hojjechuun rakkoo dhabamuu bishaan dhugaatii furuuf hojjeteera.',
     'ባለፉት አምስት ዓመታት፣ የኢሉአባቦር ዞን ውሃና ኢነርጂ ጽ/ቤት ከ1,250 በላይ ትላልቅና ትናንሽ ፕሮጀክቶችን በመገንባት የመጠጥ ውሃ እጥረት ችግርን ለመፍታት ሰርቷል።',
     "Over the past five years, the Illubabor Zone Water and Energy Office constructed and commissioned over 1,250 major and minor projects worth over half a billion Birr to resolve drinking water supply shortages in the zone. Working with community participation and stakeholders, the office completed 16 major schemes and 1,239 small schemes (hand pumps and developed springs) at a cost of 648,650,960.83 Birr, providing clean drinking water to 198,518 people and raising coverage from 73.5% (end of 2013 E.C.) to 83%.",
-  ) as any,
-  electricity: L('', '', '') as any,
+  ),
+  electricity: L('', '', ''),
   agriculture: L(
     'Wiirtuuwwan Leenjii Qonnaan Bultootaa (FTC) 229 godina keessatti argamu.',
     '229 የገበሬ ማሰልጠኛ ማዕከላት (FTC) በዞኑ ውስጥ ይገኛሉ።',
     'The zone has 229 Farmer Training Centers (FTCs) located across its rural kebeles.',
-  ) as any,
+  ),
 };
 
-function StatCard({ value, label }: { value: string; label: string }) {
+function StatCard({ value, label, accent }: { value: string; label: string; accent: SectorKey }) {
+  const { ring } = SECTOR_ACCENT[accent];
   return (
-    <div className="rounded-lg border border-coffee-950/10 bg-white p-4 text-center">
-      <div className="font-display text-xl font-semibold text-coffee-950">{value}</div>
+    <div
+      className={`group rounded-lg border border-coffee-950/10 bg-white p-4 text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-2 ${ring}`}
+    >
+      <div className="font-display text-xl font-semibold text-coffee-950 transition-transform duration-200 group-hover:scale-110">
+        {value}
+      </div>
       <div className="mt-1 text-xs text-coffee-600">{label}</div>
     </div>
   );
@@ -103,7 +136,7 @@ function TeacherRow({
   title, cert, dip, ba, ma, lang,
 }: { title: string; cert?: string; dip?: string; ba?: string; ma?: string; lang: Lang }) {
   return (
-    <div className="rounded-lg border border-coffee-950/10 bg-white p-4">
+    <div className="rounded-lg border border-coffee-950/10 bg-white p-4 transition-shadow duration-200 hover:shadow-md">
       <p className="font-medium text-coffee-950">{title}</p>
       <div className="mt-2 grid grid-cols-1 gap-2 text-xs text-coffee-700 sm:grid-cols-2">
         {cert && <p>{UI.certificate[lang]}: {cert}</p>}
@@ -119,23 +152,42 @@ function teacherStat(male: string, female: string, total: string, lang: Lang) {
   return `${UI.male[lang]} ${male} / ${UI.female[lang]} ${female} / ${UI.total[lang]} ${total}`;
 }
 
-export function SectorStats() {
+function SectorHeading({ sectorKey, lang }: { sectorKey: SectorKey; lang: Lang }) {
+  const Icon = SECTOR_ICON[sectorKey];
+  const { icon } = SECTOR_ACCENT[sectorKey];
+  return (
+    <div className="flex items-center gap-3">
+      <span
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-lg transition-transform duration-300 hover:rotate-6 hover:scale-110 ${icon}`}
+      >
+        <Icon size={20} strokeWidth={2} />
+      </span>
+      <h3 className="flex items-center gap-2 font-display text-lg font-semibold text-coffee-950">
+        {SECTOR_LABELS[sectorKey][lang]}
+        <span aria-hidden="true">{SECTOR_EMOJI[sectorKey]}</span>
+      </h3>
+    </div>
+  );
+}
+
+export function SectorStats({ only }: { only?: SectorKey } = {}) {
   const { language } = useLanguage();
   const lang = language as Lang;
+  const sectorsToShow = only ? [only] : SECTORS;
 
   return (
     <div className="space-y-12">
-      {SECTORS.map((key) => (
+      {sectorsToShow.map((key) => (
         <div key={key} className="border-t border-coffee-950/10 pt-8 first:border-t-0 first:pt-0">
-          <h3 className="font-display text-lg font-semibold text-coffee-950">{SECTOR_LABELS[key][lang]}</h3>
-          {INTRO[key][lang] && <p className="mt-2 text-sm text-coffee-800">{INTRO[key][lang]}</p>}
+          <SectorHeading sectorKey={key} lang={lang} />
+          {INTRO[key][lang] && <p className="mt-3 text-sm text-coffee-800">{INTRO[key][lang]}</p>}
 
           {key === 'education' && (
             <div className="mt-6 space-y-8">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                <StatCard value="660" label={UI.basicSchools[lang]} />
-                <StatCard value="440" label={UI.primarySchools[lang]} />
-                <StatCard value="45" label={UI.secondarySchools[lang]} />
+                <StatCard value="660" label={UI.basicSchools[lang]} accent={key} />
+                <StatCard value="440" label={UI.primarySchools[lang]} accent={key} />
+                <StatCard value="45" label={UI.secondarySchools[lang]} accent={key} />
               </div>
 
               <div>
@@ -151,9 +203,9 @@ export function SectorStats() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-coffee-950/5">
-                      <tr><td className="p-3 font-medium text-coffee-950">{UI.basicEducation[lang]}</td><td className="p-3">27,535</td><td className="p-3">26,276</td><td className="p-3 font-medium">53,811</td></tr>
-                      <tr><td className="p-3 font-medium text-coffee-950">{UI.primarySchool[lang]}</td><td className="p-3">84,608</td><td className="p-3">78,632</td><td className="p-3 font-medium">163,240</td></tr>
-                      <tr><td className="p-3 font-medium text-coffee-950">{UI.secondarySchool[lang]}</td><td className="p-3">8,697</td><td className="p-3">8,332</td><td className="p-3 font-medium">17,029</td></tr>
+                      <tr className="transition-colors hover:bg-parchment-50"><td className="p-3 font-medium text-coffee-950">{UI.basicEducation[lang]}</td><td className="p-3">27,535</td><td className="p-3">26,276</td><td className="p-3 font-medium">53,811</td></tr>
+                      <tr className="transition-colors hover:bg-parchment-50"><td className="p-3 font-medium text-coffee-950">{UI.primarySchool[lang]}</td><td className="p-3">84,608</td><td className="p-3">78,632</td><td className="p-3 font-medium">163,240</td></tr>
+                      <tr className="transition-colors hover:bg-parchment-50"><td className="p-3 font-medium text-coffee-950">{UI.secondarySchool[lang]}</td><td className="p-3">8,697</td><td className="p-3">8,332</td><td className="p-3 font-medium">17,029</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -203,24 +255,24 @@ export function SectorStats() {
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-clay-600">{UI.govFacilities[lang]}</p>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  <StatCard value="1" label={UI.govHospitals[lang]} />
-                  <StatCard value="39" label={UI.healthCenters[lang]} />
-                  <StatCard value="273+" label={UI.healthPosts[lang]} />
+                  <StatCard value="1" label={UI.govHospitals[lang]} accent={key} />
+                  <StatCard value="39" label={UI.healthCenters[lang]} accent={key} />
+                  <StatCard value="273+" label={UI.healthPosts[lang]} accent={key} />
                 </div>
               </div>
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-clay-600">{UI.privateFacilities[lang]}</p>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  <StatCard value="134" label={UI.clinics[lang]} />
-                  <StatCard value="126" label={UI.pharmacies[lang]} />
-                  <StatCard value="573+" label={UI.totalHealthInst[lang]} />
+                  <StatCard value="134" label={UI.clinics[lang]} accent={key} />
+                  <StatCard value="126" label={UI.pharmacies[lang]} accent={key} />
+                  <StatCard value="573+" label={UI.totalHealthInst[lang]} accent={key} />
                 </div>
               </div>
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-clay-600">{UI.coverageNeeds[lang]}</p>
                 <div className="grid grid-cols-2 gap-3">
-                  <StatCard value="1 / 10 (10%)" label={UI.hospitalCoverage[lang]} />
-                  <StatCard value="39 / 52 (77%)" label={UI.healthCenterCoverage[lang]} />
+                  <StatCard value="1 / 10 (10%)" label={UI.hospitalCoverage[lang]} accent={key} />
+                  <StatCard value="39 / 52 (77%)" label={UI.healthCenterCoverage[lang]} accent={key} />
                 </div>
               </div>
             </div>
@@ -231,29 +283,29 @@ export function SectorStats() {
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-clay-600">{UI.operationalSchemes[lang]}</p>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  <StatCard value="41" label={UI.deepWells[lang]} />
-                  <StatCard value="2,431" label={UI.handDugWells[lang]} />
-                  <StatCard value="2,870" label={UI.developedSprings[lang]} />
+                  <StatCard value="41" label={UI.deepWells[lang]} accent={key} />
+                  <StatCard value="2,431" label={UI.handDugWells[lang]} accent={key} />
+                  <StatCard value="2,870" label={UI.developedSprings[lang]} accent={key} />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                <StatCard value="198,518" label={UI.peopleReached[lang]} />
-                <StatCard value="83%" label={UI.zoneCoverage[lang]} />
-                <StatCard value="659" label={UI.nonOperational[lang]} />
+                <StatCard value="198,518" label={UI.peopleReached[lang]} accent={key} />
+                <StatCard value="83%" label={UI.zoneCoverage[lang]} accent={key} />
+                <StatCard value="659" label={UI.nonOperational[lang]} accent={key} />
               </div>
             </div>
           )}
 
           {key === 'electricity' && (
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <StatCard value="62%+" label={UI.urbanElectricity[lang]} />
-              <StatCard value="71 / 260 (8.8%)" label={UI.ruralElectricity[lang]} />
+              <StatCard value="62%+" label={UI.urbanElectricity[lang]} accent={key} />
+              <StatCard value="71 / 260 (8.8%)" label={UI.ruralElectricity[lang]} accent={key} />
             </div>
           )}
 
           {key === 'agriculture' && (
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <StatCard value="229" label={UI.ftcs[lang]} />
+              <StatCard value="229" label={UI.ftcs[lang]} accent={key} />
             </div>
           )}
         </div>

@@ -84,6 +84,8 @@ model Zone {
   capital         String
   region          String   @default("Oromia")
   population      Int?
+  populationMale   Int?
+  populationFemale Int?
   areaKm2         Float?
   elevationMin    Int?
   elevationMax    Int?
@@ -110,6 +112,7 @@ model Zone {
   documents       Document[]
   contactMessages ContactMessage[]
   contentEntries  ContentEntry[]
+  galleryPhotos GalleryPhoto[]
 }
 
 model Woreda {
@@ -349,4 +352,26 @@ model ContentEntry {
 
   zoneId      String
   zone        Zone        @relation(fields: [zoneId], references: [id])
+}
+
+enum GalleryCategory {
+  ADMIN_OFFICE
+  PROJECTS
+  PUBLIC_EVENTS
+  INFRASTRUCTURE
+  PUBLIC_PARTICIPATION
+}
+
+model GalleryPhoto {
+  id          String          @id @default(cuid())
+  category    GalleryCategory
+  imageUrl    String
+  caption     String?
+  captionOm   String?
+  captionAm   String?
+  order       Int             @default(0)
+  createdAt   DateTime        @default(now())
+
+  zoneId      String
+  zone        Zone            @relation(fields: [zoneId], references: [id])
 }

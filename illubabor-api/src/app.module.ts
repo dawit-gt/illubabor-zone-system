@@ -15,6 +15,7 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { ContactModule } from './contact/contact.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 import { SiteConfigModule } from './site-config/site-config.module';
+import { GalleryModule } from './gallery/gallery.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { SiteConfigModule } from './site-config/site-config.module';
     UsersModule,
     ContactModule,
     SiteConfigModule,
+    GalleryModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

@@ -5,18 +5,18 @@ import { api } from '@/lib/api';
 
 interface Sections {
   stats: boolean;
-  sectors: boolean;
+  welcome: boolean;
   departments: boolean;
   heritage: boolean;
   economy: boolean;
   people: boolean;
 }
 
-const DEFAULTS: Sections = { stats: true, sectors:true, departments: true, heritage: true, economy: true, people: true };
+const DEFAULTS: Sections = { stats: true, welcome: true, departments: true, heritage: true, economy: true, people: true };
 
 const LABELS: Record<keyof Sections, string> = {
   stats: 'Stats strip (woredas / population / area / departments)',
-  sectors: 'Public Services stats (education, health, water, agriculture)',
+  welcome: 'Administrator welcome message & quick stats table',
   departments: 'Departments grid',
   heritage: 'Yayu Biosphere & Sor Falls cards',
   economy: 'Coffee Economy section',
@@ -27,6 +27,7 @@ export default function HomepageSettingsPage() {
   const [sections, setSections] = useState<Sections>(DEFAULTS);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     api.get('/site-config/homepage_sections')
@@ -37,10 +38,23 @@ export default function HomepageSettingsPage() {
 
   const toggle = async (key: keyof Sections) => {
     const next = { ...sections, [key]: !sections[key] };
-    setSections(next);
+    setSections(next); // optimistic
     setSaving(true);
+    setError(null);
     try {
       await api.put('/site-config/homepage_sections', { value: JSON.stringify(next) });
+    } catch (err: any) {
+      // Roll back the optimistic toggle since the save actually failed —
+      // otherwise the UI shows a state that was never persisted.
+      setSections(sections);
+      const status = err?.response?.status;
+      setError(
+        status === 401
+          ? 'Your session has expired. Please sign in again.'
+          : status === 403
+            ? "You don't have permission to change this."
+            : 'Save failed — please try again.',
+      );
     } finally {
       setSaving(false);
     }
@@ -52,6 +66,8 @@ export default function HomepageSettingsPage() {
       <p className="mt-2 text-sm text-coffee-600">
         Turn sections on or off on the public homepage. The hero and stats strip stay above these.
       </p>
+
+      {error && <p className="mt-3 text-sm font-medium text-red-600">{error}</p>}
 
       {loading ? (
         <div className="mt-6 text-sm text-coffee-600">Loading…</div>

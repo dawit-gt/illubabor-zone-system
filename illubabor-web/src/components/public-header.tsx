@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: '/services', label: { om: 'Tajaajila', am: 'አገልግሎቶች', en: 'Services' } },
   { href: '/news', label: { om: 'Oduu', am: 'ዜናዎች', en: 'News' } },
   { href: '/transparency', label: { om: 'Ifa Ta\'uu', am: 'ግልጽነት', en: 'Transparency' } },
+  { href: '/gallery', label: { om: 'Suuraalee', am: 'ፎቶ', en: 'Gallery' } },
   { href: '/contact', label: { om: 'Qunnamtii', am: 'አድራሻ', en: 'Contact' } },
 ];
 
@@ -25,8 +26,13 @@ export function PublicHeader() {
   return (
     <header className="sticky top-0 z-50 bg-coffee-950 text-parchment-50 shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="font-display text-lg font-semibold tracking-tight">
-          Illubabor Zone
+        <Link href="/" className="flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight">
+          <img
+            src="/logo.png"
+            alt="Ilu Abba Bor Zone logo"
+            className="h-9 w-9 shrink-0 rounded-full object-cover"
+          />
+          <span>Ilu Abba Bor Zone</span>
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">

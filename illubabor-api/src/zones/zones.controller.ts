@@ -21,7 +21,9 @@ export class ZonesController {
   @Roles(Role.SUPER_ADMIN, Role.ZONE_ADMIN)
   async updateCurrent(@Body() body: Partial<{
     description: string; descriptionOm: string; descriptionAm: string;
-    population: number; areaKm2: number;
+    population: number; populationMale: number; populationFemale: number;
+    areaKm2: number; elevationMin: number; elevationMax: number;
+    urbanKebeles: number; ruralKebeles: number;
   }>) {
     const zone = await this.prisma.zone.findFirst();
     return this.prisma.zone.update({ where: { id: zone!.id }, data: body });

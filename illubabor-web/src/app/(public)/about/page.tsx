@@ -416,7 +416,7 @@ export default function AboutPage() {
                 loading="lazy"
               />
               <div className="bg-parchment-100 px-4 py-2 text-right text-xs">
-                
+                <a
                   href={`https://www.openstreetmap.org/?mlat=8.35&mlon=35.58#map=9/8.35/35.58`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -469,7 +469,7 @@ export default function AboutPage() {
           />
         )}
       </div>
-    </div>
+  )</div>  
   );
 }
 

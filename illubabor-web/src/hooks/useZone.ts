@@ -8,7 +8,13 @@ interface Zone {
   name: string;
   capital: string;
   population: number;
+  populationMale?: number;
+  populationFemale?: number;
   areaKm2: number;
+  elevationMin?: number;
+  elevationMax?: number;
+  urbanKebeles?: number;
+  ruralKebeles?: number;
   description: string;
   _count: { woredas: number; departments: number; news: number };
 }

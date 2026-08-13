@@ -16,6 +16,7 @@ import { ContactModule } from './contact/contact.module';
 import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor';
 import { SiteConfigModule } from './site-config/site-config.module';
 import { GalleryModule } from './gallery/gallery.module';
+import { ContentModule } from './content/content.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { GalleryModule } from './gallery/gallery.module';
     ContactModule,
     SiteConfigModule,
     GalleryModule,
+    ContentModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

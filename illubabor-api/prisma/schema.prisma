@@ -375,3 +375,4 @@ model GalleryPhoto {
   zoneId      String
   zone        Zone            @relation(fields: [zoneId], references: [id])
 }
+

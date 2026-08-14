@@ -10,6 +10,7 @@ import { useSiteConfig } from '@/hooks/useSiteConfig';
 import { AdminWelcome } from '@/components/admin-welcome';
 import { QuickStats } from '@/components/quick-stats';
 
+type Lang = 'om' | 'am' | 'en';
 
 const HERO_COPY = {
   om: {
@@ -100,21 +101,52 @@ const HISTORY_COPY = {
 
 export default function HomePage() {
   const { language } = useLanguage();
-  const t = HERO_COPY[language];
+
+  const { value: heroTextOverride } = useSiteConfig<
+    Record<
+      Lang,
+      {
+        eyebrow: string;
+        title: string;
+        sub: string;
+        cta: string;
+      }
+    > | null
+  >('hero_text', null);
+
+  const override = heroTextOverride?.[language];
+
+  const t = {
+    eyebrow: override?.eyebrow || HERO_COPY[language].eyebrow,
+    title: override?.title || HERO_COPY[language].title,
+    sub: override?.sub || HERO_COPY[language].sub,
+    cta: override?.cta || HERO_COPY[language].cta,
+  };
+
   const h = HERITAGE_COPY[language];
 
   const { zone, loading: zoneLoading } = useZone();
   const { departments, loading: deptLoading } = useDepartments();
+
   const STATIC_DEPARTMENT_OFFSET = 5;
+
   const { value: contentImages } = useSiteConfig<{
     yayo?: string;
     sor?: string;
     coffee?: string;
   }>('content_images', {});
 
-  const { value: sections } = useSiteConfig<Record<string, boolean>>('homepage_sections', {
-    stats: true, welcome: true, departments: true, heritage: true, economy: true, people: true,
-  });
+  const { value: sections } = useSiteConfig<Record<string, boolean>>(
+    'homepage_sections',
+    {
+      stats: true,
+      welcome: true,
+      departments: true,
+      heritage: true,
+      economy: true,
+      people: true,
+    }
+  );
 
   const stats = [
     {
@@ -145,7 +177,9 @@ export default function HomePage() {
             : 'Area (km²)',
     },
     {
-      value: deptLoading ? '—' : String(departments.length + STATIC_DEPARTMENT_OFFSET),
+      value: deptLoading
+        ? '—'
+        : String(departments.length + STATIC_DEPARTMENT_OFFSET),
       label:
         language === 'om'
           ? 'Waajjiraalee'
@@ -177,7 +211,7 @@ export default function HomePage() {
 
               <Link
                 href="/services"
-                className="mt-6 inline-block rounded-lg bg-clay-600 px-6 py-3 text-sm font-semibold text-white hover:bg-clay-700 transition-colors"
+                className="mt-6 inline-block rounded-lg bg-clay-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-clay-700"
               >
                 {t.cta}
               </Link>
@@ -187,179 +221,180 @@ export default function HomePage() {
       </section>
 
       {sections.stats && (
-      <section className="border-b border-coffee-950/10 bg-parchment-100">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="font-display text-3xl font-semibold text-coffee-950">
-                {zoneLoading ? '…' : s.value}
-              </div>
+        <section className="border-b border-coffee-950/10 bg-parchment-100">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center">
+                <div className="font-display text-3xl font-semibold text-coffee-950">
+                  {zoneLoading ? '…' : s.value}
+                </div>
 
-              <div className="mt-1 text-sm text-coffee-800">
-                {s.label}
+                <div className="mt-1 text-sm text-coffee-800">
+                  {s.label}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
       )}
 
       {sections.welcome && (
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-8">
-          <AdminWelcome />
-          <QuickStats />
-        </div>
-      </section>
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="grid gap-8">
+            <AdminWelcome />
+            <QuickStats />
+          </div>
+        </section>
       )}
 
       {sections.departments && (
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <h2 className="font-display text-2xl font-semibold text-coffee-950">
-          {language === 'om'
-            ? 'Waajjiraalee fi Tajaajiloota'
-            : language === 'am'
-              ? 'መምሪያዎች እና አገልግሎቶች'
-              : 'Departments & Services'}
-        </h2>
+        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <h2 className="font-display text-2xl font-semibold text-coffee-950">
+            {language === 'om'
+              ? 'Waajjiraalee fi Tajaajiloota'
+              : language === 'am'
+                ? 'መምሪያዎች እና አገልግሎቶች'
+                : 'Departments & Services'}
+          </h2>
 
-        {deptLoading ? (
-          <div className="mt-6 text-sm text-coffee-600">
-            Loading…
-          </div>
-        ) : (
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {departments.map((d) => (
-              <Link
-                key={d.id}
-                href={`/departments/${d.slug}`}
-                className="rounded-lg border border-coffee-950/10 bg-white p-5 transition-shadow hover:shadow-md"
-              >
-                <h3 className="font-display text-base font-semibold text-coffee-950">
-                  {selectByLanguage(d, 'name', language)}
-                </h3>
+          {deptLoading ? (
+            <div className="mt-6 text-sm text-coffee-600">
+              Loading…
+            </div>
+          ) : (
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {departments.map((d) => (
+                <Link
+                  key={d.id}
+                  href={`/departments/${d.slug}`}
+                  className="rounded-lg border border-coffee-950/10 bg-white p-5 transition-shadow hover:shadow-md"
+                >
+                  <h3 className="font-display text-base font-semibold text-coffee-950">
+                    {selectByLanguage(d, 'name', language)}
+                  </h3>
 
-                <p className="mt-1 text-xs text-coffee-600">
-                  {d._count.services} services
-                </p>
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
+                  <p className="mt-1 text-xs text-coffee-600">
+                    {d._count.services} services
+                  </p>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
       )}
 
       {sections.heritage && (
-      <section className="bg-parchment-100 py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-semibold text-coffee-950">
-            {h.title}
-          </h2>
+        <section className="bg-parchment-100 py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="font-display text-2xl font-semibold text-coffee-950">
+              {h.title}
+            </h2>
 
-          <div className="mt-8 grid gap-8 md:grid-cols-2">
-            <div className="overflow-hidden rounded-lg border border-coffee-950/10 bg-white">
-              {contentImages.yayo && (
-                <img
-                  src={contentImages.yayo}
-                  alt={h.yayoTitle}
-                  className="h-56 w-full object-cover"
-                />
-              )}
+            <div className="mt-8 grid gap-8 md:grid-cols-2">
+              <div className="overflow-hidden rounded-lg border border-coffee-950/10 bg-white">
+                {contentImages.yayo && (
+                  <img
+                    src={contentImages.yayo}
+                    alt={h.yayoTitle}
+                    className="h-56 w-full object-cover"
+                  />
+                )}
 
-              <div className="p-6">
-                <p className="font-mono text-xs uppercase tracking-wide text-clay-600">
-                  UNESCO Biosphere Reserve
-                </p>
+                <div className="p-6">
+                  <p className="font-mono text-xs uppercase tracking-wide text-clay-600">
+                    UNESCO Biosphere Reserve
+                  </p>
 
-                <h3 className="mt-2 font-display text-lg font-semibold text-coffee-950">
-                  {h.yayoTitle}
-                </h3>
+                  <h3 className="mt-2 font-display text-lg font-semibold text-coffee-950">
+                    {h.yayoTitle}
+                  </h3>
 
-                <p className="mt-3 text-sm leading-relaxed text-coffee-800">
-                  {h.yayoBody}
-                </p>
+                  <p className="mt-3 text-sm leading-relaxed text-coffee-800">
+                    {h.yayoBody}
+                  </p>
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-lg border border-coffee-950/10 bg-white">
+                {contentImages.sor && (
+                  <img
+                    src={contentImages.sor}
+                    alt={h.sorTitle}
+                    className="h-56 w-full object-cover"
+                  />
+                )}
+
+                <div className="p-6">
+                  <p className="font-mono text-xs uppercase tracking-wide text-sor-600">
+                    Natural Landmark
+                  </p>
+
+                  <h3 className="mt-2 font-display text-lg font-semibold text-coffee-950">
+                    {h.sorTitle}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-relaxed text-coffee-800">
+                    {h.sorBody}
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-lg border border-coffee-950/10 bg-white">
-              {contentImages.sor && (
-                <img
-                  src={contentImages.sor}
-                  alt={h.sorTitle}
-                  className="h-56 w-full object-cover"
-                />
-              )}
+            <div className="mt-10 rounded-lg border border-coffee-950/10 bg-white p-6">
+              <h3 className="font-display text-lg font-semibold text-coffee-950">
+                {language === 'om'
+                  ? 'Seenaa Magaalaa Metuu'
+                  : language === 'am'
+                    ? 'የመቱ ከተማ ታሪክ'
+                    : 'Historical Significance of Metu'}
+              </h3>
 
-              <div className="p-6">
-                <p className="font-mono text-xs uppercase tracking-wide text-sor-600">
-                  Natural Landmark
-                </p>
-
-                <h3 className="mt-2 font-display text-lg font-semibold text-coffee-950">
-                  {h.sorTitle}
-                </h3>
-
-                <p className="mt-3 text-sm leading-relaxed text-coffee-800">
-                  {h.sorBody}
-                </p>
-              </div>
+              <p className="mt-3 text-sm leading-relaxed text-coffee-800">
+                {HISTORY_COPY[language]}
+              </p>
             </div>
           </div>
-
-          <div className="mt-10 rounded-lg border border-coffee-950/10 bg-white p-6">
-            <h3 className="font-display text-lg font-semibold text-coffee-950">
-              {language === 'om'
-                ? 'Seenaa Magaalaa Metuu'
-                : language === 'am'
-                  ? 'የመቱ ከተማ ታሪክ'
-                  : 'Historical Significance of Metu'}
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-coffee-800">
-              {HISTORY_COPY[language]}
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
       )}
 
       {sections.economy && (
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-2 md:items-center">
-          <div className="overflow-hidden rounded-lg border border-coffee-950/10">
-            {contentImages.coffee && (
-              <img
-                src={contentImages.coffee}
-                alt="Coffee economy"
-                className="h-72 w-full rounded-lg object-cover"
-              />
-            )}
-          </div>
+        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="grid gap-8 md:grid-cols-2 md:items-center">
+            <div className="overflow-hidden rounded-lg border border-coffee-950/10">
+              {contentImages.coffee && (
+                <img
+                  src={contentImages.coffee}
+                  alt="Coffee economy"
+                  className="h-72 w-full rounded-lg object-cover"
+                />
+              )}
+            </div>
 
-          <div>
-            <h2 className="font-display text-2xl font-semibold text-coffee-950">
-              {ECONOMY_COPY[language].title}
-            </h2>
+            <div>
+              <h2 className="font-display text-2xl font-semibold text-coffee-950">
+                {ECONOMY_COPY[language].title}
+              </h2>
 
-            <p className="mt-4 text-sm leading-relaxed text-coffee-800">
-              {ECONOMY_COPY[language].body}
-            </p>
+              <p className="mt-4 text-sm leading-relaxed text-coffee-800">
+                {ECONOMY_COPY[language].body}
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
 
       {sections.people && (
-      <section className="bg-canopy-700 py-20 text-parchment-50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-semibold">
-            {PEOPLE_COPY[language].title}
-          </h2>
+        <section className="bg-canopy-700 py-20 text-parchment-50">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="font-display text-2xl font-semibold">
+              {PEOPLE_COPY[language].title}
+            </h2>
 
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-parchment-100/90">
-            {PEOPLE_COPY[language].body}
-          </p>
-        </div>
-      </section>
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-parchment-100/90">
+              {PEOPLE_COPY[language].body}
+            </p>
+          </div>
+        </section>
       )}
     </main>
   );

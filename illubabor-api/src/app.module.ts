@@ -17,7 +17,7 @@ import { AuditLogInterceptor } from './common/interceptors/audit-log.interceptor
 import { SiteConfigModule } from './site-config/site-config.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { ContentModule } from './content/content.module';
-
+import { UploadsModule } from './uploads/uploads.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -35,6 +35,7 @@ import { ContentModule } from './content/content.module';
     SiteConfigModule,
     GalleryModule,
     ContentModule,
+    UploadsModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

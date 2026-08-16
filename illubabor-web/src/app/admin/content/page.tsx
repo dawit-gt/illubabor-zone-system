@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { useContent, ContentEntry } from '@/hooks/useContent';
+import { FileUpload } from '@/components/file-upload';
 
 type ContentType = 'HISTORICAL_SITE' | 'CULTURAL_TOPIC';
 
@@ -102,8 +103,7 @@ export default function AdminContentPage() {
               <input value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm" />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-ink-950">Image URL</label>
-              <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm" />
+              <FileUpload label="Image" value={form.imageUrl} onChange={(url) => setForm({ ...form, imageUrl: url })} accept="image/*" />
             </div>
             <div>
               <label className="block text-sm font-medium text-ink-950">Full Body (English)</label>

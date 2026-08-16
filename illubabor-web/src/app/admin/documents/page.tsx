@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { FileUpload } from '@/components/file-upload';
 
 interface Doc { id: string; title: string; type: string; fileUrl: string }
 interface Department { id: string; name: string }
@@ -89,8 +90,12 @@ export default function AdminDocumentsPage() {
               </select>
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-coffee-950">File URL</label>
-              <input value={form.fileUrl} onChange={(e) => setForm({ ...form, fileUrl: e.target.value })} placeholder="https://..." className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm" />
+              <FileUpload
+                label="Document file"
+                value={form.fileUrl}
+                onChange={(url) => setForm({ ...form, fileUrl: url })}
+                accept=".pdf,.doc,.docx,.xls,.xlsx"
+              />
             </div>
           </div>
           <div className="mt-4 flex gap-3">

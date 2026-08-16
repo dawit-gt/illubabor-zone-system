@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { useGallery, GalleryPhoto } from '@/hooks/useGallery';
+import { FileUpload } from '@/components/file-upload';
 
 const CATEGORIES = ['ADMIN_OFFICE', 'PROJECTS', 'PUBLIC_EVENTS', 'INFRASTRUCTURE', 'PUBLIC_PARTICIPATION'] as const;
 
@@ -70,12 +71,11 @@ export default function AdminGalleryPage() {
             />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-coffee-950">Image URL</label>
-            <input
+            <FileUpload
+              label="Photo"
               value={form.imageUrl}
-              onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-              placeholder="https://..."
-              className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+              onChange={(url) => setForm({ ...form, imageUrl: url })}
+              accept="image/*"
             />
           </div>
         </div>

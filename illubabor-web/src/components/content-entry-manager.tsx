@@ -7,15 +7,13 @@ import { FileUpload } from '@/components/file-upload';
 
 type ContentType = 'HISTORICAL_SITE' | 'CULTURAL_TOPIC';
 
-export default function AdminContentPage() {
-  const [activeType, setActiveType] = useState<ContentType>('HISTORICAL_SITE');
-  const { entries, loading } = useContent(activeType);
+export function ContentEntryManager({ type }: { type: ContentType }) {
+  const { entries, loading } = useContent(type);
   const [zoneId, setZoneId] = useState<string | null>(null);
   const [editing, setEditing] = useState<ContentEntry | null>(null);
   const [creating, setCreating] = useState(false);
   const [form, setForm] = useState({ title: '', titleOm: '', summary: '', body: '', bodyOm: '', imageUrl: '' });
   const [saving, setSaving] = useState(false);
-  const [, forceReload] = useState(0);
 
   useEffect(() => {
     api.get('/zones/current').then((res) => setZoneId(res.data.id));
@@ -40,12 +38,11 @@ export default function AdminContentPage() {
     setSaving(true);
     try {
       if (creating) {
-        await api.post('/content', { ...form, type: activeType, zoneId });
+        await api.post('/content', { ...form, type, zoneId });
       } else if (editing) {
         await api.patch(`/content/${editing.id}`, form);
       }
       cancel();
-      forceReload((n) => n + 1);
       window.location.reload();
     } catch {
       alert('Save failed.');
@@ -64,25 +61,8 @@ export default function AdminContentPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold text-ink-950">Historical Places & Cultural Attractions</h1>
-
-      <div className="mt-4 flex gap-2">
-        <button
-          onClick={() => { setActiveType('HISTORICAL_SITE'); cancel(); }}
-          className={`rounded-md px-4 py-2 text-sm ${activeType === 'HISTORICAL_SITE' ? 'bg-clay-600 text-white' : 'border border-coffee-950/20'}`}
-        >
-          Historical Places
-        </button>
-        <button
-          onClick={() => { setActiveType('CULTURAL_TOPIC'); cancel(); }}
-          className={`rounded-md px-4 py-2 text-sm ${activeType === 'CULTURAL_TOPIC' ? 'bg-clay-600 text-white' : 'border border-coffee-950/20'}`}
-        >
-          Cultural Attractions
-        </button>
-      </div>
-
       {!showForm && (
-        <button onClick={startCreate} className="mt-4 rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500">
+        <button onClick={startCreate} className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500">
           + New Entry
         </button>
       )}
@@ -115,8 +95,8 @@ export default function AdminContentPage() {
             </div>
           </div>
           <div className="mt-4 flex gap-3">
-            <button onClick={save} disabled={saving} className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500 disabled:opacity-60">
-              {saving ? 'Saving…' : 'Save'}
+            <button onClick={save} disabled={saving || !zoneId} className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500 disabled:opacity-60">
+              {saving ? 'Saving…' : !zoneId ? 'Loading…' : 'Save'}
             </button>
             <button onClick={cancel} className="rounded-md border border-coffee-950/20 px-4 py-2 text-sm">Cancel</button>
           </div>
@@ -136,6 +116,7 @@ export default function AdminContentPage() {
               </div>
             </div>
           ))}
+          {entries.length === 0 && <p className="px-5 py-4 text-sm text-ink-600">Nothing added yet.</p>}
         </div>
       )}
     </div>

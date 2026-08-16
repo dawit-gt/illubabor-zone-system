@@ -8,18 +8,16 @@ import { useAuth } from '@/lib/auth';
 
 const NAV = [
   { href: '/admin/dashboard', label: 'Dashboard' },
-  { href: '/admin/hero-images', label: 'Hero Images' },
-  { href: '/admin/departments', label: 'Departments' },
+  { href: '/admin/home', label: 'Home' },
+  { href: '/admin/about', label: 'About' },
   { href: '/admin/woredas', label: 'Woredas' },
-  { href: '/admin/news', label: 'News' },
+  { href: '/admin/departments', label: 'Departments' },
   { href: '/admin/services', label: 'Services' },
+  { href: '/admin/news', label: 'News' },
   { href: '/admin/documents', label: 'Documents' },
-  { href: '/admin/messages', label: 'Messages' },
-  { href: '/admin/users', label: 'Users' },
-  { href: '/admin/homepage-settings', label: 'Homepage Sections' },
   { href: '/admin/gallery', label: 'Gallery' },
-  { href: '/admin/site-settings', label: 'Site Settings' },
-  { href: '/admin/content', label: 'Places & Culture' },
+  { href: '/admin/contact', label: 'Contact' },
+  { href: '/admin/users', label: 'Users' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

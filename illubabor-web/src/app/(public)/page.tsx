@@ -16,19 +16,21 @@ const HERO_COPY = {
   om: {
     eyebrow: 'Godina Illubaabor — Misooma, Aadaa fi Uumama',
     title: 'Bulchiinsa Godina Illubaabor',
-    sub: 'Illubaabor handhuura Oromiyaa gara dhihaa kan bosona magariisaa, madda buna Arabikaa addunyaa fi uumama keessummeessituu dha. Tajaajila mootummaa, oduu fi ifa ta\'insa bulchiinsaa kallattiin gara uummataatti dhiyeessina.',
+    sub: "Illubaabor handhuura Oromiyaa gara dhihaa kan bosona magariisaa, madda buna Arabikaa addunyaa fi uumama keessummeessituu dha. Tajaajila mootummaa, oduu fi ifa ta'insa bulchiinsaa kallattiin gara uummataatti dhiyeessina.",
     cta: 'Tajaajila Mootummaa Ilaali',
   },
+
   am: {
     eyebrow: 'ኢሉአባቦር ዞን — ልማት፣ ባህል እና ተፈጥሮ',
     title: 'የኢሉአባቦር ዞን አስተዳደር',
     sub: 'በደቡብ ምዕራብ ኦሮሚያ የምትገኘው ኢሉአባቦር በለምለም ደኗ፣ በዱር አረቢካ ቡናዋ እና በተፈጥሮ ሀብቷ ትታወቃለች። የመንግስት አገልግሎቶችን፣ ትኩስ ዜናዎችን እና ግልፅ የአስተዳደር መረጃዎችን ለህዝባችን እናቀርባለን።',
     cta: 'አገልግሎቶችን ይመልከቱ',
   },
+
   en: {
     eyebrow: 'Illubabor Zone — Governance, Culture & Nature',
     title: 'Illubabor Zone Administration',
-    sub: 'Nestled in southwestern Oromia, Illubabor is renowned for its lush Afromontane rainforests, wild Arabica coffee gene bank, and vibrant cultural heritage. We deliver accessible public services, official updates, and transparent governance directly to citizens.',
+    sub: "Nestled in southwestern Oromia, Illubabor is renowned for its lush Afromontane rainforests, wild Arabica coffee gene bank, and vibrant cultural heritage. We deliver accessible public services, official updates, and transparent governance directly to citizens.",
     cta: 'Explore Public Services',
   },
 };
@@ -36,28 +38,42 @@ const HERO_COPY = {
 const HERITAGE_COPY = {
   om: {
     title: 'Dhaabbii, Seenaa fi Badhaadhina Uumama Godina Keenyaa',
+
     yayoTitle: 'Biyoosfeera Bosona Buna Yaayoo (UNESCO)',
+
     yayoBody:
       'Bosonni Buna Yaayoo, kan UNESCOn waggaa 2010 galmeesse, iddoo jalqabaa fi madda buna Arabikaa (Coffea arabica) addunyaa keessatti madda jeneetikiitiin adda duree dha. Laga Gabbaa, Doogii fi Saakii kan genga Barootti madaalan dabalatee, biyyoosfeerri kun badhaadhina xos-uumamaa (biodiversity) addunyaaf gumaacha dhiyeessa.',
+
     sorTitle: 'Cascade Sooree (Sor Waterfalls)',
+
     sorBody:
-      'Aanaa Bachoo keessatti kan argamu Cascadeen Sooree dhoksaa uumamaa bosona gurraacha keessatti argamu dha. Bisaniin sooraa fi fageenyi qillensa isaa ijaarsaa fi turizimiif hawwata addaa kan qabu yoo ta\'u, madda badhaadhina uumama Godina Illubaabor ta\'iinsa isaatiin beekama.',
+      "Aanaa Bachoo keessatti kan argamu Cascadeen Sooree dhoksaa uumamaa bosona gurraacha keessatti argamu dha. Bisaniin sooraa fi fageenyi qillensa isaa ijaarsaa fi turizimiif hawwata addaa kan qabu yoo ta'u, madda badhaadhina uumama Godina Illubaabor ta'iinsa isaatiin beekama.",
   },
+
   am: {
     title: 'የዞናችን ተፈጥሯዊና ባህላዊ ቅርሶች',
+
     yayoTitle: 'የያዩ ቡና ደን ባዮስፌር ሪዘርቭ (UNESCO)',
+
     yayoBody:
       'እ.አ.አ. በ2010 በዩኔስኮ የተመዘገበው የያዩ ቡና ደን የዓለም አረቢካ ቡና (Coffea arabica) መገኛና ዋና የጄኔቲክ ሀብት ማከማቻ ነው። እንደ ገባ፣ ዶጊ እና ሳኪ ያሉ ወንዞች ባሮ ወንዝን የሚቀላቀሉበት ይህ ስፍራ ለብዝሃ-ሕይወት ጥበቃ ከፍተኛ ዓለም አቀፍ ድርሻ አለው።',
+
     sorTitle: 'የሶር ፏፏቴ (Sor Falls)',
+
     sorBody:
       'በባቾ ወረዳ በጥቅጥቅ ደን ውስጥ የሚገኘው የሶር ፏፏቴ ከኢሉአባቦር ዞን እጅግ አስደናቂ የተፈጥሮ ውበቶች አንዱ ነው። ከፍተኛ የውሃ ፍሰትና ማራኪ የተፈጥሮ ከባቢ ያለው ይህ ፏፏቴ ለዞናችን የቱሪዝም ዘርፍ ትልቅ አቅም ነው።',
   },
+
   en: {
     title: "Our Zone's Natural Heritage & Landscapes",
+
     yayoTitle: 'Yayu Coffee Forest Biosphere Reserve (UNESCO)',
+
     yayoBody:
       "Designated as a UNESCO Biosphere Reserve in 2010, Yayu is one of the last remaining Afromontane rainforests housing the world's richest wild Coffea arabica genetic diversity. Drained by rivers like Geba, Dogi, and Saki into the Baro River basin, it serves as a critical hotspot for global biodiversity and conservation research.",
+
     sorTitle: 'Sor Waterfalls',
+
     sorBody:
       "Hidden within the dense evergreen rainforests of Bacho woreda, Sor Waterfalls is one of southwestern Ethiopia's most breathtaking natural wonders. Cascading from high cliffs into a serene forested basin, it offers tremendous potential for eco-tourism and environmental study.",
   },
@@ -66,14 +82,19 @@ const HERITAGE_COPY = {
 const ECONOMY_COPY = {
   om: {
     title: 'Diinagdee Bunaa, Qonnaa fi Badhaadhina Badhee',
+
     body: 'Godinni Illubaabor qabeenya bunaa tiin Oromiyaa keessatti shoora olaanaa taphata. Oomisha buna bosonaa fi mantiisa (garden coffee) dabalatee, barbaree goda (korarima), damma bosonaa, qullubbii adiifi jinjibila madaaluun diinagdee uummataa fura. Kana malees, qonnaa agroforestry fi iddoowwan bunaa fi baala bunoota (tea estates) misoomsuun galii uummataa guddisaa jira.',
   },
+
   am: {
     title: 'የቡና፣ የግብርና እና የተፈጥሮ ሀብት ኢኮኖሚ',
+
     body: 'የኢሉአባቦር ዞን በኦሮሚያ ክልል የቡና ምርት ውስጥ ከፍተኛ ድርሻ ይይዛል። በዱር ደን ቡና እና በጓሮ ቡና ምርት የሚታወቅ ሲሆን እንደ ኮረሪማ፣ የደን ማር እና ዝንጅብል ያሉ ቅመማ ቅመሞች የነዋሪዎች ዋና የገቢ ምንጭ ናቸው። በተጨማሪም ዘመናዊ የአግሮ-ፎረስትሪ ልማትና የሻይ ቅጠል ማበጠሪያዎች ለዞኑ ኢኮኖሚ ዕድገት ትልቅ አስተዋጽኦ ያደርጋሉ።',
   },
+
   en: {
     title: 'A Vibrant Coffee & Agro-Forestry Economy',
+
     body: "Illubabor is a key economic driver in Oromia, producing a significant share of Ethiopia's premium forest and garden Arabica coffee. Beyond coffee, the region thrives on rich agro-forestry products, including high-grade forest honey, Ethiopian cardamom (korarima), ginger, spices, and commercial tea plantations, powering local livelihoods and national trade.",
   },
 };
@@ -81,21 +102,28 @@ const ECONOMY_COPY = {
 const PEOPLE_COPY = {
   om: {
     title: 'Uummata, Aadaa fi Sirna Gadaa',
-    body: 'Uummanni Godina Illubaabor duudhaa fi aadaa Oromoo isa boonsa dhiheessa. Afaan Oromoo afaan isaanii jalqabaa yoo ta\'u, kabaja keessummaa, sirna buna dhiheessuu (coffee ceremony) fi duudhaa Waloo fi Aadaa Gadaa jabaatti fayyadamu. Misooma bosonaa keessatti immoo toftaa bosona eeguu (Participatory Forest Management) fayyadamuun uummataa fi uumama haala dinqisiisaa ta\'een walsimsiisu.',
+
+    body: "Uummanni Godina Illubaabor duudhaa fi aadaa Oromoo isa boonsa dhiheessa. Afaan Oromoo afaan isaanii jalqabaa yoo ta'u, kabaja keessummaa, sirna buna dhiheessuu (coffee ceremony) fi duudhaa Waloo fi Aadaa Gadaa jabaatti fayyadamu. Misooma bosonaa keessatti immoo toftaa bosona eeguu (Participatory Forest Management) fayyadamuun uummataa fi uumama haala dinqisiisaa ta'een walsimsiisu.",
   },
+
   am: {
     title: 'ህዝብ፣ ባህል እና ህብረተሰብ',
+
     body: 'የኢሉአባቦር ዞን ህዝብ የበለፀገ የኦሮሞ ባህል፣ የገዳ ስርዓት እሴቶች እና ታዋቂ የኢትዮጵያዊያን እንግዳ ተቀባይነት ባለቤት ነው። አፋን ኦሮሞ የዞኑ ዋና ቋንቋ ሲሆን፣ ህዝቡ ባህላዊ የቡና አፈላል ስነ-ስርዓትንና ተፈጥሮን የመንከባከብ ባህልን አጣጥሞ ይኖራል። በማህበረሰብ አቀፍ የደን ጥበቃ (PFM) ተፈጥሮን ከትውልድ ወደ ትውልድ ማስተላለፍ የህዝቡ መገለጫ ነው።',
   },
+
   en: {
     title: 'People, Culture, and Living Traditions',
+
     body: 'Illubabor is home to a rich Oromo cultural heritage rooted in the principles of the Gadaa system, community solidarity, and renowned hospitality. Afaan Oromoo is the principal language spoken. The local community maintains a deep, harmonious connection with nature, combining traditional coffee ceremonies with innovative participatory forest management (PFM) to preserve their pristine environment.',
   },
 };
 
 const HISTORY_COPY = {
-  om: 'Metuun magaalaa guddittii Godina Illubaabor yoo taatu, bara dheeraa irraa eegalee handhuura daldala bunaa, qabeenya uumamaa fi walitti dhufeenya Oromiyaa gara dhihaa ti. Magaalaan kun seenaa dheeraa gabaa, daldala giddu-galeessaa fi misooma dinagdee rejiiniikoo agarsiisti.',
+  om: "Metuun magaalaa guddittii Godina Illubaabor yoo taatu, bara dheeraa irraa eegalee handhuura daldala bunaa, qabeenya uumamaa fi walitti dhufeenya Oromiyaa gara dhihaa ti. Magaalaan kun seenaa dheeraa gabaa, daldala giddu-galeessaa fi misooma dinagdee rejiiniikoo agarsiisti.",
+
   am: 'መቱ የኢሉአባቦር ዞን ዋና ከተማ ስትሆን ከረጅም ጊዜ ጀምሮ የደቡብ ምዕራብ ኢትዮጵያ የቡና ንግድ፣ የትራንስፖርት እና የኢኮኖሚ ማዕከል ሆና አገልግላለች። ከተማዋ ታሪካዊ የንግድ መስመሮችና የነዋሪዎች መስተጋብር የሚታይባት ውብ የዞኑ መዲና ናት።',
+
   en: 'Metu (Mettu) serves as the vibrant capital of Illubabor Zone. Historically renowned as a major commercial crossroads and coffee trading hub in southwestern Ethiopia, Metu continues to grow as an administrative, educational, and economic center nestled along the scenic Sor River valley.',
 };
 
@@ -122,6 +150,26 @@ export default function HomePage() {
     sub: override?.sub || HERO_COPY[language].sub,
     cta: override?.cta || HERO_COPY[language].cta,
   };
+
+  /*
+   * Homepage section text overrides.
+   *
+   * If the admin has saved custom text, it will be displayed.
+   * Otherwise, the existing HERITAGE_COPY / ECONOMY_COPY
+   * content will be used as the fallback.
+   */
+  const { value: contentText } = useSiteConfig<
+    Record<
+      'yayo' | 'sor' | 'coffee',
+      Record<
+        'en' | 'om' | 'am',
+        {
+          title: string;
+          body: string;
+        }
+      >
+    > | null
+  >('content_sections_text', null);
 
   const h = HERITAGE_COPY[language];
 
@@ -158,6 +206,7 @@ export default function HomePage() {
             ? 'ወረዳዎች'
             : 'Woredas',
     },
+
     {
       value: zone ? zone.population.toLocaleString() : '—',
       label:
@@ -167,6 +216,7 @@ export default function HomePage() {
             ? 'ህዝብ ብዛት'
             : 'Population',
     },
+
     {
       value: zone ? zone.areaKm2.toLocaleString() : '—',
       label:
@@ -176,6 +226,7 @@ export default function HomePage() {
             ? 'ስፋት (ኪ.ሜ²)'
             : 'Area (km²)',
     },
+
     {
       value: deptLoading
         ? '—'
@@ -191,6 +242,7 @@ export default function HomePage() {
 
   return (
     <main>
+      {/* Hero Section */}
       <section className="relative min-h-[600px] overflow-hidden">
         <HeroCarousel />
 
@@ -220,6 +272,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Statistics */}
       {sections.stats && (
         <section className="border-b border-coffee-950/10 bg-parchment-100">
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
@@ -238,6 +291,7 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Welcome */}
       {sections.welcome && (
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-8">
@@ -247,6 +301,7 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Departments */}
       {sections.departments && (
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl font-semibold text-coffee-950">
@@ -283,6 +338,7 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Heritage */}
       {sections.heritage && (
         <section className="bg-parchment-100 py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -291,11 +347,15 @@ export default function HomePage() {
             </h2>
 
             <div className="mt-8 grid gap-8 md:grid-cols-2">
+              {/* Yayo */}
               <div className="overflow-hidden rounded-lg border border-coffee-950/10 bg-white">
                 {contentImages.yayo && (
                   <img
                     src={contentImages.yayo}
-                    alt={h.yayoTitle}
+                    alt={
+                      contentText?.yayo?.[language]?.title ||
+                      h.yayoTitle
+                    }
                     className="h-56 w-full object-cover"
                   />
                 )}
@@ -306,20 +366,26 @@ export default function HomePage() {
                   </p>
 
                   <h3 className="mt-2 font-display text-lg font-semibold text-coffee-950">
-                    {h.yayoTitle}
+                    {contentText?.yayo?.[language]?.title ||
+                      h.yayoTitle}
                   </h3>
 
                   <p className="mt-3 text-sm leading-relaxed text-coffee-800">
-                    {h.yayoBody}
+                    {contentText?.yayo?.[language]?.body ||
+                      h.yayoBody}
                   </p>
                 </div>
               </div>
 
+              {/* Sor */}
               <div className="overflow-hidden rounded-lg border border-coffee-950/10 bg-white">
                 {contentImages.sor && (
                   <img
                     src={contentImages.sor}
-                    alt={h.sorTitle}
+                    alt={
+                      contentText?.sor?.[language]?.title ||
+                      h.sorTitle
+                    }
                     className="h-56 w-full object-cover"
                   />
                 )}
@@ -330,16 +396,19 @@ export default function HomePage() {
                   </p>
 
                   <h3 className="mt-2 font-display text-lg font-semibold text-coffee-950">
-                    {h.sorTitle}
+                    {contentText?.sor?.[language]?.title ||
+                      h.sorTitle}
                   </h3>
 
                   <p className="mt-3 text-sm leading-relaxed text-coffee-800">
-                    {h.sorBody}
+                    {contentText?.sor?.[language]?.body ||
+                      h.sorBody}
                   </p>
                 </div>
               </div>
             </div>
 
+            {/* History */}
             <div className="mt-10 rounded-lg border border-coffee-950/10 bg-white p-6">
               <h3 className="font-display text-lg font-semibold text-coffee-950">
                 {language === 'om'
@@ -357,6 +426,7 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Economy */}
       {sections.economy && (
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="grid gap-8 md:grid-cols-2 md:items-center">
@@ -372,17 +442,20 @@ export default function HomePage() {
 
             <div>
               <h2 className="font-display text-2xl font-semibold text-coffee-950">
-                {ECONOMY_COPY[language].title}
+                {contentText?.coffee?.[language]?.title ||
+                  ECONOMY_COPY[language].title}
               </h2>
 
               <p className="mt-4 text-sm leading-relaxed text-coffee-800">
-                {ECONOMY_COPY[language].body}
+                {contentText?.coffee?.[language]?.body ||
+                  ECONOMY_COPY[language].body}
               </p>
             </div>
           </div>
         </section>
       )}
 
+      {/* People */}
       {sections.people && (
         <section className="bg-canopy-700 py-20 text-parchment-50">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

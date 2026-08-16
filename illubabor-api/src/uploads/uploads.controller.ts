@@ -28,7 +28,7 @@ export class UploadsController {
     const path = `${randomUUID()}.${ext}`;
 
     const { error } = await this.supabase.storage
-      .from('zone-uploads')
+      .from('site-images')
       .upload(path, file.buffer, { contentType: file.mimetype });
 
     if (error) throw new BadRequestException(`Upload failed: ${error.message}`);

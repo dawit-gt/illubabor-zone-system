@@ -33,7 +33,7 @@ export class UploadsController {
 
     if (error) throw new BadRequestException(`Upload failed: ${error.message}`);
 
-    const { data } = this.supabase.storage.from('zone-uploads').getPublicUrl(path);
+    const { data } = this.supabase.storage.from('site-images').getPublicUrl(path);
     return { url: data.publicUrl };
   }
 }

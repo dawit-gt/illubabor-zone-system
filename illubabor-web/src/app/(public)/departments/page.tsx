@@ -58,8 +58,8 @@ export default function DepartmentsPage() {
                     <h2 className="font-display text-lg font-semibold text-ink-950">
                       {selectByLanguage(d, 'name', language)}
                     </h2>
-                    {d.description && !isOpen && (
-                      <p className="mt-1 line-clamp-1 text-sm text-ink-600">{selectByLanguage(d, 'description', language)}</p>
+                    {d.description && (
+                      <p className="max-w-2xl text-sm text-ink-800">{selectByLanguage(d, 'description', language)}</p>
                     )}
                   </div>
                   <ChevronDown

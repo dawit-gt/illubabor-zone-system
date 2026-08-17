@@ -397,21 +397,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
-            {/* History */}
-            <div className="mt-10 rounded-lg border border-coffee-950/10 bg-white p-6">
-              <h3 className="font-display text-lg font-semibold text-coffee-950">
-                {language === 'om'
-                  ? 'Seenaa Magaalaa Metuu'
-                  : language === 'am'
-                    ? 'የመቱ ከተማ ታሪክ'
-                    : 'Historical Significance of Metu'}
-              </h3>
-
-              <p className="mt-3 text-sm leading-relaxed text-coffee-800">
-                {HISTORY_COPY[language]}
-              </p>
-            </div>
           </div>
         </section>
       )}

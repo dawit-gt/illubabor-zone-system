@@ -84,14 +84,6 @@ export default function AdminDashboardPage() {
         <p className="mt-1 text-sm text-coffee-600">
           Control which sections appear on the public homepage, and manage the hero/content images.
         </p>
-        <div className="mt-4 flex gap-3">
-          <Link href="/admin/homepage-settings" className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500">
-            Homepage Sections
-          </Link>
-          <Link href="/admin/hero-images" className="rounded-md border border-coffee-950/20 px-4 py-2 text-sm hover:bg-coffee-950/5">
-            Hero & Content Images
-          </Link>
-        </div>
       </div>
     </div>
   );

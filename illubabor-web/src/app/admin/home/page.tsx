@@ -346,7 +346,15 @@ export default function AdminHomePage() {
   };
 
   const saveStats = async () => {
-    await saveConfig('homepage_stats', stats);
+    setSaving(true);
+    try {
+      await api.patch('/zones/current', stats);
+    } catch (error) {
+      console.error('Failed to save statistics:', error);
+      alert('Failed to save statistics.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const saveContentImages = async (

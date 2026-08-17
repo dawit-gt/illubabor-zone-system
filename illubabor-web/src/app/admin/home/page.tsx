@@ -203,7 +203,7 @@ export default function AdminHomePage() {
             .catch(() => SECTION_DEFAULTS),
 
           api
-            .get('/site-config/welcome_message')
+            .get('/site-config/admin_welcome_message')
             .then((r) => JSON.parse(r.data.value))
             .catch(
               () => ({

@@ -39,10 +39,12 @@ export default function DepartmentsPage() {
 
       {loading ? (
         <div className="mt-6 text-sm text-ink-600">Loading…</div>
+      ) : departments.length === 0 ? (
+        <p className="mt-6 text-sm text-ink-600">No departments added yet.</p>
       ) : (
-        <div className="mt-10 space-y-16">
+        <div className="mt-10 flex flex-col gap-16">
           {departments.map((d: any) => (
-            <section key={d.id} className="border-t border-coffee-950/10 pt-10 first:border-t-0 first:pt-0">
+            <section key={d.id} className="w-full border-t border-coffee-950/10 pt-10 first:border-t-0 first:pt-0">
               <h2 className="font-display text-2xl font-semibold text-ink-950">
                 {selectByLanguage(d, 'name', language)}
               </h2>
@@ -58,7 +60,7 @@ export default function DepartmentsPage() {
               )}
 
               {DEPARTMENT_SECTOR_MAP[d.slug] ? (
-                <div className="mt-6">
+                <div className="mt-6 w-full">
                   <SectorStats only={DEPARTMENT_SECTOR_MAP[d.slug]} />
                 </div>
               ) : (
@@ -66,9 +68,6 @@ export default function DepartmentsPage() {
               )}
             </section>
           ))}
-          {departments.length === 0 && (
-            <p className="text-sm text-ink-600">No departments added yet.</p>
-          )}
         </div>
       )}
     </div>

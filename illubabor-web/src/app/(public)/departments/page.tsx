@@ -59,7 +59,9 @@ export default function DepartmentsPage() {
                       {selectByLanguage(d, 'name', language)}
                     </h2>
                     {d.description && (
-                      <p className="max-w-2xl text-sm text-ink-800">{selectByLanguage(d, 'description', language)}</p>
+                      <p className="line-clamp-2 max-w-2xl whitespace-pre-line text-sm text-ink-800">
+                        {selectByLanguage(d, 'description', language)}
+                      </p>
                     )}
                   </div>
                   <ChevronDown
@@ -71,7 +73,9 @@ export default function DepartmentsPage() {
                 {isOpen && (
                   <div className="border-t border-coffee-950/10 px-5 py-6">
                     {d.description && (
-                      <p className="max-w-2xl text-sm text-ink-800">{selectByLanguage(d, 'description', language)}</p>
+                      <p className="max-w-2xl whitespace-pre-line text-sm text-ink-800">
+                        {selectByLanguage(d, 'description', language)}
+                      </p>
                     )}
                     {(d.headName || d.contactEmail || d.contactPhone) && (
                       <div className="mt-3 space-y-0.5 text-xs text-ink-600">

@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react';
 import { useLanguage } from '@/lib/language-provider';
 import { api } from '@/lib/api';
 import { useSiteConfig } from '@/hooks/useSiteConfig';
+import { MapPin, Mail, Phone } from 'lucide-react';
 
 type Lang = 'om' | 'am' | 'en';
 
@@ -37,13 +38,27 @@ export default function ContactPage() {
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="font-display text-3xl font-semibold text-ink-950">{t.title}</h1>
 
-      {info?.address[lang] && <p className="mt-2 text-sm text-ink-800">{info.address[lang]}</p>}
-      {(info?.email || info?.phone) && (
-        <p className="mt-1 text-sm text-ink-600">
-          {info.email && <span>{info.email}</span>}
-          {info.email && info.phone && <span> · </span>}
-          {info.phone && <span>{info.phone}</span>}
-        </p>
+      {(info?.address[lang] || info?.email || info?.phone) && (
+        <div className="mt-6 space-y-3 rounded-lg border border-coffee-950/10 bg-white p-5">
+          {info.address[lang] && (
+            <div className="flex items-start gap-3">
+              <MapPin size={18} className="mt-0.5 shrink-0 text-clay-600" />
+              <p className="text-sm text-ink-800">{info.address[lang]}</p>
+            </div>
+          )}
+          {info.email && (
+            <a href={`mailto:${info.email}`} className="flex items-center gap-3 text-sm text-ink-800 hover:text-clay-600">
+              <Mail size={18} className="shrink-0 text-clay-600" />
+              <span className="underline-offset-2 hover:underline">{info.email}</span>
+            </a>
+          )}
+          {info.phone && (
+            <a href={`tel:${info.phone.replace(/\s+/g, '')}`} className="flex items-center gap-3 text-sm text-ink-800 hover:text-clay-600">
+              <Phone size={18} className="shrink-0 text-clay-600" />
+              <span className="underline-offset-2 hover:underline">{info.phone}</span>
+            </a>
+          )}
+        </div>
       )}
 
       {status === 'sent' ? (

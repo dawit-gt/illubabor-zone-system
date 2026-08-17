@@ -340,7 +340,7 @@ export default function AdminHomePage() {
 
   const saveWelcomeMessage = async () => {
     await saveConfig(
-      'welcome_message',
+      'admin_welcome_message',
       welcomeMessage
     );
   };

@@ -99,26 +99,6 @@ const ECONOMY_COPY = {
   },
 };
 
-const PEOPLE_COPY = {
-  om: {
-    title: 'Uummata, Aadaa fi Sirna Gadaa',
-
-    body: "Uummanni Godina Illubaabor duudhaa fi aadaa Oromoo isa boonsa dhiheessa. Afaan Oromoo afaan isaanii jalqabaa yoo ta'u, kabaja keessummaa, sirna buna dhiheessuu (coffee ceremony) fi duudhaa Waloo fi Aadaa Gadaa jabaatti fayyadamu. Misooma bosonaa keessatti immoo toftaa bosona eeguu (Participatory Forest Management) fayyadamuun uummataa fi uumama haala dinqisiisaa ta'een walsimsiisu.",
-  },
-
-  am: {
-    title: 'ህዝብ፣ ባህል እና ህብረተሰብ',
-
-    body: 'የኢሉአባቦር ዞን ህዝብ የበለፀገ የኦሮሞ ባህል፣ የገዳ ስርዓት እሴቶች እና ታዋቂ የኢትዮጵያዊያን እንግዳ ተቀባይነት ባለቤት ነው። አፋን ኦሮሞ የዞኑ ዋና ቋንቋ ሲሆን፣ ህዝቡ ባህላዊ የቡና አፈላል ስነ-ስርዓትንና ተፈጥሮን የመንከባከብ ባህልን አጣጥሞ ይኖራል። በማህበረሰብ አቀፍ የደን ጥበቃ (PFM) ተፈጥሮን ከትውልድ ወደ ትውልድ ማስተላለፍ የህዝቡ መገለጫ ነው።',
-  },
-
-  en: {
-    title: 'People, Culture, and Living Traditions',
-
-    body: 'Illubabor is home to a rich Oromo cultural heritage rooted in the principles of the Gadaa system, community solidarity, and renowned hospitality. Afaan Oromoo is the principal language spoken. The local community maintains a deep, harmonious connection with nature, combining traditional coffee ceremonies with innovative participatory forest management (PFM) to preserve their pristine environment.',
-  },
-};
-
 const HISTORY_COPY = {
   om: "Metuun magaalaa guddittii Godina Illubaabor yoo taatu, bara dheeraa irraa eegalee handhuura daldala bunaa, qabeenya uumamaa fi walitti dhufeenya Oromiyaa gara dhihaa ti. Magaalaan kun seenaa dheeraa gabaa, daldala giddu-galeessaa fi misooma dinagdee rejiiniikoo agarsiisti.",
 
@@ -127,9 +107,17 @@ const HISTORY_COPY = {
   en: 'Metu (Mettu) serves as the vibrant capital of Illubabor Zone. Historically renowned as a major commercial crossroads and coffee trading hub in southwestern Ethiopia, Metu continues to grow as an administrative, educational, and economic center nestled along the scenic Sor River valley.',
 };
 
+interface ExtraSection {
+  id: string;
+  imageUrl: string;
+  title: Record<Lang, string>;
+  body: Record<Lang, string>;
+}
+
 export default function HomePage() {
   const { language } = useLanguage();
 
+  /* Hero text */
   const { value: heroTextOverride } = useSiteConfig<
     Record<
       Lang,
@@ -151,18 +139,12 @@ export default function HomePage() {
     cta: override?.cta || HERO_COPY[language].cta,
   };
 
-  /*
-   * Homepage section text overrides.
-   *
-   * If the admin has saved custom text, it will be displayed.
-   * Otherwise, the existing HERITAGE_COPY / ECONOMY_COPY
-   * content will be used as the fallback.
-   */
+  /* Content text overrides */
   const { value: contentText } = useSiteConfig<
     Record<
       'yayo' | 'sor' | 'coffee',
       Record<
-        'en' | 'om' | 'am',
+        Lang,
         {
           title: string;
           body: string;
@@ -171,19 +153,20 @@ export default function HomePage() {
     > | null
   >('content_sections_text', null);
 
-  const h = HERITAGE_COPY[language];
-
-  const { zone, loading: zoneLoading } = useZone();
-  const { departments, loading: deptLoading } = useDepartments();
-
-  const STATIC_DEPARTMENT_OFFSET = 5;
-
+  /* Content images */
   const { value: contentImages } = useSiteConfig<{
     yayo?: string;
     sor?: string;
     coffee?: string;
   }>('content_images', {});
 
+  /* Flexible extra content blocks */
+  const { value: extraSections } = useSiteConfig<ExtraSection[]>(
+    'homepage_extra_sections',
+    []
+  );
+
+  /* Homepage section visibility */
   const { value: sections } = useSiteConfig<Record<string, boolean>>(
     'homepage_sections',
     {
@@ -192,9 +175,16 @@ export default function HomePage() {
       departments: true,
       heritage: true,
       economy: true,
-      people: true,
+      extraContent: true,
     }
   );
+
+  const h = HERITAGE_COPY[language];
+
+  const { zone, loading: zoneLoading } = useZone();
+  const { departments, loading: deptLoading } = useDepartments();
+
+  const STATIC_DEPARTMENT_OFFSET = 5;
 
   const stats = [
     {
@@ -455,20 +445,34 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* People */}
-      {sections.people && (
-        <section className="bg-canopy-700 py-20 text-parchment-50">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="font-display text-2xl font-semibold">
-              {PEOPLE_COPY[language].title}
-            </h2>
+      {/* Extra Content Blocks */}
+      {sections.extraContent &&
+        extraSections.map((s) => (
+          <section
+            key={s.id}
+            className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
+          >
+            <div className="grid gap-8 md:grid-cols-2 md:items-center">
+              {s.imageUrl && (
+                <img
+                  src={s.imageUrl}
+                  alt={s.title[language] || ''}
+                  className="h-64 w-full rounded-lg object-cover"
+                />
+              )}
 
-            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-parchment-100/90">
-              {PEOPLE_COPY[language].body}
-            </p>
-          </div>
-        </section>
-      )}
+              <div>
+                <h2 className="font-display text-2xl font-semibold text-coffee-950">
+                  {s.title[language]}
+                </h2>
+
+                <p className="mt-4 text-sm leading-relaxed text-coffee-800">
+                  {s.body[language]}
+                </p>
+              </div>
+            </div>
+          </section>
+        ))}
     </main>
   );
 }

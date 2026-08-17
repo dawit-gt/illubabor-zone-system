@@ -79,12 +79,6 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="mt-8 rounded-lg border border-coffee-950/10 bg-white p-6">
-        <h2 className="font-display text-lg font-semibold text-coffee-950">Homepage Content</h2>
-        <p className="mt-1 text-sm text-coffee-600">
-          Control which sections appear on the public homepage, and manage the hero/content images.
-        </p>
-      </div>
     </div>
   );
 }

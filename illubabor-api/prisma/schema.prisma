@@ -332,6 +332,8 @@ model ContactMessage {
 enum ContentType {
   HISTORICAL_SITE
   CULTURAL_TOPIC
+  INVESTMENT_OPPORTUNITY
+  PROJECT
 }
 
 model ContentEntry {

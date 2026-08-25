@@ -84,15 +84,27 @@ const NAV_LINKS: NavItem[] = [
   },
   {
     href: '/transparency',
-    label: { om: "Ifa Ta'uu", am: 'ግልጽነት', en: 'Transparency' },
+    label: {
+      om: "Ifa Ta'uu",
+      am: 'ግልጽነት',
+      en: 'Transparency',
+    },
   },
   {
     href: '/gallery',
-    label: { om: 'Suuraalee', am: 'ፎቶ ማዕከል', en: 'Gallery' },
+    label: {
+      om: 'Suuraalee',
+      am: 'ፎቶ ማዕከል',
+      en: 'Gallery',
+    },
   },
   {
     href: '/contact',
-    label: { om: 'Qunnamtii', am: 'አድራሻ', en: 'Contact' },
+    label: {
+      om: 'Qunnamtii',
+      am: 'አድራሻ',
+      en: 'Contact',
+    },
   },
 ];
 
@@ -130,8 +142,8 @@ export function PublicHeader() {
                   onMouseEnter={() => setOpenDropdown(key)}
                   onMouseLeave={() => setOpenDropdown(null)}
                 >
-                  <div className="flex items-center">
-                    {/* Investment landing page */}
+                  {/* Main link + dropdown button */}
+                  <div className="flex items-center gap-1">
                     <Link
                       href={item.href!}
                       className="text-sm font-medium text-parchment-100/90 transition-colors hover:text-clay-500"
@@ -139,13 +151,14 @@ export function PublicHeader() {
                       {item.label[language]}
                     </Link>
 
-                    {/* Dropdown toggle */}
                     <button
+                      type="button"
                       onClick={() =>
                         setOpenDropdown(isOpen ? null : key)
                       }
-                      className="ml-1 flex items-center text-parchment-100/90 transition-colors hover:text-clay-500"
-                      aria-label={`${item.label[language]} menu`}
+                      aria-label={`Toggle ${item.label[language]} submenu`}
+                      aria-expanded={isOpen}
+                      className="flex items-center text-parchment-100/90 transition-colors hover:text-clay-500"
                     >
                       <ChevronDown
                         size={14}
@@ -156,23 +169,28 @@ export function PublicHeader() {
                     </button>
                   </div>
 
+                  {/* Dropdown */}
                   {isOpen && (
-                    <div className="absolute left-0 top-full mt-2 w-64 overflow-hidden rounded-lg bg-white py-2 shadow-lg">
-                      {/* Landing page shortcut */}
+                    <div
+                      className="dropdown-link absolute left-0 top-full mt-2 w-64 overflow-hidden rounded-lg bg-white py-2 shadow-lg"
+                      style={{ color: '#1C2620' }}
+                    >
+                      {/* Investment landing page */}
                       <Link
                         href={item.href!}
-                        className="block border-b border-gray-100 px-4 py-2.5 text-sm font-semibold text-clay-600 hover:bg-gray-50"
                         onClick={() => setOpenDropdown(null)}
+                        className="dropdown-link block border-b border-gray-100 px-4 py-2.5 text-sm font-semibold text-clay-600 hover:bg-gray-50"
                       >
                         {item.label[language]}
                       </Link>
 
+                      {/* Submenu items */}
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
                           href={child.href}
-                          className="block px-4 py-2.5 text-sm text-ink-900 hover:bg-gray-100"
                           onClick={() => setOpenDropdown(null)}
+                          className="dropdown-link block px-4 py-2.5 text-sm text-ink-900 hover:bg-gray-100"
                         >
                           {child.label[language]}
                         </Link>
@@ -183,6 +201,7 @@ export function PublicHeader() {
               );
             }
 
+            {/* Normal navigation link */}
             return (
               <Link
                 key={key}
@@ -197,23 +216,29 @@ export function PublicHeader() {
 
         {/* Right Controls */}
         <div className="flex items-center gap-3">
-          {/* Language */}
+          {/* Language Selector */}
           <div className="relative">
             <button
+              type="button"
               onClick={() => setLangOpen((v) => !v)}
+              aria-label="Select language"
+              aria-expanded={langOpen}
               className="flex items-center gap-1 rounded-md border border-parchment-100/20 px-3 py-1.5 text-sm hover:border-clay-500"
             >
-              {
-                LANGUAGES.find((l) => l.code === language)
-                  ?.label
-              }
-              <ChevronDown size={14} />
+              {LANGUAGES.find((l) => l.code === language)?.label}
+              <ChevronDown
+                size={14}
+                className={`transition-transform ${
+                  langOpen ? 'rotate-180' : ''
+                }`}
+              />
             </button>
 
             {langOpen && (
               <div className="absolute right-0 mt-1 w-40 rounded-md bg-coffee-800 py-1 shadow-lg">
                 {LANGUAGES.map((l) => (
                   <button
+                    type="button"
                     key={l.code}
                     onClick={() => {
                       setLanguage(l.code);
@@ -230,9 +255,11 @@ export function PublicHeader() {
 
           {/* Mobile Menu Button */}
           <button
+            type="button"
             className="lg:hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -250,8 +277,8 @@ export function PublicHeader() {
 
               return (
                 <div key={key}>
+                  {/* Main link + expand button */}
                   <div className="flex items-center">
-                    {/* Mobile landing page link */}
                     <Link
                       href={item.href!}
                       onClick={() => setMobileOpen(false)}
@@ -260,15 +287,16 @@ export function PublicHeader() {
                       {item.label[language]}
                     </Link>
 
-                    {/* Expand dropdown */}
                     <button
+                      type="button"
                       onClick={() =>
                         setMobileExpanded(
                           isExpanded ? null : key
                         )
                       }
-                      className="rounded px-2 py-2 hover:bg-coffee-800"
                       aria-label={`Expand ${item.label[language]}`}
+                      aria-expanded={isExpanded}
+                      className="rounded px-2 py-2 hover:bg-coffee-800"
                     >
                       <ChevronDown
                         size={16}
@@ -279,14 +307,15 @@ export function PublicHeader() {
                     </button>
                   </div>
 
+                  {/* Mobile submenu */}
                   {isExpanded && (
                     <div className="ml-3 flex flex-col gap-1 border-l border-parchment-100/10 pl-3">
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
                           href={child.href}
-                          className="rounded px-2 py-2 text-sm text-parchment-100/80 hover:bg-coffee-800"
                           onClick={() => setMobileOpen(false)}
+                          className="rounded px-2 py-2 text-sm text-parchment-100/80 hover:bg-coffee-800"
                         >
                           {child.label[language]}
                         </Link>
@@ -297,6 +326,7 @@ export function PublicHeader() {
               );
             }
 
+            {/* Normal mobile navigation link */}
             return (
               <Link
                 key={key}

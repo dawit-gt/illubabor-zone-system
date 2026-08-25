@@ -25,6 +25,9 @@ export interface ContentEntry {
   bodyAm?: string;
 
   imageUrl?: string;
+
+  tag?: string;
+  status?: string;
 }
 
 export function useContent(type?: ContentEntry['type']) {

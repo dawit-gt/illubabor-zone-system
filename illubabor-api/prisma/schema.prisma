@@ -355,6 +355,8 @@ model ContentEntry {
 
   zoneId      String
   zone        Zone        @relation(fields: [zoneId], references: [id])
+  tag         String?
+  status      String?
 }
 
 enum GalleryCategory {

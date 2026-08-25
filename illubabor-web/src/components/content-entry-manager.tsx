@@ -25,6 +25,8 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
     body: '',
     bodyOm: '',
     imageUrl: '',
+    tag: '',
+    status: '',
   });
 
   const [saving, setSaving] = useState(false);
@@ -44,6 +46,8 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
       body: '',
       bodyOm: '',
       imageUrl: '',
+      tag: '',
+      status: '',
     });
   };
 
@@ -58,6 +62,8 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
       body: e.body,
       bodyOm: e.bodyOm ?? '',
       imageUrl: e.imageUrl ?? '',
+      tag: (e as any).tag ?? '',
+      status: (e as any).status ?? '',
     });
   };
 
@@ -162,6 +168,42 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
                   setForm({
                     ...form,
                     summary: e.target.value,
+                  })
+                }
+                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+              />
+            </div>
+
+            {/* Tag */}
+            <div>
+              <label className="block text-sm font-medium text-ink-950">
+                Tag / Category (e.g. Coffee, Spices, Eco-Tourism)
+              </label>
+
+              <input
+                value={form.tag}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    tag: e.target.value,
+                  })
+                }
+                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+              />
+            </div>
+
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-medium text-ink-950">
+                Status (e.g. Open, Planned)
+              </label>
+
+              <input
+                value={form.status}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    status: e.target.value,
                   })
                 }
                 className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"

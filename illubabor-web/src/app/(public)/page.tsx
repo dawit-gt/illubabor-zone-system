@@ -184,8 +184,6 @@ export default function HomePage() {
   const { zone, loading: zoneLoading } = useZone();
   const { departments, loading: deptLoading } = useDepartments();
 
-  const STATIC_DEPARTMENT_OFFSET = 5;
-
   const stats = [
     {
       value: zone ? String(zone._count.woredas) : '—',
@@ -220,7 +218,7 @@ export default function HomePage() {
     {
       value: deptLoading
         ? '—'
-        : String(departments.length + STATIC_DEPARTMENT_OFFSET),
+        : String(departments.length),
       label:
         language === 'om'
           ? 'Dameewwan'

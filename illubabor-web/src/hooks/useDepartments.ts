@@ -10,7 +10,9 @@ interface Department {
   nameAm?: string;
   slug: string;
   description?: string;
-  _count: { services: number };
+  _count: {
+    services: number;
+  };
 }
 
 export function useDepartments() {
@@ -18,11 +20,28 @@ export function useDepartments() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/departments')
-      .then((res) => setDepartments(res.data))
-      .catch(() => setDepartments([]))
-      .finally(() => setLoading(false));
+    api
+      .get('/departments')
+      .then((res) => {
+        const validDepartments = Array.isArray(res.data)
+          ? res.data.filter(
+              (department: Department) =>
+                department.name?.trim() && department.slug?.trim()
+            )
+          : [];
+
+        setDepartments(validDepartments);
+      })
+      .catch(() => {
+        setDepartments([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
-  return { departments, loading };
+  return {
+    departments,
+    loading,
+  };
 }

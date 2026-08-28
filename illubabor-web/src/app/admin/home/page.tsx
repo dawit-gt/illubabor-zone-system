@@ -124,12 +124,29 @@ export default function AdminHomePage() {
   const [heroText, setHeroText] =
     useState<Record<Lang, HeroText>>(EMPTY_HERO_TEXT);
 
-  const [welcomeMessage, setWelcomeMessage] =
-    useState<Record<Lang, string>>({
-      en: '',
-      om: '',
-      am: '',
-    });
+  const [welcomeMessage, setWelcomeMessage] = useState<{
+    text: Record<Lang, string>;
+    adminName: string;
+    adminTitle: Record<Lang, string>;
+    adminPhotoUrl: string;
+  }>({
+    text: { en: '', om: '', am: '' },
+    adminName: '',
+    adminTitle: { en: '', om: '', am: '' },
+    adminPhotoUrl: '',
+  });
+
+  interface LeadershipMember {
+    id: string;
+    photoUrl: string;
+    name: string;
+    title: Record<Lang, string>;
+    message: Record<Lang, string>;
+  }
+
+  const [leadership, setLeadership] = useState<LeadershipMember[]>([]);
+  const [editingLeader, setEditingLeader] =
+    useState<LeadershipMember | null>(null);
 
   const [stats, setStats] = useState<Stats>(EMPTY_STATS);
   const [woredaCount, setWoredaCount] = useState<number | null>(null);
@@ -168,6 +185,7 @@ export default function AdminHomePage() {
           cTxt,
           sect,
           welcome,
+          leadershipTeam,
           zoneRes,
           extra,
         ] = await Promise.all([
@@ -207,11 +225,17 @@ export default function AdminHomePage() {
             .then((r) => JSON.parse(r.data.value))
             .catch(
               () => ({
-                en: '',
-                om: '',
-                am: '',
+                text: { en: '', om: '', am: '' },
+                adminName: '',
+                adminTitle: { en: '', om: '', am: '' },
+                adminPhotoUrl: '',
               })
             ),
+
+          api
+            .get('/site-config/leadership_team')
+            .then((r) => JSON.parse(r.data.value))
+            .catch(() => []),
 
           api
             .get('/zones/current')
@@ -247,10 +271,15 @@ export default function AdminHomePage() {
         });
 
         setWelcomeMessage({
-          en: welcome?.en ?? '',
-          om: welcome?.om ?? '',
-          am: welcome?.am ?? '',
+          text: welcome?.text ?? { en: '', om: '', am: '' },
+          adminName: welcome?.adminName ?? '',
+          adminTitle: welcome?.adminTitle ?? { en: '', om: '', am: '' },
+          adminPhotoUrl: welcome?.adminPhotoUrl ?? '',
         });
+
+        setLeadership(
+          Array.isArray(leadershipTeam) ? leadershipTeam : []
+        );
 
         if (zoneRes?.data) {
           const zone = zoneRes.data;
@@ -342,6 +371,62 @@ export default function AdminHomePage() {
     await saveConfig(
       'admin_welcome_message',
       welcomeMessage
+    );
+  };
+
+  const saveLeadership = async (
+    next: LeadershipMember[]
+  ) => {
+    setSaving(true);
+
+    try {
+      await api.put('/site-config/leadership_team', {
+        value: JSON.stringify(next),
+      });
+
+      setLeadership(next);
+    } catch (error) {
+      console.error('Failed to save leadership team:', error);
+      alert('Failed to save leadership team.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const startNewLeader = () => {
+    setEditingLeader({
+      id: crypto.randomUUID(),
+      photoUrl: '',
+      name: '',
+      title: { en: '', om: '', am: '' },
+      message: { en: '', om: '', am: '' },
+    });
+  };
+
+  const saveEditingLeader = () => {
+    if (!editingLeader) return;
+
+    const exists = leadership.some(
+      (leader) => leader.id === editingLeader.id
+    );
+
+    const next = exists
+      ? leadership.map((leader) =>
+          leader.id === editingLeader.id
+            ? editingLeader
+            : leader
+        )
+      : [...leadership, editingLeader];
+
+    saveLeadership(next);
+    setEditingLeader(null);
+  };
+
+  const removeLeader = (id: string) => {
+    if (!confirm('Delete this team member?')) return;
+
+    saveLeadership(
+      leadership.filter((leader) => leader.id !== id)
     );
   };
 
@@ -660,23 +745,75 @@ export default function AdminHomePage() {
           </h2>
 
           <div className="mt-4 space-y-4">
-            {(
-              ['en', 'om', 'am'] as Lang[]
-            ).map((lang) => (
+            <div className="rounded-lg border border-coffee-950/10 bg-white p-4">
+              <FileUpload
+                label="Administrator photo (portrait, roughly 800×1000)"
+                value={welcomeMessage.adminPhotoUrl}
+                onChange={(url) =>
+                  setWelcomeMessage({
+                    ...welcomeMessage,
+                    adminPhotoUrl: url,
+                  })
+                }
+                accept="image/*"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-ink-950">
+                Administrator Name
+              </label>
+              <input
+                value={welcomeMessage.adminName}
+                onChange={(e) =>
+                  setWelcomeMessage({
+                    ...welcomeMessage,
+                    adminName: e.target.value,
+                  })
+                }
+                placeholder="e.g. Dr. Teshome Aduna"
+                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+              />
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {(['en', 'om', 'am'] as Lang[]).map((lang) => (
+                <div key={lang}>
+                  <label className="block text-xs font-semibold uppercase text-ink-600">
+                    Title ({lang})
+                  </label>
+                  <input
+                    value={welcomeMessage.adminTitle[lang]}
+                    onChange={(e) =>
+                      setWelcomeMessage({
+                        ...welcomeMessage,
+                        adminTitle: {
+                          ...welcomeMessage.adminTitle,
+                          [lang]: e.target.value,
+                        },
+                      })
+                    }
+                    placeholder="e.g. Zone Administrator"
+                    className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {(['en', 'om', 'am'] as Lang[]).map((lang) => (
               <div key={lang}>
                 <label className="block text-sm font-medium uppercase text-ink-950">
-                  {lang}
+                  {lang} — Message
                 </label>
-
                 <textarea
-                  value={
-                    welcomeMessage[lang]
-                  }
+                  value={welcomeMessage.text[lang]}
                   onChange={(e) =>
                     setWelcomeMessage({
                       ...welcomeMessage,
-                      [lang]:
-                        e.target.value,
+                      text: {
+                        ...welcomeMessage.text,
+                        [lang]: e.target.value,
+                      },
                     })
                   }
                   rows={4}
@@ -686,16 +823,179 @@ export default function AdminHomePage() {
             ))}
 
             <button
-              onClick={
-                saveWelcomeMessage
-              }
+              onClick={saveWelcomeMessage}
               disabled={saving}
               className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500 disabled:opacity-60"
             >
-              {saving
-                ? 'Saving…'
-                : 'Save Message'}
+              {saving ? 'Saving…' : 'Save Message'}
             </button>
+          </div>
+
+          <div className="mt-10 border-t border-coffee-950/10 pt-8">
+            <h3 className="font-display text-lg font-semibold text-ink-950">
+              Leadership Team
+            </h3>
+
+            <p className="mt-1 text-sm text-ink-600">
+              Deputy administrators and other leadership shown below the welcome message.
+            </p>
+
+            {!editingLeader && (
+              <button
+                onClick={startNewLeader}
+                className="mt-4 rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500"
+              >
+                + New Team Member
+              </button>
+            )}
+
+            {editingLeader && (
+              <div className="mt-4 rounded-lg border border-coffee-950/10 bg-white p-4">
+                <FileUpload
+                  label="Photo (square, roughly 800×800)"
+                  value={editingLeader.photoUrl}
+                  onChange={(url) =>
+                    setEditingLeader({
+                      ...editingLeader,
+                      photoUrl: url,
+                    })
+                  }
+                  accept="image/*"
+                />
+
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-ink-950">
+                    Name
+                  </label>
+                  <input
+                    value={editingLeader.name}
+                    onChange={(e) =>
+                      setEditingLeader({
+                        ...editingLeader,
+                        name: e.target.value,
+                      })
+                    }
+                    placeholder="e.g. Deputy Zone Administrator"
+                    className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                  />
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  {(['en', 'om', 'am'] as Lang[]).map((lang) => (
+                    <div key={lang}>
+                      <p className="text-xs font-semibold uppercase text-ink-600">
+                        {lang} — Title
+                      </p>
+
+                      <input
+                        value={editingLeader.title[lang]}
+                        onChange={(e) =>
+                          setEditingLeader({
+                            ...editingLeader,
+                            title: {
+                              ...editingLeader.title,
+                              [lang]: e.target.value,
+                            },
+                          })
+                        }
+                        className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                      />
+
+                      <p className="mt-2 text-xs font-semibold uppercase text-ink-600">
+                        {lang} — Message
+                      </p>
+
+                      <textarea
+                        value={editingLeader.message[lang]}
+                        onChange={(e) =>
+                          setEditingLeader({
+                            ...editingLeader,
+                            message: {
+                              ...editingLeader.message,
+                              [lang]: e.target.value,
+                            },
+                          })
+                        }
+                        rows={4}
+                        className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 flex gap-3">
+                  <button
+                    onClick={saveEditingLeader}
+                    disabled={saving}
+                    className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500 disabled:opacity-60"
+                  >
+                    {saving ? 'Saving…' : 'Save Member'}
+                  </button>
+
+                  <button
+                    onClick={() => setEditingLeader(null)}
+                    disabled={saving}
+                    className="rounded-md border border-coffee-950/20 px-4 py-2 text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-6 divide-y divide-coffee-950/10 rounded-lg border border-coffee-950/10 bg-white">
+              {leadership.map((leader) => (
+                <div
+                  key={leader.id}
+                  className="flex items-center justify-between px-5 py-3"
+                >
+                  <div className="flex items-center gap-3">
+                    {leader.photoUrl ? (
+                      <img
+                        src={leader.photoUrl}
+                        alt={leader.name || 'Leadership team member'}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-10 w-10 rounded-full bg-coffee-950/10" />
+                    )}
+
+                    <div>
+                      <p className="font-medium text-ink-950">
+                        {leader.name || '(unnamed)'}
+                      </p>
+                      {leader.title.en && (
+                        <p className="text-xs text-ink-600">
+                          {leader.title.en}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setEditingLeader(leader)}
+                      className="text-sm text-clay-600 hover:underline"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => removeLeader(leader.id)}
+                      className="text-sm text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              {leadership.length === 0 && (
+                <p className="px-5 py-4 text-sm text-ink-600">
+                  No team members yet.
+                </p>
+              )}
+            </div>
           </div>
         </section>
       )}

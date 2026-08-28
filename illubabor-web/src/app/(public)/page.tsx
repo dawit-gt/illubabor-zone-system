@@ -8,7 +8,7 @@ import { useDepartments } from '@/hooks/useDepartments';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { useSiteConfig } from '@/hooks/useSiteConfig';
 import { AdminWelcome } from '@/components/admin-welcome';
-import { QuickStats } from '@/components/quick-stats';
+import { LeadershipTeam } from '@/components/leadership-team';
 
 type Lang = 'om' | 'am' | 'en';
 
@@ -284,10 +284,8 @@ export default function HomePage() {
       {/* Welcome */}
       {sections.welcome && (
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid gap-8">
-            <AdminWelcome />
-            <QuickStats />
-          </div>
+          <AdminWelcome />
+          <LeadershipTeam />
         </section>
       )}
 

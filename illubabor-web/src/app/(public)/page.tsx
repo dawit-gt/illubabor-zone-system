@@ -223,10 +223,10 @@ export default function HomePage() {
         : String(departments.length + STATIC_DEPARTMENT_OFFSET),
       label:
         language === 'om'
-          ? 'Waajjiraalee'
+          ? 'Dameewwan'
           : language === 'am'
-            ? 'መምሪያዎች'
-            : 'Departments',
+            ? 'ዘርፎች'
+            : 'Sectors',
     },
   ];
 
@@ -294,10 +294,10 @@ export default function HomePage() {
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl font-semibold text-coffee-950">
             {language === 'om'
-              ? 'Waajjiraalee fi Tajaajiloota'
+              ? 'Dameewwan fi Tajaajiloota'
               : language === 'am'
-                ? 'መምሪያዎች እና አገልግሎቶች'
-                : 'Departments & Services'}
+                ? 'ዘርፎች እና አገልግሎቶች'
+                : 'Sectors & Services'}
           </h2>
 
           {deptLoading ? (

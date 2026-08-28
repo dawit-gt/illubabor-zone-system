@@ -42,7 +42,7 @@ export default function AdminDashboardPage() {
   const cards = stats
     ? [
         { label: 'Woredas', value: stats.woredas, href: '/admin/woredas' },
-        { label: 'Departments', value: stats.departments, href: '/admin/departments' },
+        { label: 'Sectors', value: stats.departments, href: '/admin/departments' },
         { label: 'News Articles', value: stats.news, href: '/admin/news' },
         { label: 'Services', value: stats.services, href: '/admin/services' },
         { label: 'Documents', value: stats.documents, href: '/admin/documents' },

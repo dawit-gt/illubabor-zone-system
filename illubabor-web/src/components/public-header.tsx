@@ -30,7 +30,7 @@ const NAV_LINKS: NavItem[] = [
   },
   {
     href: '/departments',
-    label: { om: 'Waajjiraalee', am: 'መምሪያዎች', en: 'Departments' },
+    label: { om: 'Dameewwan', am: 'ዘርፎች', en: 'Sectors' },
   },
   {
     href: '/services',

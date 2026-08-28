@@ -10,9 +10,9 @@ import { SectorStats } from '@/components/sector-stats';
 type Lang = 'om' | 'am' | 'en';
 
 const PAGE_TITLE: Record<Lang, string> = {
-  om: 'Waajjiraalee',
-  am: 'መምሪያዎች',
-  en: 'Departments',
+  om: 'Dameewwan',
+  am: 'ዘርፎች',
+  en: 'Sectors',
 };
 
 const PAGE_SUBTITLE: Record<Lang, string> = {

@@ -11,7 +11,7 @@ const NAV = [
   { href: '/admin/home', label: 'Home' },
   { href: '/admin/about', label: 'About' },
   { href: '/admin/woredas', label: 'Woredas' },
-  { href: '/admin/departments', label: 'Departments' },
+  { href: '/admin/departments', label: 'Sectors' },
   { href: '/admin/services', label: 'Services' },
   { href: '/admin/news', label: 'News' },
   { href: '/admin/investment', label: 'Investment' },

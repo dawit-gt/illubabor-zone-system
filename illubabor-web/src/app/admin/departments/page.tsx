@@ -84,10 +84,10 @@ export default function AdminDepartmentsPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-semibold text-coffee-950">Departments</h1>
+        <h1 className="font-display text-2xl font-semibold text-coffee-950">Sectors</h1>
         {!showForm && (
           <button onClick={startCreate} className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500">
-            + New Department
+            + New Sector
           </button>
         )}
       </div>

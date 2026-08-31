@@ -13,8 +13,11 @@ interface Zone {
   areaKm2: number;
   elevationMin?: number;
   elevationMax?: number;
-  urbanKebeles?: number;
   ruralKebeles?: number;
+  urbanKebeles?: number;
+  computedRuralKebeles?: number;
+  computedUrbanKebeles?: number;
+  computedTotalKebeles?: number;
   description: string;
   _count: { woredas: number; departments: number; news: number };
 }

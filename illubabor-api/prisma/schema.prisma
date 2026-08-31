@@ -1,4 +1,5 @@
 // Illubabor Zone Administration System — Prisma Schema
+
 // Zone-level platform: Zone -> Woreda -> Kebele hierarchy
 
 generator client {
@@ -8,19 +9,19 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 // ---------- ENUMS ----------
 
 enum Role {
-  SUPER_ADMIN     // full zone-level system control
-  ZONE_ADMIN      // manages zone-wide content, departments, cross-woreda coordination
-  WOREDA_ADMIN    // manages content scoped to one woreda
-  DEPARTMENT_HEAD // manages one department's services/news
-  STAFF           // content contributor, limited permissions
-  PUBLIC          // registered public user (service applications, feedback)
+  SUPER_ADMIN
+  ZONE_ADMIN
+  WOREDA_ADMIN
+  DEPARTMENT_HEAD
+  STAFF
+  PUBLIC
 }
 
 enum NewsStatus {
@@ -77,42 +78,42 @@ enum ApplicationStatus {
 // ---------- ADMINISTRATIVE HIERARCHY ----------
 
 model Zone {
-  id              String   @id @default(cuid())
-  name            String   @unique
-  nameOm          String?
-  nameAm          String?
-  capital         String
-  region          String   @default("Oromia")
-  population      Int?
+  id               String   @id @default(cuid())
+  name             String   @unique
+  nameOm           String?
+  nameAm           String?
+  capital          String
+  region           String   @default("Oromia")
+  population       Int?
   populationMale   Int?
   populationFemale Int?
-  areaKm2         Float?
-  elevationMin    Int?
-  elevationMax    Int?
-  urbanKebeles    Int?
-  ruralKebeles    Int?
-  boundaryNorth   String?  @db.Text
-  boundarySouth   String?  @db.Text
-  boundaryEast    String?  @db.Text
-  boundaryWest    String?  @db.Text
-  officeAddress   String?
-  officePhones    String[] @default([])
-  officeHours     String?
-  logoUrl         String?
-  description     String?  @db.Text
-  descriptionOm   String?  @db.Text
-  descriptionAm   String?  @db.Text
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  areaKm2          Float?
+  elevationMin     Int?
+  elevationMax     Int?
+  urbanKebeles     Int?
+  ruralKebeles     Int?
+  boundaryNorth    String?  @db.Text
+  boundarySouth    String?  @db.Text
+  boundaryEast     String?  @db.Text
+  boundaryWest     String?  @db.Text
+  officeAddress    String?
+  officePhones     String[] @default([])
+  officeHours      String?
+  logoUrl          String?
+  description      String?  @db.Text
+  descriptionOm    String?  @db.Text
+  descriptionAm    String?  @db.Text
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  woredas         Woreda[]
-  departments     Department[]
-  news            News[]
-  services        Service[]
-  documents       Document[]
-  contactMessages ContactMessage[]
-  contentEntries  ContentEntry[]
-  galleryPhotos GalleryPhoto[]
+  woredas          Woreda[]
+  departments      Department[]
+  news             News[]
+  services         Service[]
+  documents        Document[]
+  contactMessages  ContactMessage[]
+  contentEntries   ContentEntry[]
+  galleryPhotos    GalleryPhoto[]
 }
 
 model Woreda {
@@ -122,7 +123,7 @@ model Woreda {
   nameAm      String?
   slug        String   @unique
   population  Int?
-  isTown      Boolean  @default(false) // e.g. Metu Ketema town administration
+  isTown      Boolean  @default(false)
   description String?  @db.Text
   order       Int      @default(0)
   createdAt   DateTime @default(now())
@@ -137,34 +138,35 @@ model Woreda {
 }
 
 model Kebele {
-  id        String   @id @default(cuid())
-  name      String
-  nameOm    String?
-  nameAm    String?
-  isForested Boolean @default(false)
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  name       String
+  nameOm     String?
+  nameAm     String?
+  isForested Boolean  @default(false)
+  isUrban    Boolean  @default(false)
+  createdAt  DateTime @default(now())
 
-  woredaId  String
-  woreda    Woreda   @relation(fields: [woredaId], references: [id])
+  woredaId   String
+  woreda     Woreda   @relation(fields: [woredaId], references: [id])
 }
 
 // ---------- USERS / AUTH ----------
 
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
-  password     String
-  fullName     String
-  role         Role      @default(PUBLIC)
-  isActive     Boolean   @default(true)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  fullName      String
+  role          Role      @default(PUBLIC)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  woredaId     String?
-  woreda       Woreda?   @relation(fields: [woredaId], references: [id])
+  woredaId      String?
+  woreda        Woreda?   @relation(fields: [woredaId], references: [id])
 
-  departmentId String?
-  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId  String?
+  department    Department? @relation(fields: [departmentId], references: [id])
 
   refreshTokens RefreshToken[]
   auditLogs     AuditLog[]
@@ -184,28 +186,28 @@ model RefreshToken {
 // ---------- CONTENT ----------
 
 model Department {
-  id          String   @id @default(cuid())
-  name        String
-  nameOm      String?
-  nameAm      String?
-  slug        String   @unique
-  description String?  @db.Text
-  descriptionOm String? @db.Text
-  descriptionAm String? @db.Text
-  icon        String?
-  headName    String?
-  contactEmail String?
-  contactPhone String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  name          String
+  nameOm        String?
+  nameAm        String?
+  slug          String   @unique
+  description   String?  @db.Text
+  descriptionOm String?  @db.Text
+  descriptionAm String?  @db.Text
+  icon          String?
+  headName      String?
+  contactEmail  String?
+  contactPhone  String?
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  zoneId      String
-  zone        Zone     @relation(fields: [zoneId], references: [id])
+  zoneId        String
+  zone          Zone     @relation(fields: [zoneId], references: [id])
 
-  users       User[]
-  services    Service[]
-  documents   Document[]
+  users         User[]
+  services      Service[]
+  documents     Document[]
 }
 
 model News {
@@ -235,74 +237,74 @@ model News {
 }
 
 model Service {
-  id          String          @id @default(cuid())
-  name        String
-  nameOm      String?
-  nameAm      String?
-  slug        String          @unique
-  category    ServiceCategory
-  description String          @db.Text
-  descriptionOm String?       @db.Text
-  descriptionAm String?       @db.Text
-  requirements String?        @db.Text
-  processTime String?
-  fee         String?
-  isOnline    Boolean         @default(false)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id            String          @id @default(cuid())
+  name          String
+  nameOm        String?
+  nameAm        String?
+  slug          String          @unique
+  category      ServiceCategory
+  description   String          @db.Text
+  descriptionOm String?         @db.Text
+  descriptionAm String?         @db.Text
+  requirements  String?         @db.Text
+  processTime   String?
+  fee           String?
+  isOnline      Boolean         @default(false)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
-  zoneId       String
-  zone         Zone           @relation(fields: [zoneId], references: [id])
+  zoneId        String
+  zone          Zone            @relation(fields: [zoneId], references: [id])
 
-  departmentId String
-  department   Department     @relation(fields: [departmentId], references: [id])
+  departmentId  String
+  department    Department      @relation(fields: [departmentId], references: [id])
 
-  applications ServiceApplication[]
+  applications  ServiceApplication[]
 }
 
 model ServiceApplication {
-  id          String            @id @default(cuid())
+  id          String           @id @default(cuid())
   status      ApplicationStatus @default(SUBMITTED)
-  notes       String?           @db.Text
-  submittedAt DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  notes       String?          @db.Text
+  submittedAt DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
   serviceId   String
-  service     Service           @relation(fields: [serviceId], references: [id])
+  service     Service          @relation(fields: [serviceId], references: [id])
 
   userId      String
-  user        User              @relation(fields: [userId], references: [id])
+  user        User             @relation(fields: [userId], references: [id])
 }
 
 model Document {
-  id          String       @id @default(cuid())
-  title       String
-  titleOm     String?
-  titleAm     String?
-  type        DocumentType
-  fileUrl     String
-  fileSizeKb  Int?
-  isPublic    Boolean      @default(true)
-  createdAt   DateTime     @default(now())
+  id           String       @id @default(cuid())
+  title        String
+  titleOm      String?
+  titleAm      String?
+  type         DocumentType
+  fileUrl      String
+  fileSizeKb   Int?
+  isPublic     Boolean      @default(true)
+  createdAt    DateTime     @default(now())
 
   zoneId       String
-  zone         Zone        @relation(fields: [zoneId], references: [id])
+  zone         Zone         @relation(fields: [zoneId], references: [id])
 
   departmentId String?
-  department   Department? @relation(fields: [departmentId], references: [id])
+  department   Department?  @relation(fields: [departmentId], references: [id])
 }
 
 model SiteConfig {
-  id            String   @id @default(cuid())
-  key           String   @unique
-  value         String   @db.Text
-  updatedAt     DateTime @updatedAt
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
 }
 
 model AuditLog {
   id        String   @id @default(cuid())
-  action    String   // e.g. "CREATE_NEWS", "DELETE_SERVICE"
-  entity    String   // e.g. "News", "Service"
+  action    String
+  entity    String
   entityId  String?
   metadata  Json?
   createdAt DateTime @default(now())
@@ -337,26 +339,27 @@ enum ContentType {
 }
 
 model ContentEntry {
-  id          String      @id @default(cuid())
-  type        ContentType
-  title       String
-  titleOm     String?
-  titleAm     String?
-  summary     String?     @db.Text
-  summaryOm   String?     @db.Text
-  summaryAm   String?     @db.Text
-  body        String      @db.Text
-  bodyOm      String?     @db.Text
-  bodyAm      String?     @db.Text
-  imageUrl    String?
-  order       Int         @default(0)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id         String      @id @default(cuid())
+  type       ContentType
+  title      String
+  titleOm    String?
+  titleAm    String?
+  summary    String?     @db.Text
+  summaryOm  String?     @db.Text
+  summaryAm  String?     @db.Text
+  body       String      @db.Text
+  bodyOm     String?     @db.Text
+  bodyAm     String?     @db.Text
+  imageUrl   String?
+  order      Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
-  zoneId      String
-  zone        Zone        @relation(fields: [zoneId], references: [id])
-  tag         String?
-  status      String?
+  zoneId     String
+  zone       Zone        @relation(fields: [zoneId], references: [id])
+
+  tag        String?
+  status     String?
 }
 
 enum GalleryCategory {
@@ -368,16 +371,15 @@ enum GalleryCategory {
 }
 
 model GalleryPhoto {
-  id          String          @id @default(cuid())
-  category    GalleryCategory
-  imageUrl    String
-  caption     String?
-  captionOm   String?
-  captionAm   String?
-  order       Int             @default(0)
-  createdAt   DateTime        @default(now())
+  id         String          @id @default(cuid())
+  category   GalleryCategory
+  imageUrl   String
+  caption    String?
+  captionOm  String?
+  captionAm  String?
+  order      Int             @default(0)
+  createdAt  DateTime        @default(now())
 
-  zoneId      String
-  zone        Zone            @relation(fields: [zoneId], references: [id])
+  zoneId     String
+  zone       Zone            @relation(fields: [zoneId], references: [id])
 }
-

@@ -88,8 +88,7 @@ export function QuickStats() {
           </StatRow>
 
           <StatRow rowKey="divisions" label={LABELS.divisions[lang]}>
-            {zone._count?.woredas ?? '—'} {LABELS.woredas[lang]}; {zone.ruralKebeles ?? '—'} {LABELS.ruralKebeles[lang]}; {zone.urbanKebeles ?? '—'} {LABELS.urbanKebeles[lang]}
-          </StatRow>
+            {zone._count?.woredas ?? '—'} {LABELS.woredas[lang]}; {zone.computedRuralKebeles ?? 0} {LABELS.ruralKebeles[lang]}; {zone.computedUrbanKebeles ?? 0} {LABELS.urbanKebeles[lang]}          </StatRow>
 
           <StatRow rowKey="elevation" label={LABELS.elevation[lang]}>
             {zone.elevationMin ?? '—'} m – {zone.elevationMax ?? '—'} m

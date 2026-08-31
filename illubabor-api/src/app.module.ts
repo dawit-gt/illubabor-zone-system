@@ -18,6 +18,7 @@ import { SiteConfigModule } from './site-config/site-config.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { ContentModule } from './content/content.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { KebelesModule } from './kebeles/kebeles.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -36,6 +37,7 @@ import { UploadsModule } from './uploads/uploads.module';
     GalleryModule,
     ContentModule,
     UploadsModule,
+    KebelesModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },

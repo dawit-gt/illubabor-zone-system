@@ -10,10 +10,23 @@ export class ZonesController {
   constructor(private prisma: PrismaService) {}
 
   @Get('current')
-  getCurrent() {
-    return this.prisma.zone.findFirst({
+  async getCurrent() {
+    const zone = await this.prisma.zone.findFirst({
       include: { _count: { select: { woredas: true, departments: true, news: true } } },
     });
+    if (!zone) return null;
+
+    const [ruralKebeleCount, urbanKebeleCount] = await Promise.all([
+      this.prisma.kebele.count({ where: { woreda: { zoneId: zone.id }, isUrban: false } }),
+      this.prisma.kebele.count({ where: { woreda: { zoneId: zone.id }, isUrban: true } }),
+    ]);
+
+    return {
+      ...zone,
+      computedRuralKebeles: ruralKebeleCount,
+      computedUrbanKebeles: urbanKebeleCount,
+      computedTotalKebeles: ruralKebeleCount + urbanKebeleCount,
+    };
   }
 
   @Patch('current')

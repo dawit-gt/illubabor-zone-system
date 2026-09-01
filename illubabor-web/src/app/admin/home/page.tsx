@@ -63,6 +63,13 @@ interface Stats {
   elevationMax: number;
 }
 
+interface ProfileStat {
+  id: string;
+  iconUrl: string;
+  label: Record<Lang, string>;
+  value: string;
+}
+
 const EMPTY_HERO_TEXT: Record<Lang, HeroText> = {
   en: {
     eyebrow: '',
@@ -148,6 +155,9 @@ export default function AdminHomePage() {
   const [editingLeader, setEditingLeader] =
     useState<LeadershipMember | null>(null);
 
+  const [profileStats, setProfileStats] = useState<ProfileStat[]>([]);
+  const [editingStat, setEditingStat] = useState<ProfileStat | null>(null);
+
   const [stats, setStats] = useState<Stats>(EMPTY_STATS);
   const [woredaCount, setWoredaCount] = useState<number | null>(null);
 
@@ -186,6 +196,7 @@ export default function AdminHomePage() {
           sect,
           welcome,
           leadershipTeam,
+          profileStatsRes,
           zoneRes,
           extra,
         ] = await Promise.all([
@@ -202,13 +213,11 @@ export default function AdminHomePage() {
           api
             .get('/site-config/content_images')
             .then((r) => JSON.parse(r.data.value))
-            .catch(
-              () => ({
-                yayo: '',
-                sor: '',
-                coffee: '',
-              })
-            ),
+            .catch(() => ({
+              yayo: '',
+              sor: '',
+              coffee: '',
+            })),
 
           api
             .get('/site-config/content_sections_text')
@@ -223,17 +232,20 @@ export default function AdminHomePage() {
           api
             .get('/site-config/admin_welcome_message')
             .then((r) => JSON.parse(r.data.value))
-            .catch(
-              () => ({
-                text: { en: '', om: '', am: '' },
-                adminName: '',
-                adminTitle: { en: '', om: '', am: '' },
-                adminPhotoUrl: '',
-              })
-            ),
+            .catch(() => ({
+              text: { en: '', om: '', am: '' },
+              adminName: '',
+              adminTitle: { en: '', om: '', am: '' },
+              adminPhotoUrl: '',
+            })),
 
           api
             .get('/site-config/leadership_team')
+            .then((r) => JSON.parse(r.data.value))
+            .catch(() => []),
+
+          api
+            .get('/site-config/zonal_profile_stats')
             .then((r) => JSON.parse(r.data.value))
             .catch(() => []),
 
@@ -271,14 +283,30 @@ export default function AdminHomePage() {
         });
 
         setWelcomeMessage({
-          text: welcome?.text ?? { en: '', om: '', am: '' },
+          text: welcome?.text ?? {
+            en: '',
+            om: '',
+            am: '',
+          },
           adminName: welcome?.adminName ?? '',
-          adminTitle: welcome?.adminTitle ?? { en: '', om: '', am: '' },
+          adminTitle: welcome?.adminTitle ?? {
+            en: '',
+            om: '',
+            am: '',
+          },
           adminPhotoUrl: welcome?.adminPhotoUrl ?? '',
         });
 
         setLeadership(
-          Array.isArray(leadershipTeam) ? leadershipTeam : []
+          Array.isArray(leadershipTeam)
+            ? leadershipTeam
+            : []
+        );
+
+        setProfileStats(
+          Array.isArray(profileStatsRes)
+            ? profileStatsRes
+            : []
         );
 
         if (zoneRes?.data) {
@@ -386,7 +414,11 @@ export default function AdminHomePage() {
 
       setLeadership(next);
     } catch (error) {
-      console.error('Failed to save leadership team:', error);
+      console.error(
+        'Failed to save leadership team:',
+        error
+      );
+
       alert('Failed to save leadership team.');
     } finally {
       setSaving(false);
@@ -398,8 +430,16 @@ export default function AdminHomePage() {
       id: crypto.randomUUID(),
       photoUrl: '',
       name: '',
-      title: { en: '', om: '', am: '' },
-      message: { en: '', om: '', am: '' },
+      title: {
+        en: '',
+        om: '',
+        am: '',
+      },
+      message: {
+        en: '',
+        om: '',
+        am: '',
+      },
     });
   };
 
@@ -407,7 +447,8 @@ export default function AdminHomePage() {
     if (!editingLeader) return;
 
     const exists = leadership.some(
-      (leader) => leader.id === editingLeader.id
+      (leader) =>
+        leader.id === editingLeader.id
     );
 
     const next = exists
@@ -416,7 +457,10 @@ export default function AdminHomePage() {
             ? editingLeader
             : leader
         )
-      : [...leadership, editingLeader];
+      : [
+          ...leadership,
+          editingLeader,
+        ];
 
     saveLeadership(next);
     setEditingLeader(null);
@@ -426,16 +470,94 @@ export default function AdminHomePage() {
     if (!confirm('Delete this team member?')) return;
 
     saveLeadership(
-      leadership.filter((leader) => leader.id !== id)
+      leadership.filter(
+        (leader) => leader.id !== id
+      )
+    );
+  };
+
+  const saveProfileStats = async (
+    next: ProfileStat[]
+  ) => {
+    setSaving(true);
+
+    try {
+      await api.put(
+        '/site-config/zonal_profile_stats',
+        {
+          value: JSON.stringify(next),
+        }
+      );
+
+      setProfileStats(next);
+    } catch (error) {
+      console.error(
+        'Failed to save profile stats:',
+        error
+      );
+
+      alert('Failed to save profile stats.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const startNewStat = () => {
+    setEditingStat({
+      id: crypto.randomUUID(),
+      iconUrl: '',
+      label: {
+        en: '',
+        om: '',
+        am: '',
+      },
+      value: '',
+    });
+  };
+
+  const saveEditingStat = () => {
+    if (!editingStat) return;
+
+    const exists = profileStats.some(
+      (s) => s.id === editingStat.id
+    );
+
+    const next = exists
+      ? profileStats.map((s) =>
+          s.id === editingStat.id
+            ? editingStat
+            : s
+        )
+      : [
+          ...profileStats,
+          editingStat,
+        ];
+
+    saveProfileStats(next);
+    setEditingStat(null);
+  };
+
+  const removeStat = (id: string) => {
+    if (!confirm('Delete this stat?')) return;
+
+    saveProfileStats(
+      profileStats.filter(
+        (s) => s.id !== id
+      )
     );
   };
 
   const saveStats = async () => {
     setSaving(true);
+
     try {
       await api.patch('/zones/current', stats);
     } catch (error) {
-      console.error('Failed to save statistics:', error);
+      console.error(
+        'Failed to save statistics:',
+        error
+      );
+
       alert('Failed to save statistics.');
     } finally {
       setSaving(false);
@@ -748,7 +870,9 @@ export default function AdminHomePage() {
             <div className="rounded-lg border border-coffee-950/10 bg-white p-4">
               <FileUpload
                 label="Administrator photo (portrait, roughly 800×1000)"
-                value={welcomeMessage.adminPhotoUrl}
+                value={
+                  welcomeMessage.adminPhotoUrl
+                }
                 onChange={(url) =>
                   setWelcomeMessage({
                     ...welcomeMessage,
@@ -763,12 +887,16 @@ export default function AdminHomePage() {
               <label className="block text-sm font-medium text-ink-950">
                 Administrator Name
               </label>
+
               <input
-                value={welcomeMessage.adminName}
+                value={
+                  welcomeMessage.adminName
+                }
                 onChange={(e) =>
                   setWelcomeMessage({
                     ...welcomeMessage,
-                    adminName: e.target.value,
+                    adminName:
+                      e.target.value,
                   })
                 }
                 placeholder="e.g. Dr. Teshome Aduna"
@@ -777,19 +905,26 @@ export default function AdminHomePage() {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
-              {(['en', 'om', 'am'] as Lang[]).map((lang) => (
+              {(
+                ['en', 'om', 'am'] as Lang[]
+              ).map((lang) => (
                 <div key={lang}>
                   <label className="block text-xs font-semibold uppercase text-ink-600">
                     Title ({lang})
                   </label>
+
                   <input
-                    value={welcomeMessage.adminTitle[lang]}
+                    value={
+                      welcomeMessage
+                        .adminTitle[lang]
+                    }
                     onChange={(e) =>
                       setWelcomeMessage({
                         ...welcomeMessage,
                         adminTitle: {
                           ...welcomeMessage.adminTitle,
-                          [lang]: e.target.value,
+                          [lang]:
+                            e.target.value,
                         },
                       })
                     }
@@ -800,19 +935,25 @@ export default function AdminHomePage() {
               ))}
             </div>
 
-            {(['en', 'om', 'am'] as Lang[]).map((lang) => (
+            {(
+              ['en', 'om', 'am'] as Lang[]
+            ).map((lang) => (
               <div key={lang}>
                 <label className="block text-sm font-medium uppercase text-ink-950">
                   {lang} — Message
                 </label>
+
                 <textarea
-                  value={welcomeMessage.text[lang]}
+                  value={
+                    welcomeMessage.text[lang]
+                  }
                   onChange={(e) =>
                     setWelcomeMessage({
                       ...welcomeMessage,
                       text: {
                         ...welcomeMessage.text,
-                        [lang]: e.target.value,
+                        [lang]:
+                          e.target.value,
                       },
                     })
                   }
@@ -827,7 +968,9 @@ export default function AdminHomePage() {
               disabled={saving}
               className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500 disabled:opacity-60"
             >
-              {saving ? 'Saving…' : 'Save Message'}
+              {saving
+                ? 'Saving…'
+                : 'Save Message'}
             </button>
           </div>
 
@@ -853,7 +996,9 @@ export default function AdminHomePage() {
               <div className="mt-4 rounded-lg border border-coffee-950/10 bg-white p-4">
                 <FileUpload
                   label="Photo (square, roughly 800×800)"
-                  value={editingLeader.photoUrl}
+                  value={
+                    editingLeader.photoUrl
+                  }
                   onChange={(url) =>
                     setEditingLeader({
                       ...editingLeader,
@@ -867,12 +1012,14 @@ export default function AdminHomePage() {
                   <label className="block text-sm font-medium text-ink-950">
                     Name
                   </label>
+
                   <input
                     value={editingLeader.name}
                     onChange={(e) =>
                       setEditingLeader({
                         ...editingLeader,
-                        name: e.target.value,
+                        name:
+                          e.target.value,
                       })
                     }
                     placeholder="e.g. Deputy Zone Administrator"
@@ -881,20 +1028,26 @@ export default function AdminHomePage() {
                 </div>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                  {(['en', 'om', 'am'] as Lang[]).map((lang) => (
+                  {(
+                    ['en', 'om', 'am'] as Lang[]
+                  ).map((lang) => (
                     <div key={lang}>
                       <p className="text-xs font-semibold uppercase text-ink-600">
                         {lang} — Title
                       </p>
 
                       <input
-                        value={editingLeader.title[lang]}
+                        value={
+                          editingLeader
+                            .title[lang]
+                        }
                         onChange={(e) =>
                           setEditingLeader({
                             ...editingLeader,
                             title: {
                               ...editingLeader.title,
-                              [lang]: e.target.value,
+                              [lang]:
+                                e.target.value,
                             },
                           })
                         }
@@ -906,13 +1059,17 @@ export default function AdminHomePage() {
                       </p>
 
                       <textarea
-                        value={editingLeader.message[lang]}
+                        value={
+                          editingLeader
+                            .message[lang]
+                        }
                         onChange={(e) =>
                           setEditingLeader({
                             ...editingLeader,
                             message: {
                               ...editingLeader.message,
-                              [lang]: e.target.value,
+                              [lang]:
+                                e.target.value,
                             },
                           })
                         }
@@ -925,15 +1082,21 @@ export default function AdminHomePage() {
 
                 <div className="mt-4 flex gap-3">
                   <button
-                    onClick={saveEditingLeader}
+                    onClick={
+                      saveEditingLeader
+                    }
                     disabled={saving}
                     className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500 disabled:opacity-60"
                   >
-                    {saving ? 'Saving…' : 'Save Member'}
+                    {saving
+                      ? 'Saving…'
+                      : 'Save Member'}
                   </button>
 
                   <button
-                    onClick={() => setEditingLeader(null)}
+                    onClick={() =>
+                      setEditingLeader(null)
+                    }
                     disabled={saving}
                     className="rounded-md border border-coffee-950/20 px-4 py-2 text-sm"
                   >
@@ -953,7 +1116,10 @@ export default function AdminHomePage() {
                     {leader.photoUrl ? (
                       <img
                         src={leader.photoUrl}
-                        alt={leader.name || 'Leadership team member'}
+                        alt={
+                          leader.name ||
+                          'Leadership team member'
+                        }
                         className="h-10 w-10 rounded-full object-cover"
                       />
                     ) : (
@@ -962,11 +1128,15 @@ export default function AdminHomePage() {
 
                     <div>
                       <p className="font-medium text-ink-950">
-                        {leader.name || '(unnamed)'}
+                        {leader.name ||
+                          '(unnamed)'}
                       </p>
+
                       {leader.title.en && (
                         <p className="text-xs text-ink-600">
-                          {leader.title.en}
+                          {
+                            leader.title.en
+                          }
                         </p>
                       )}
                     </div>
@@ -974,14 +1144,22 @@ export default function AdminHomePage() {
 
                   <div className="flex gap-2">
                     <button
-                      onClick={() => setEditingLeader(leader)}
+                      onClick={() =>
+                        setEditingLeader(
+                          leader
+                        )
+                      }
                       className="text-sm text-clay-600 hover:underline"
                     >
                       Edit
                     </button>
 
                     <button
-                      onClick={() => removeLeader(leader.id)}
+                      onClick={() =>
+                        removeLeader(
+                          leader.id
+                        )
+                      }
                       className="text-sm text-red-600 hover:underline"
                     >
                       Delete
@@ -993,6 +1171,179 @@ export default function AdminHomePage() {
               {leadership.length === 0 && (
                 <p className="px-5 py-4 text-sm text-ink-600">
                   No team members yet.
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* =====================================================
+              ZONAL PROFILE STATS
+          ====================================================== */}
+          <div className="mt-10 border-t border-coffee-950/10 pt-8">
+            <h3 className="font-display text-lg font-semibold text-ink-950">
+              Zonal Profile Stats
+            </h3>
+
+            <p className="mt-1 text-sm text-ink-600">
+              Icon-and-number highlights shown after the leadership team (e.g. Water coverage, School coverage).
+            </p>
+
+            {!editingStat && (
+              <button
+                onClick={startNewStat}
+                className="mt-4 rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500"
+              >
+                + New Stat
+              </button>
+            )}
+
+            {editingStat && (
+              <div className="mt-4 rounded-lg border border-coffee-950/10 bg-white p-4">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <FileUpload
+                      label="Icon image"
+                      value={editingStat.iconUrl}
+                      onChange={(url) =>
+                        setEditingStat({
+                          ...editingStat,
+                          iconUrl: url,
+                        })
+                      }
+                      accept="image/*"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-ink-950">
+                      Value
+                    </label>
+
+                    <input
+                      value={
+                        editingStat.value
+                      }
+                      onChange={(e) =>
+                        setEditingStat({
+                          ...editingStat,
+                          value:
+                            e.target.value,
+                        })
+                      }
+                      placeholder="e.g. 66.8% or 12,464"
+                      className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                  {(
+                    ['en', 'om', 'am'] as Lang[]
+                  ).map((lang) => (
+                    <div key={lang}>
+                      <label className="block text-xs font-semibold uppercase text-ink-600">
+                        Label ({lang})
+                      </label>
+
+                      <input
+                        value={
+                          editingStat
+                            .label[lang]
+                        }
+                        onChange={(e) =>
+                          setEditingStat({
+                            ...editingStat,
+                            label: {
+                              ...editingStat.label,
+                              [lang]:
+                                e.target.value,
+                            },
+                          })
+                        }
+                        placeholder="e.g. Water coverage"
+                        className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 flex gap-3">
+                  <button
+                    onClick={
+                      saveEditingStat
+                    }
+                    disabled={saving}
+                    className="rounded-md bg-clay-600 px-4 py-2 text-sm font-semibold text-white hover:bg-clay-500 disabled:opacity-60"
+                  >
+                    {saving
+                      ? 'Saving…'
+                      : 'Save Stat'}
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      setEditingStat(null)
+                    }
+                    disabled={saving}
+                    className="rounded-md border border-coffee-950/20 px-4 py-2 text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-6 divide-y divide-coffee-950/10 rounded-lg border border-coffee-950/10 bg-white">
+              {profileStats.map((s) => (
+                <div
+                  key={s.id}
+                  className="flex items-center justify-between px-5 py-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 overflow-hidden rounded-full bg-canopy-700/10">
+                      {s.iconUrl && (
+                        <img
+                          src={s.iconUrl}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      )}
+                    </div>
+
+                    <p className="text-sm text-ink-950">
+                      {s.label.en ||
+                        s.label.om ||
+                        s.label.am ||
+                        '(unlabeled)'}
+                      : <strong>{s.value}</strong>
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() =>
+                        setEditingStat(s)
+                      }
+                      className="text-sm text-clay-600 hover:underline"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        removeStat(s.id)
+                      }
+                      className="text-sm text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              {profileStats.length === 0 && (
+                <p className="px-5 py-4 text-sm text-ink-600">
+                  No stats added yet.
                 </p>
               )}
             </div>
@@ -1119,8 +1470,7 @@ export default function AdminHomePage() {
               <div className="mt-3">
                 <FileUpload
                   value={
-                    contentImages[key] ??
-                    ''
+                    contentImages[key] ?? ''
                   }
                   onChange={(url) =>
                     saveContentImages({
@@ -1160,8 +1510,7 @@ export default function AdminHomePage() {
                                 key
                               ][lang],
                               title:
-                                e.target
-                                  .value,
+                                e.target.value,
                             },
                           },
                         })
@@ -1188,8 +1537,7 @@ export default function AdminHomePage() {
                                 key
                               ][lang],
                               body:
-                                e.target
-                                  .value,
+                                e.target.value,
                             },
                           },
                         })
@@ -1277,8 +1625,7 @@ export default function AdminHomePage() {
                           title: {
                             ...editingExtra.title,
                             [lang]:
-                              e.target
-                                .value,
+                              e.target.value,
                           },
                         })
                       }
@@ -1297,8 +1644,7 @@ export default function AdminHomePage() {
                           body: {
                             ...editingExtra.body,
                             [lang]:
-                              e.target
-                                .value,
+                              e.target.value,
                           },
                         })
                       }

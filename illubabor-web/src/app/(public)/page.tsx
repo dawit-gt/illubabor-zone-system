@@ -9,6 +9,7 @@ import { HeroCarousel } from '@/components/hero-carousel';
 import { useSiteConfig } from '@/hooks/useSiteConfig';
 import { AdminWelcome } from '@/components/admin-welcome';
 import { LeadershipTeam } from '@/components/leadership-team';
+import { ZonalProfile } from '@/components/zonal-profile';
 
 type Lang = 'om' | 'am' | 'en';
 
@@ -216,9 +217,7 @@ export default function HomePage() {
     },
 
     {
-      value: deptLoading
-        ? '—'
-        : String(departments.length),
+      value: deptLoading ? '—' : String(departments.length),
       label:
         language === 'om'
           ? 'Dameewwan'
@@ -284,6 +283,10 @@ export default function HomePage() {
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <AdminWelcome />
           <LeadershipTeam />
+
+          <div className="mt-16">
+            <ZonalProfile />
+          </div>
         </section>
       )}
 

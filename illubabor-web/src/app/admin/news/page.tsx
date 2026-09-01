@@ -7,10 +7,16 @@ import { FileUpload } from '@/components/file-upload';
 interface NewsItem {
   id: string;
   title: string;
+  titleOm?: string;
+  titleAm?: string;
   slug: string;
   status: string;
   excerpt?: string;
+  excerptOm?: string;
+  excerptAm?: string;
   content: string;
+  contentOm?: string;
+  contentAm?: string;
   coverImage?: string | null;
   images?: string[];
 }
@@ -23,9 +29,15 @@ export default function AdminNewsPage() {
 
   const [form, setForm] = useState({
     title: '',
+    titleOm: '',
+    titleAm: '',
     slug: '',
     excerpt: '',
+    excerptOm: '',
+    excerptAm: '',
     content: '',
+    contentOm: '',
+    contentAm: '',
     status: 'DRAFT',
     coverImage: '',
     images: [] as string[],
@@ -57,9 +69,15 @@ export default function AdminNewsPage() {
 
     setForm({
       title: '',
+      titleOm: '',
+      titleAm: '',
       slug: '',
       excerpt: '',
+      excerptOm: '',
+      excerptAm: '',
       content: '',
+      contentOm: '',
+      contentAm: '',
       status: 'DRAFT',
       coverImage: '',
       images: [],
@@ -72,9 +90,15 @@ export default function AdminNewsPage() {
 
     setForm({
       title: n.title,
+      titleOm: n.titleOm ?? '',
+      titleAm: n.titleAm ?? '',
       slug: n.slug,
       excerpt: n.excerpt ?? '',
+      excerptOm: n.excerptOm ?? '',
+      excerptAm: n.excerptAm ?? '',
       content: n.content,
+      contentOm: n.contentOm ?? '',
+      contentAm: n.contentAm ?? '',
       status: n.status,
       coverImage: n.coverImage ?? '',
       images: n.images ?? [],
@@ -109,26 +133,32 @@ export default function AdminNewsPage() {
 
     setSaving(true);
 
+    const payload = {
+      title: form.title,
+      titleOm: form.titleOm,
+      titleAm: form.titleAm,
+      excerpt: form.excerpt,
+      excerptOm: form.excerptOm,
+      excerptAm: form.excerptAm,
+      content: form.content,
+      contentOm: form.contentOm,
+      contentAm: form.contentAm,
+      coverImage: form.coverImage,
+      images: form.images,
+    };
+
     try {
       if (creating) {
         await api.post('/news', {
-          title: form.title,
+          ...payload,
           slug: form.slug,
-          excerpt: form.excerpt,
-          content: form.content,
-          coverImage: form.coverImage,
-          images: form.images,
           zoneId,
         });
       } else if (editing) {
         await api.patch(`/news/${editing.id}`, {
-          title: form.title,
+          ...payload,
           slug: form.slug,
-          excerpt: form.excerpt,
-          content: form.content,
           status: form.status,
-          coverImage: form.coverImage,
-          images: form.images,
         });
       }
 
@@ -181,23 +211,47 @@ export default function AdminNewsPage() {
             {creating ? 'New Article' : `Edit: ${editing?.title}`}
           </h2>
 
-          <div className="mt-4 grid gap-4">
-            {/* Title */}
-            <div>
-              <label className="block text-sm font-medium text-ink-950">
-                Title
-              </label>
+          <div className="mt-4 space-y-6">
+            {/* Titles */}
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Title (English)
+                </label>
+                <input
+                  value={form.title}
+                  onChange={(e) =>
+                    setForm({ ...form, title: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
 
-              <input
-                value={form.title}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    title: e.target.value,
-                  })
-                }
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Title (Oromiffa)
+                </label>
+                <input
+                  value={form.titleOm}
+                  onChange={(e) =>
+                    setForm({ ...form, titleOm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Title (Amharic)
+                </label>
+                <input
+                  value={form.titleAm}
+                  onChange={(e) =>
+                    setForm({ ...form, titleAm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
 
             {/* Slug */}
@@ -209,10 +263,7 @@ export default function AdminNewsPage() {
               <input
                 value={form.slug}
                 onChange={(e) =>
-                  setForm({
-                    ...form,
-                    slug: e.target.value,
-                  })
+                  setForm({ ...form, slug: e.target.value })
                 }
                 placeholder="example-news-article"
                 className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
@@ -220,27 +271,51 @@ export default function AdminNewsPage() {
 
               {editing && (
                 <p className="mt-1 text-xs text-ink-600">
-                  Changing this changes the article's public URL.
+                  Changing this changes the article&apos;s public URL.
                 </p>
               )}
             </div>
 
-            {/* Excerpt */}
-            <div>
-              <label className="block text-sm font-medium text-ink-950">
-                Excerpt
-              </label>
+            {/* Excerpts */}
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Excerpt (English)
+                </label>
+                <input
+                  value={form.excerpt}
+                  onChange={(e) =>
+                    setForm({ ...form, excerpt: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
 
-              <input
-                value={form.excerpt}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    excerpt: e.target.value,
-                  })
-                }
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Excerpt (Oromiffa)
+                </label>
+                <input
+                  value={form.excerptOm}
+                  onChange={(e) =>
+                    setForm({ ...form, excerptOm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Excerpt (Amharic)
+                </label>
+                <input
+                  value={form.excerptAm}
+                  onChange={(e) =>
+                    setForm({ ...form, excerptAm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
 
             {/* Cover Image */}
@@ -286,7 +361,7 @@ export default function AdminNewsPage() {
                         setForm({
                           ...form,
                           images: form.images.filter(
-                            (_, idx) => idx !== i,
+                            (_, idx) => idx !== i
                           ),
                         })
                       }
@@ -313,22 +388,48 @@ export default function AdminNewsPage() {
             </div>
 
             {/* Content */}
-            <div>
-              <label className="block text-sm font-medium text-ink-950">
-                Content
-              </label>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Content (English)
+                </label>
+                <textarea
+                  value={form.content}
+                  onChange={(e) =>
+                    setForm({ ...form, content: e.target.value })
+                  }
+                  rows={8}
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
 
-              <textarea
-                value={form.content}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    content: e.target.value,
-                  })
-                }
-                rows={8}
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Content (Oromiffa)
+                </label>
+                <textarea
+                  value={form.contentOm}
+                  onChange={(e) =>
+                    setForm({ ...form, contentOm: e.target.value })
+                  }
+                  rows={8}
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Content (Amharic)
+                </label>
+                <textarea
+                  value={form.contentAm}
+                  onChange={(e) =>
+                    setForm({ ...form, contentAm: e.target.value })
+                  }
+                  rows={8}
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
 
             {/* Status */}
@@ -357,7 +458,7 @@ export default function AdminNewsPage() {
           </div>
 
           {/* Actions */}
-          <div className="mt-4 flex gap-3">
+          <div className="mt-6 flex gap-3">
             <button
               onClick={save}
               disabled={saving}
@@ -394,7 +495,6 @@ export default function AdminNewsPage() {
               className="flex items-center justify-between px-5 py-3"
             >
               <div className="flex items-center gap-4">
-                {/* Thumbnail */}
                 {n.coverImage ? (
                   <img
                     src={n.coverImage}

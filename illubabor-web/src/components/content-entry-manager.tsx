@@ -21,9 +21,13 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
   const [form, setForm] = useState({
     title: '',
     titleOm: '',
+    titleAm: '',
     summary: '',
+    summaryOm: '',
+    summaryAm: '',
     body: '',
     bodyOm: '',
+    bodyAm: '',
     imageUrl: '',
     tag: '',
     status: '',
@@ -42,9 +46,13 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
     setForm({
       title: '',
       titleOm: '',
+      titleAm: '',
       summary: '',
+      summaryOm: '',
+      summaryAm: '',
       body: '',
       bodyOm: '',
+      bodyAm: '',
       imageUrl: '',
       tag: '',
       status: '',
@@ -58,9 +66,13 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
     setForm({
       title: e.title,
       titleOm: e.titleOm ?? '',
+      titleAm: e.titleAm ?? '',
       summary: e.summary ?? '',
+      summaryOm: e.summaryOm ?? '',
+      summaryAm: e.summaryAm ?? '',
       body: e.body,
       bodyOm: e.bodyOm ?? '',
+      bodyAm: e.bodyAm ?? '',
       imageUrl: e.imageUrl ?? '',
       tag: (e as any).tag ?? '',
       status: (e as any).status ?? '',
@@ -106,7 +118,6 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
 
   return (
     <div>
-      {/* New Entry Button */}
       {!showForm && (
         <button
           onClick={startCreate}
@@ -116,155 +127,171 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
         </button>
       )}
 
-      {/* Create / Edit Form */}
       {showForm && (
         <div className="mt-4 rounded-lg border border-coffee-950/10 bg-white p-6">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {/* English Title */}
-            <div>
-              <label className="block text-sm font-medium text-ink-950">
-                Title (English)
-              </label>
+          <div className="mt-4 space-y-6">
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Title (English)
+                </label>
+                <input
+                  value={form.title}
+                  onChange={(e) =>
+                    setForm({ ...form, title: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
 
-              <input
-                value={form.title}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    title: e.target.value,
-                  })
-                }
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Title (Oromiffa)
+                </label>
+                <input
+                  value={form.titleOm}
+                  onChange={(e) =>
+                    setForm({ ...form, titleOm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Title (Amharic)
+                </label>
+                <input
+                  value={form.titleAm}
+                  onChange={(e) =>
+                    setForm({ ...form, titleAm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
 
-            {/* Oromo Title */}
-            <div>
-              <label className="block text-sm font-medium text-ink-950">
-                Title (Oromiffa)
-              </label>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Summary (English)
+                </label>
+                <input
+                  value={form.summary}
+                  onChange={(e) =>
+                    setForm({ ...form, summary: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
 
-              <input
-                value={form.titleOm}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    titleOm: e.target.value,
-                  })
-                }
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Summary (Oromiffa)
+                </label>
+                <input
+                  value={form.summaryOm}
+                  onChange={(e) =>
+                    setForm({ ...form, summaryOm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Summary (Amharic)
+                </label>
+                <input
+                  value={form.summaryAm}
+                  onChange={(e) =>
+                    setForm({ ...form, summaryAm: e.target.value })
+                  }
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
 
-            {/* Summary */}
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-ink-950">
-                Summary (shown in list view)
-              </label>
-
-              <input
-                value={form.summary}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    summary: e.target.value,
-                  })
-                }
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
-            </div>
-
-            {/* Tag */}
             <div>
               <label className="block text-sm font-medium text-ink-950">
-                Tag / Category (e.g. Coffee, Spices, Eco-Tourism)
+                Tag / Category
               </label>
-
               <input
                 value={form.tag}
                 onChange={(e) =>
-                  setForm({
-                    ...form,
-                    tag: e.target.value,
-                  })
+                  setForm({ ...form, tag: e.target.value })
                 }
                 className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
               />
             </div>
 
-            {/* Status */}
             <div>
               <label className="block text-sm font-medium text-ink-950">
                 Status (e.g. Open, Planned)
               </label>
-
               <input
                 value={form.status}
                 onChange={(e) =>
-                  setForm({
-                    ...form,
-                    status: e.target.value,
-                  })
+                  setForm({ ...form, status: e.target.value })
                 }
                 className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
               />
             </div>
 
-            {/* Image */}
-            <div className="sm:col-span-2">
-              <FileUpload
-                label="Image"
-                value={form.imageUrl}
-                onChange={(url) =>
-                  setForm({
-                    ...form,
-                    imageUrl: url,
-                  })
-                }
-                accept="image/*"
-              />
-            </div>
+            <FileUpload
+              label="Image"
+              value={form.imageUrl}
+              onChange={(url) =>
+                setForm({ ...form, imageUrl: url })
+              }
+              accept="image/*"
+            />
 
-            {/* English Body */}
-            <div>
-              <label className="block text-sm font-medium text-ink-950">
-                Full Body (English)
-              </label>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Full Body (English)
+                </label>
+                <textarea
+                  value={form.body}
+                  onChange={(e) =>
+                    setForm({ ...form, body: e.target.value })
+                  }
+                  rows={8}
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
 
-              <textarea
-                value={form.body}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    body: e.target.value,
-                  })
-                }
-                rows={8}
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
-            </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Full Body (Oromiffa)
+                </label>
+                <textarea
+                  value={form.bodyOm}
+                  onChange={(e) =>
+                    setForm({ ...form, bodyOm: e.target.value })
+                  }
+                  rows={8}
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
 
-            {/* Oromo Body */}
-            <div>
-              <label className="block text-sm font-medium text-ink-950">
-                Full Body (Oromiffa)
-              </label>
-
-              <textarea
-                value={form.bodyOm}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    bodyOm: e.target.value,
-                  })
-                }
-                rows={8}
-                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-              />
+              <div>
+                <label className="block text-xs font-semibold uppercase text-ink-600">
+                  Full Body (Amharic)
+                </label>
+                <textarea
+                  value={form.bodyAm}
+                  onChange={(e) =>
+                    setForm({ ...form, bodyAm: e.target.value })
+                  }
+                  rows={8}
+                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Form Buttons */}
           <div className="mt-4 flex gap-3">
             <button
               onClick={save}
@@ -280,6 +307,7 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
 
             <button
               onClick={cancel}
+              disabled={saving}
               className="rounded-md border border-coffee-950/20 px-4 py-2 text-sm"
             >
               Cancel
@@ -288,7 +316,6 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
         </div>
       )}
 
-      {/* Content List */}
       {loading ? (
         <div className="mt-6 text-sm text-ink-600">
           Loading…

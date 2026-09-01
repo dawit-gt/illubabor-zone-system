@@ -234,6 +234,8 @@ model News {
 
   woredaId    String?
   woreda      Woreda?    @relation(fields: [woredaId], references: [id])
+  images      String[]   @default([])
+
 }
 
 model Service {

@@ -49,7 +49,7 @@ export default function NewsDetailPage() {
       {article.publishedAt && (
         <p className="font-mono text-xs uppercase tracking-wide text-clay-600">
           {new Date(article.publishedAt).toLocaleDateString(
-            language === 'en' ? 'en-US' : undefined
+            language === 'en' ? 'en-US' : undefined,
           )}
         </p>
       )}
@@ -74,6 +74,20 @@ export default function NewsDetailPage() {
       <div className="prose mt-8 max-w-none whitespace-pre-line text-coffee-900">
         {content}
       </div>
+
+      {/* Image Gallery */}
+      {article.images && article.images.length > 0 && (
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          {article.images.map((url: string, i: number) => (
+            <img
+              key={i}
+              src={url}
+              alt=""
+              className="w-full rounded-lg border border-coffee-950/10 object-cover"
+            />
+          ))}
+        </div>
+      )}
     </article>
   );
 }

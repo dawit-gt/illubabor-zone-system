@@ -12,6 +12,7 @@ interface NewsItem {
   excerpt?: string;
   content: string;
   coverImage?: string | null;
+  images?: string[];
 }
 
 export default function AdminNewsPage() {
@@ -27,6 +28,7 @@ export default function AdminNewsPage() {
     content: '',
     status: 'DRAFT',
     coverImage: '',
+    images: [] as string[],
   });
 
   const [saving, setSaving] = useState(false);
@@ -60,6 +62,7 @@ export default function AdminNewsPage() {
       content: '',
       status: 'DRAFT',
       coverImage: '',
+      images: [],
     });
   };
 
@@ -74,6 +77,7 @@ export default function AdminNewsPage() {
       content: n.content,
       status: n.status,
       coverImage: n.coverImage ?? '',
+      images: n.images ?? [],
     });
   };
 
@@ -88,13 +92,13 @@ export default function AdminNewsPage() {
       return;
     }
 
-    if (!form.content.trim()) {
-      alert('Content is required.');
+    if (!form.slug.trim()) {
+      alert('Slug is required.');
       return;
     }
 
-    if (creating && !form.slug.trim()) {
-      alert('Slug is required.');
+    if (!form.content.trim()) {
+      alert('Content is required.');
       return;
     }
 
@@ -113,15 +117,18 @@ export default function AdminNewsPage() {
           excerpt: form.excerpt,
           content: form.content,
           coverImage: form.coverImage,
+          images: form.images,
           zoneId,
         });
       } else if (editing) {
         await api.patch(`/news/${editing.id}`, {
           title: form.title,
+          slug: form.slug,
           excerpt: form.excerpt,
           content: form.content,
           status: form.status,
           coverImage: form.coverImage,
+          images: form.images,
         });
       }
 
@@ -177,7 +184,7 @@ export default function AdminNewsPage() {
           <div className="mt-4 grid gap-4">
             {/* Title */}
             <div>
-              <label className="block text-sm font-medium text-coffee-950">
+              <label className="block text-sm font-medium text-ink-950">
                 Title
               </label>
 
@@ -194,29 +201,33 @@ export default function AdminNewsPage() {
             </div>
 
             {/* Slug */}
-            {creating && (
-              <div>
-                <label className="block text-sm font-medium text-coffee-950">
-                  Slug
-                </label>
+            <div>
+              <label className="block text-sm font-medium text-ink-950">
+                Slug
+              </label>
 
-                <input
-                  value={form.slug}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      slug: e.target.value,
-                    })
-                  }
-                  placeholder="example-news-article"
-                  className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
-                />
-              </div>
-            )}
+              <input
+                value={form.slug}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    slug: e.target.value,
+                  })
+                }
+                placeholder="example-news-article"
+                className="mt-1 w-full rounded-md border border-coffee-950/20 px-3 py-2 text-sm"
+              />
+
+              {editing && (
+                <p className="mt-1 text-xs text-ink-600">
+                  Changing this changes the article's public URL.
+                </p>
+              )}
+            </div>
 
             {/* Excerpt */}
             <div>
-              <label className="block text-sm font-medium text-coffee-950">
+              <label className="block text-sm font-medium text-ink-950">
                 Excerpt
               </label>
 
@@ -235,7 +246,7 @@ export default function AdminNewsPage() {
             {/* Cover Image */}
             <div>
               <FileUpload
-                label="Cover Image"
+                label="Cover Image (shown in the article list)"
                 value={form.coverImage}
                 onChange={(url) =>
                   setForm({
@@ -247,9 +258,63 @@ export default function AdminNewsPage() {
               />
             </div>
 
+            {/* Additional Images */}
+            <div>
+              <label className="block text-sm font-medium text-ink-950">
+                Additional Images
+              </label>
+
+              <div className="mt-2 space-y-2">
+                {form.images.map((url, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 rounded-md border border-coffee-950/10 bg-white p-2"
+                  >
+                    <img
+                      src={url}
+                      alt=""
+                      className="h-12 w-12 rounded object-cover"
+                    />
+
+                    <p className="flex-1 truncate text-xs text-ink-600">
+                      {url}
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          images: form.images.filter(
+                            (_, idx) => idx !== i,
+                          ),
+                        })
+                      }
+                      className="text-xs text-red-600 hover:underline"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+
+                <FileUpload
+                  value=""
+                  onChange={(url) => {
+                    if (url) {
+                      setForm({
+                        ...form,
+                        images: [...form.images, url],
+                      });
+                    }
+                  }}
+                  accept="image/*"
+                />
+              </div>
+            </div>
+
             {/* Content */}
             <div>
-              <label className="block text-sm font-medium text-coffee-950">
+              <label className="block text-sm font-medium text-ink-950">
                 Content
               </label>
 
@@ -269,7 +334,7 @@ export default function AdminNewsPage() {
             {/* Status */}
             {editing && (
               <div>
-                <label className="block text-sm font-medium text-coffee-950">
+                <label className="block text-sm font-medium text-ink-950">
                   Status
                 </label>
 

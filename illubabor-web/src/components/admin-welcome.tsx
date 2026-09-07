@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useLanguage } from '@/lib/language-provider';
 import { useSiteConfig } from '@/hooks/useSiteConfig';
 
@@ -9,6 +10,18 @@ const TITLE = {
   om: 'Baga Nagaan Dhuftan',
   am: 'እንኳን ደህና መጡ',
   en: 'Welcome',
+};
+
+const READ_MORE = {
+  om: 'Dabalataan dubbisi',
+  am: 'ተጨማሪ ያንብቡ',
+  en: 'Read more',
+};
+
+const READ_LESS = {
+  om: 'Gabaabsi',
+  am: 'አሳጥር',
+  en: 'Show less',
 };
 
 interface WelcomeData {
@@ -21,6 +34,7 @@ interface WelcomeData {
 export function AdminWelcome() {
   const { language } = useLanguage();
   const lang = language as Lang;
+  const [expanded, setExpanded] = useState(false);
 
   const { value: welcome, loading } = useSiteConfig<WelcomeData>(
     'admin_welcome_message',
@@ -48,45 +62,64 @@ export function AdminWelcome() {
         <div className="flex flex-col md:flex-row">
 
           {welcome.adminPhotoUrl && (
-            <div className="group relative order-1 h-56 w-full overflow-hidden sm:h-64 md:order-2 md:h-[320px] md:w-[42%] lg:h-[340px]">
-              <img
-                src={welcome.adminPhotoUrl}
-                alt={welcome.adminName || TITLE[lang]}
-                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
+            <div className="relative order-1 w-full shrink-0 md:order-2 md:w-[38%]">
+              <div className="relative aspect-[16/10] w-full overflow-hidden md:aspect-auto md:h-full md:min-h-[320px]">
+                <img
+                  src={welcome.adminPhotoUrl}
+                  alt={welcome.adminName || TITLE[lang]}
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-[1.025]"
+                />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-coffee-950/30 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+              </div>
             </div>
           )}
 
           <div
-            className={`relative order-2 flex w-full flex-col justify-center px-6 py-8 sm:px-8 sm:py-9 md:order-1 md:w-[58%] md:px-10 md:py-10 ${
+            className={`order-2 flex min-w-0 flex-1 flex-col justify-center px-6 py-7 sm:px-8 sm:py-8 md:order-1 md:px-10 md:py-9 ${
               !welcome.adminPhotoUrl ? 'md:w-full' : ''
             }`}
           >
-            <span className="pointer-events-none absolute -left-1 top-0 select-none font-display text-7xl leading-none text-clay-600/10 sm:text-8xl">
-              "
-            </span>
+            <div className="max-w-2xl">
 
-            <div className="relative max-w-2xl">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-clay-700">
-                {TITLE[lang]}
-              </p>
+              <div className="mb-4 flex items-center gap-3">
+                <span className="h-px w-8 bg-clay-600" />
+
+                <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-clay-700">
+                  {TITLE[lang]}
+                </span>
+              </div>
 
               <h3 className="font-display text-2xl font-semibold leading-tight text-ink-950 sm:text-3xl">
                 {TITLE[lang]}
               </h3>
 
-              <p className="mt-4 whitespace-pre-line text-sm leading-7 text-ink-700 sm:text-base">
-                {text}
-              </p>
+              <div className="relative mt-4">
+                <p
+                  className={`whitespace-pre-line text-sm leading-6 text-ink-700 sm:text-[15px] sm:leading-7 ${
+                    expanded ? '' : 'line-clamp-7'
+                  }`}
+                >
+                  {text}
+                </p>
+              </div>
+
+              {text.length > 500 && (
+                <button
+                  type="button"
+                  onClick={() => setExpanded(!expanded)}
+                  className="mt-3 text-sm font-semibold text-clay-700 transition-colors hover:text-clay-900"
+                >
+                  {expanded ? READ_LESS[lang] : READ_MORE[lang]}
+                </button>
+              )}
 
               {welcome.adminName && (
                 <div className="mt-6 flex items-center gap-3">
-                  <span className="h-px w-8 shrink-0 bg-clay-600" />
+                  <div className="h-px w-8 shrink-0 bg-clay-600" />
 
                   <div>
-                    <p className="text-sm font-semibold text-ink-950 sm:text-base">
+                    <p className="text-sm font-bold text-ink-950 sm:text-base">
                       {welcome.adminName}
                     </p>
 
@@ -98,6 +131,7 @@ export function AdminWelcome() {
                   </div>
                 </div>
               )}
+
             </div>
           </div>
 

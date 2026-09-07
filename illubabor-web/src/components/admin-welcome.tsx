@@ -44,17 +44,30 @@ export function AdminWelcome() {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-coffee-950/10 bg-white shadow-sm">
-      <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
-        <div className="relative flex flex-col justify-center px-8 py-10 sm:px-10">
-          <span className="pointer-events-none absolute left-4 top-2 select-none font-display text-8xl leading-none text-clay-600/10">
+      <div className="flex flex-col md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
+        
+        {welcome.adminPhotoUrl && (
+          <div className="group relative order-1 h-64 overflow-hidden sm:h-80 md:order-2 md:h-auto md:min-h-[360px] md:max-h-[420px]">
+            <img
+              src={welcome.adminPhotoUrl}
+              alt={welcome.adminName}
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-coffee-950/30 via-transparent to-transparent" />
+          </div>
+        )}
+
+        <div className="relative order-2 flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-10 md:order-1">
+          <span className="pointer-events-none absolute left-4 top-2 select-none font-display text-7xl leading-none text-clay-600/10 sm:text-8xl">
             "
           </span>
 
-          <h3 className="relative font-display text-2xl font-semibold text-ink-950">
+          <h3 className="relative font-display text-2xl font-semibold text-ink-950 sm:text-3xl">
             {TITLE[lang]}
           </h3>
 
-          <p className="relative mt-4 whitespace-pre-line text-sm leading-relaxed text-ink-800">
+          <p className="relative mt-4 whitespace-pre-line text-sm leading-relaxed text-ink-800 sm:text-base">
             {text}
           </p>
 
@@ -77,17 +90,6 @@ export function AdminWelcome() {
           )}
         </div>
 
-        {welcome.adminPhotoUrl && (
-          <div className="group relative h-64 overflow-hidden sm:h-80 md:h-auto md:max-h-[420px]">
-            <img
-              src={welcome.adminPhotoUrl}
-              alt={welcome.adminName}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-t from-coffee-950/30 via-transparent to-transparent" />
-          </div>
-        )}
       </div>
     </div>
   );

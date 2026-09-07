@@ -63,7 +63,7 @@ export function AdminWelcome() {
 
           {welcome.adminPhotoUrl && (
             <div className="relative order-1 w-full shrink-0 md:order-2 md:w-[38%]">
-              <div className="relative aspect-[16/10] w-full overflow-hidden md:aspect-auto md:h-full md:min-h-[320px]">
+              <div className="relative h-56 w-full overflow-hidden sm:h-64 md:h-[260px]">
                 <img
                   src={welcome.adminPhotoUrl}
                   alt={welcome.adminName || TITLE[lang]}
@@ -76,7 +76,7 @@ export function AdminWelcome() {
           )}
 
           <div
-            className={`order-2 flex min-w-0 flex-1 flex-col justify-center px-6 py-7 sm:px-8 sm:py-8 md:order-1 md:px-10 md:py-9 ${
+            className={`order-2 flex min-w-0 flex-1 flex-col justify-center px-6 py-7 sm:px-8 sm:py-8 md:order-1 md:px-10 md:py-8 ${
               !welcome.adminPhotoUrl ? 'md:w-full' : ''
             }`}
           >

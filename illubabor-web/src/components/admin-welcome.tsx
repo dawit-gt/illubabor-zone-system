@@ -20,7 +20,7 @@ const READ_MORE = {
 
 const READ_LESS = {
   om: 'Gabaabsi',
-  am: 'አሳጥር',
+  am: 'አሳጥir',
   en: 'Show less',
 };
 
@@ -62,21 +62,21 @@ export function AdminWelcome() {
         <div className="flex flex-col md:flex-row">
 
           {welcome.adminPhotoUrl && (
-            <div className="relative order-1 w-full shrink-0 md:order-2 md:w-[38%]">
-              <div className="relative h-56 w-full overflow-hidden sm:h-64 md:h-[260px]">
+            <div className="order-1 flex w-full items-center justify-center px-6 py-8 sm:px-8 md:order-2 md:w-[38%] md:px-8 md:py-10">
+              <div className="group relative w-full max-w-[360px] overflow-hidden rounded-xl">
                 <img
                   src={welcome.adminPhotoUrl}
                   alt={welcome.adminName || TITLE[lang]}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-[1.025]"
+                  className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
               </div>
             </div>
           )}
 
           <div
-            className={`order-2 flex min-w-0 flex-1 flex-col justify-center px-6 py-7 sm:px-8 sm:py-8 md:order-1 md:px-10 md:py-8 ${
+            className={`order-2 flex min-w-0 flex-1 flex-col justify-center px-6 py-8 sm:px-8 md:order-1 md:px-10 md:py-10 ${
               !welcome.adminPhotoUrl ? 'md:w-full' : ''
             }`}
           >

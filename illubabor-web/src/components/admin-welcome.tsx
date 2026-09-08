@@ -67,7 +67,7 @@ export function AdminWelcome() {
                 <img
                   src={welcome.adminPhotoUrl}
                   alt={welcome.adminName || TITLE[lang]}
-                  className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                  className="aspect-square h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
                 />
 
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />

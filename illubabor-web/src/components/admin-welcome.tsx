@@ -63,7 +63,7 @@ export function AdminWelcome() {
 
           {welcome.adminPhotoUrl && (
             <div className="order-1 flex w-full items-center justify-center px-6 py-8 sm:px-8 md:order-2 md:w-[38%] md:px-8 md:py-10">
-              <div className="group relative w-full max-w-[360px] overflow-hidden rounded-xl">
+              <div className="group relative w-full max-w-[420px] overflow-hidden rounded-xl">
                 <img
                   src={welcome.adminPhotoUrl}
                   alt={welcome.adminName || TITLE[lang]}

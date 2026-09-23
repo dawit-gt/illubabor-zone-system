@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { Language, DEFAULT_LANGUAGE } from './i18n';
 
 interface LanguageContextValue {
@@ -10,13 +10,14 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(DEFAULT_LANGUAGE);
+function getInitialLanguage(): Language {
+  if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
+  const stored = window.localStorage.getItem('illubabor-lang') as Language | null;
+  return stored ?? DEFAULT_LANGUAGE;
+}
 
-  useEffect(() => {
-    const stored = localStorage.getItem('illubabor-lang') as Language | null;
-    if (stored) setLanguageState(stored);
-  }, []);
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguageState] = useState<Language>(getInitialLanguage);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

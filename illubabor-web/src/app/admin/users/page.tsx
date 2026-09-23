@@ -12,14 +12,7 @@ interface User {
   isActive: boolean;
 }
 
-const ROLES = [
-  'SUPER_ADMIN',
-  'ZONE_ADMIN',
-  'WOREDA_ADMIN',
-  'DEPARTMENT_HEAD',
-  'STAFF',
-  'PUBLIC',
-];
+const ROLES = ['SUPER_ADMIN', 'ZONE_ADMIN', 'DEPARTMENT_HEAD', 'STAFF'];
 
 export default function AdminUsersPage() {
   const confirm = useConfirm();

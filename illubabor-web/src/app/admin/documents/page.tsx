@@ -168,12 +168,6 @@ export default function AdminDocumentsPage() {
             New Document
           </h2>
 
-          <p className="mt-1 text-xs text-coffee-600">
-            File URL must point to an already-hosted file (e.g. Supabase
-            Storage public URL). This form registers metadata only — it
-            doesn't upload files.
-          </p>
-
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {/* English Title */}
             <div>

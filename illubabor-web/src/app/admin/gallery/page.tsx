@@ -91,10 +91,6 @@ export default function AdminGalleryPage() {
         Gallery
       </h1>
 
-      <p className="mt-1 text-sm text-coffee-600">
-        Add photo URLs (Supabase Storage or another hosted source) by
-        category.
-      </p>
 
       <div className="mt-6 rounded-lg border border-coffee-950/10 bg-white p-4">
         <div className="grid gap-3 sm:grid-cols-2">

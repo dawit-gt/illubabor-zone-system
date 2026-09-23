@@ -38,7 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (loading || !user) return null;
 
   return (
-    <div className="flex min-h-screen bg-parchment-50">
+    <div className="min-h-screen bg-parchment-50">
       {/* Mobile top bar */}
       <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-coffee-950/10 bg-coffee-950 px-4 py-3 text-parchment-50 lg:hidden">
         <p className="font-display text-sm font-semibold">Illubabor Admin</p>
@@ -52,21 +52,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
+      {/* Sidebar — fixed on every screen size, always pinned to the viewport */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-56 shrink-0 border-r border-coffee-950/10 bg-coffee-950 text-parchment-100 transition-transform lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-56 flex-col border-r border-coffee-950/10 bg-coffee-950 text-parchment-100 transition-transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        } lg:translate-x-0`}
       >
         <div className="px-5 py-5 pt-16 lg:pt-5">
           <p className="hidden font-display text-sm font-semibold text-parchment-50 lg:block">Illubabor Admin</p>
           <p className="mt-1 text-xs text-parchment-100/60">{user.email}</p>
         </div>
-        <nav className="mt-2 flex flex-col overflow-y-auto">
+        <nav className="flex-1 overflow-y-auto">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`px-5 py-2.5 text-sm ${
+              className={`block px-5 py-2.5 text-sm ${
                 pathname === item.href
                   ? 'bg-coffee-800 text-parchment-50'
                   : 'text-parchment-100/80 hover:bg-coffee-800/50'
@@ -78,13 +79,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
         <button
           onClick={logout}
-          className="mx-5 mt-6 rounded-md border border-parchment-100/20 px-3 py-1.5 text-xs hover:bg-coffee-800"
+          className="mx-5 mb-5 mt-4 rounded-md border border-parchment-100/20 px-3 py-1.5 text-xs hover:bg-coffee-800"
         >
           Sign out
         </button>
       </aside>
 
-      <main className="flex-1 p-4 pt-20 sm:p-8 lg:pt-8">{children}</main>
+      {/* Main content — offset to clear the fixed sidebar on desktop, and the fixed top bar on mobile */}
+      <main className="p-4 pt-20 sm:p-8 lg:ml-56 lg:pt-8">{children}</main>
     </div>
   );
 }

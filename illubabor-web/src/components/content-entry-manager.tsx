@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { useContent, ContentEntry } from '@/hooks/useContent';
 import { FileUpload } from '@/components/file-upload';
+import { useConfirm } from '@/components/confirm-dialog';
 
 type ContentType =
   | 'HISTORICAL_SITE'
@@ -12,7 +13,8 @@ type ContentType =
   | 'PROJECT';
 
 export function ContentEntryManager({ type }: { type: ContentType }) {
-  const { entries, loading } = useContent(type);
+  const { entries, loading, reload } = useContent(type);
+  const confirm = useConfirm();
 
   const [zoneId, setZoneId] = useState<string | null>(null);
   const [editing, setEditing] = useState<ContentEntry | null>(null);
@@ -99,7 +101,7 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
       }
 
       cancel();
-      window.location.reload();
+      reload();
     } catch {
       alert('Save failed.');
     } finally {
@@ -108,10 +110,19 @@ export function ContentEntryManager({ type }: { type: ContentType }) {
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this entry?')) return;
+    const ok = await confirm({
+      title: 'Delete entry',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
+      return;
+    }
 
     await api.delete(`/content/${id}`);
-    window.location.reload();
+    reload();
   };
 
   const showForm = creating || editing;

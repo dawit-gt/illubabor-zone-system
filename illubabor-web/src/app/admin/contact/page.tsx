@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { useConfirm } from '@/components/confirm-dialog';
 
 type Lang = 'en' | 'om' | 'am';
 
@@ -15,6 +16,8 @@ interface Message {
 }
 
 export default function AdminContactPage() {
+  const confirm = useConfirm();
+
   const [info, setInfo] = useState<{
     address: Record<Lang, string>;
     email: string;
@@ -97,7 +100,16 @@ export default function AdminContactPage() {
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this message permanently?')) return;
+    const ok = await confirm({
+      title: 'Delete message',
+      message: 'This message will be permanently deleted. This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
+      return;
+    }
 
     await api.delete(`/contact/${id}`);
 

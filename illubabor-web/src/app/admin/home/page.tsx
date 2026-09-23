@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { FileUpload } from '@/components/file-upload';
+import { useConfirm } from '@/components/confirm-dialog';
 
 type Lang = 'en' | 'om' | 'am';
 
@@ -124,6 +125,8 @@ const EMPTY_STATS: Stats = {
 };
 
 export default function AdminHomePage() {
+  const confirm = useConfirm();
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -466,8 +469,17 @@ export default function AdminHomePage() {
     setEditingLeader(null);
   };
 
-  const removeLeader = (id: string) => {
-    if (!confirm('Delete this team member?')) return;
+  const removeLeader = async (id: string) => {
+    const ok = await confirm({
+      title: 'Delete team member',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
+      return;
+    }
 
     saveLeadership(
       leadership.filter(
@@ -537,8 +549,17 @@ export default function AdminHomePage() {
     setEditingStat(null);
   };
 
-  const removeStat = (id: string) => {
-    if (!confirm('Delete this stat?')) return;
+  const removeStat = async (id: string) => {
+    const ok = await confirm({
+      title: 'Delete stat',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
+      return;
+    }
 
     saveProfileStats(
       profileStats.filter(
@@ -662,12 +683,15 @@ export default function AdminHomePage() {
     setEditingExtra(null);
   };
 
-  const removeExtra = (id: string) => {
-    if (
-      !confirm(
-        'Delete this content block?'
-      )
-    ) {
+  const removeExtra = async (id: string) => {
+    const ok = await confirm({
+      title: 'Delete content block',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
       return;
     }
 

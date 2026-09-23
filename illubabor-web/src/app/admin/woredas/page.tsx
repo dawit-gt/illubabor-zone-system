@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { useConfirm } from '@/components/confirm-dialog';
 
 interface Kebele {
   id: string;
@@ -22,6 +23,8 @@ interface Woreda {
 }
 
 export default function AdminWoredasPage() {
+  const confirm = useConfirm();
+
   const [woredas, setWoredas] = useState<Woreda[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Woreda | null>(null);
@@ -40,6 +43,7 @@ export default function AdminWoredasPage() {
   const [saving, setSaving] = useState(false);
   const [zoneId, setZoneId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
   const [newKebele, setNewKebele] = useState({
     name: '',
     isUrban: false,
@@ -144,9 +148,14 @@ export default function AdminWoredasPage() {
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this woreda? This cannot be undone.')) {
-      return;
-    }
+    const ok = await confirm({
+      title: 'Delete woreda',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) return;
 
     await api.delete(`/woredas/${id}`);
     load();
@@ -191,9 +200,14 @@ export default function AdminWoredasPage() {
     kebeleId: string,
     woredaSlug: string,
   ) => {
-    if (!confirm('Delete this kebele?')) {
-      return;
-    }
+    const ok = await confirm({
+      title: 'Delete kebele',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) return;
 
     await api.delete(`/kebeles/${kebeleId}`);
     loadWoredaDetail(woredaSlug);

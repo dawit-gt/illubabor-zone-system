@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { useConfirm } from '@/components/confirm-dialog';
 
 interface Department {
   id: string;
@@ -18,6 +19,8 @@ interface Department {
 const ZONE_ID_STORAGE_KEY = 'illubabor-zone-id';
 
 export default function AdminDepartmentsPage() {
+  const confirm = useConfirm();
+
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Department | null>(null);
@@ -132,9 +135,14 @@ export default function AdminDepartmentsPage() {
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this department? This cannot be undone.')) {
-      return;
-    }
+    const ok = await confirm({
+      title: 'Delete sector',
+      message: 'This will also remove its services and documents. This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) return;
 
     await api.delete(`/departments/${id}`);
     load();

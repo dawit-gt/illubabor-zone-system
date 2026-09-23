@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { useConfirm } from '@/components/confirm-dialog';
 
 interface Service {
   id: string;
@@ -66,6 +67,8 @@ export default function AdminServicesPage() {
 
   const [saving, setSaving] = useState(false);
   const [zoneId, setZoneId] = useState<string | null>(null);
+
+  const confirm = useConfirm();
 
   const load = () => {
     setLoading(true);
@@ -174,7 +177,14 @@ export default function AdminServicesPage() {
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this service? This cannot be undone.')) {
+    const ok = await confirm({
+      title: 'Delete service',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
       return;
     }
 

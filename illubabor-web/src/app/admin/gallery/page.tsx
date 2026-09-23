@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { useGallery, GalleryPhoto } from '@/hooks/useGallery';
 import { FileUpload } from '@/components/file-upload';
+import { useConfirm } from '@/components/confirm-dialog';
 
 const CATEGORIES = [
   'ADMIN_OFFICE',
@@ -23,6 +24,7 @@ const CATEGORY_LABELS: Record<typeof CATEGORIES[number], string> = {
 
 export default function AdminGalleryPage() {
   const { photos, loading, reload } = useGallery();
+  const confirm = useConfirm();
 
   const [zoneId, setZoneId] = useState<string | null>(null);
 
@@ -68,7 +70,16 @@ export default function AdminGalleryPage() {
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this photo?')) return;
+    const ok = await confirm({
+      title: 'Delete photo',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
+      return;
+    }
 
     await api.delete(`/gallery/${id}`);
     reload();

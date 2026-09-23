@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { FileUpload } from '@/components/file-upload';
+import { useConfirm } from '@/components/confirm-dialog';
 
 interface Doc {
   id: string;
@@ -46,6 +47,8 @@ export default function AdminDocumentsPage() {
 
   const [saving, setSaving] = useState(false);
   const [zoneId, setZoneId] = useState<string | null>(null);
+
+  const confirm = useConfirm();
 
   const load = () => {
     setLoading(true);
@@ -122,7 +125,14 @@ export default function AdminDocumentsPage() {
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this document? This cannot be undone.')) {
+    const ok = await confirm({
+      title: 'Delete document',
+      message: 'This cannot be undone.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+
+    if (!ok) {
       return;
     }
 

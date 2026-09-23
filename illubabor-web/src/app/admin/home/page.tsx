@@ -706,36 +706,10 @@ export default function AdminHomePage() {
 
         <div className="mt-3 space-y-3">
           {heroImages.map((url) => (
-            <div
-              key={url}
-              className="flex items-center gap-4 rounded-lg border border-coffee-950/10 bg-white p-3"
-            >
-              <img
-                src={url}
-                alt=""
-                className="h-16 w-24 rounded object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display =
-                    'none';
-                }}
-              />
-
-              <p className="flex-1 truncate text-xs text-ink-600">
-                {url}
-              </p>
-
-              <button
-                onClick={() =>
-                  saveHeroImages(
-                    heroImages.filter(
-                      (i) => i !== url
-                    )
-                  )
-                }
-                className="text-sm text-red-600 hover:underline"
-              >
-                Remove
-              </button>
+            <div key={url} className="flex items-center gap-4 rounded-lg border border-coffee-950/10 bg-white p-3">
+              <img src={url} alt="" className="h-16 w-24 rounded object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+              <span className="flex-1 text-sm text-ink-600">Image</span>
+              <button onClick={() => saveHeroImages(heroImages.filter((i) => i !== url))} className="text-sm text-red-600 hover:underline">Remove</button>
             </div>
           ))}
 

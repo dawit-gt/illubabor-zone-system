@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
         { label: 'News Articles', value: stats.news, href: '/admin/news' },
         { label: 'Services', value: stats.services, href: '/admin/services' },
         { label: 'Documents', value: stats.documents, href: '/admin/documents' },
-        { label: 'New Messages', value: stats.newMessages, href: '/admin/messages', highlight: stats.newMessages > 0 },
+        { label: 'New Messages', value: stats.newMessages, href: '/admin/contact', highlight: stats.newMessages > 0 },
         { label: 'Users', value: stats.users, href: '/admin/users' },
       ]
     : [];

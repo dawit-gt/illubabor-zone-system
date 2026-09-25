@@ -1,12 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { useLanguage } from '@/lib/language-provider';
 import { selectByLanguage } from '@/lib/i18n';
 import { useDocuments } from '@/hooks/useDocuments';
+import { Pagination } from '@/components/pagination';
 
 export default function TransparencyPage() {
   const { language } = useLanguage();
-  const { documents, loading } = useDocuments();
+  const [page, setPage] = useState(1);
+  const { documents, totalPages, loading } = useDocuments(page);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -39,32 +42,40 @@ export default function TransparencyPage() {
               : 'No documents published yet.'}
         </p>
       ) : (
-        <div className="mt-6 divide-y divide-coffee-950/10 rounded-lg border border-coffee-950/10 bg-white">
-          {documents.map((d) => (
-            <a
-              key={d.id}
-              href={d.fileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between px-5 py-4 hover:bg-parchment-50"
-            >
-              <div>
-                <p className="font-medium text-coffee-950">
-                  {selectByLanguage(d, 'title', language)}
-                </p>
+        <>
+          <div className="mt-6 divide-y divide-coffee-950/10 rounded-lg border border-coffee-950/10 bg-white">
+            {documents.map((d) => (
+              <a
+                key={d.id}
+                href={d.fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between px-5 py-4 hover:bg-parchment-50"
+              >
+                <div>
+                  <p className="font-medium text-coffee-950">
+                    {selectByLanguage(d, 'title', language)}
+                  </p>
 
-                <p className="mt-0.5 text-xs text-coffee-600">
-                  {d.type.replace(/_/g, ' ')} ·{' '}
-                  {new Date(d.createdAt).toLocaleDateString()}
-                </p>
-              </div>
+                  <p className="mt-0.5 text-xs text-coffee-600">
+                    {d.type.replace(/_/g, ' ')} ·{' '}
+                    {new Date(d.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
 
-              <span className="text-sm text-clay-600">
-                Download
-              </span>
-            </a>
-          ))}
-        </div>
+                <span className="text-sm text-clay-600">
+                  Download
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onChange={setPage}
+          />
+        </>
       )}
     </div>
   );

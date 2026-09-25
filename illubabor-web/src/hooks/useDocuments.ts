@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { api } from '@/lib/api';
 
 interface Document {
@@ -14,16 +15,26 @@ interface Document {
   createdAt: string;
 }
 
-export function useDocuments() {
+export function useDocuments(page: number = 1) {
   const [documents, setDocuments] = useState<Document[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/documents')
-      .then((res) => setDocuments(res.data))
-      .catch(() => setDocuments([]))
-      .finally(() => setLoading(false));
-  }, []);
+    setLoading(true);
 
-  return { documents, loading };
+    api
+      .get('/documents', { params: { page } })
+      .then((res) => {
+        setDocuments(res.data.data);
+        setTotalPages(res.data.totalPages);
+      })
+      .catch(() => {
+        setDocuments([]);
+        setTotalPages(1);
+      })
+      .finally(() => setLoading(false));
+  }, [page]);
+
+  return { documents, totalPages, loading };
 }

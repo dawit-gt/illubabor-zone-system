@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { api } from '@/lib/api';
 
 export interface GalleryPhoto {
@@ -12,16 +13,30 @@ export interface GalleryPhoto {
   captionAm?: string;
 }
 
-export function useGallery() {
+export function useGallery(page: number = 1, limit: number = 24) {
   const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
 
   const reload = () => {
     setLoading(true);
-    api.get('/gallery').then((res) => setPhotos(res.data)).finally(() => setLoading(false));
+
+    api
+      .get('/gallery', { params: { page, limit } })
+      .then((res) => {
+        setPhotos(res.data.data);
+        setTotalPages(res.data.totalPages);
+      })
+      .catch(() => {
+        setPhotos([]);
+        setTotalPages(1);
+      })
+      .finally(() => setLoading(false));
   };
 
-  useEffect(() => { reload(); }, []);
+  useEffect(() => {
+    reload();
+  }, [page, limit]);
 
-  return { photos, loading, reload };
+  return { photos, totalPages, loading, reload };
 }

@@ -10,11 +10,38 @@ export class DocumentsController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  findAll(@Query('type') type?: DocumentType, @Query('departmentId') departmentId?: string) {
-    return this.prisma.document.findMany({
-      where: { isPublic: true, ...(type && { type }), ...(departmentId && { departmentId }) },
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAll(
+    @Query('type') type?: DocumentType,
+    @Query('departmentId') departmentId?: string,
+    @Query('page') page = '1',
+    @Query('limit') limit = '20',
+  ) {
+    const take = Number(limit);
+    const skip = (Number(page) - 1) * take;
+
+    const where = {
+      isPublic: true,
+      ...(type && { type }),
+      ...(departmentId && { departmentId }),
+    };
+
+    const [data, total] = await Promise.all([
+      this.prisma.document.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take,
+        skip,
+      }),
+      this.prisma.document.count({ where }),
+    ]);
+
+    return {
+      data,
+      total,
+      page: Number(page),
+      limit: take,
+      totalPages: Math.ceil(total / take),
+    };
   }
 
   // Stores document *metadata* + a fileUrl pointing at object storage
@@ -23,8 +50,15 @@ export class DocumentsController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(Role.SUPER_ADMIN, Role.ZONE_ADMIN, Role.DEPARTMENT_HEAD)
   create(@Body() body: {
-    title: string; titleOm?: string; titleAm?: string; type: DocumentType;
-    fileUrl: string; fileSizeKb?: number; isPublic?: boolean; zoneId: string; departmentId?: string;
+    title: string;
+    titleOm?: string;
+    titleAm?: string;
+    type: DocumentType;
+    fileUrl: string;
+    fileSizeKb?: number;
+    isPublic?: boolean;
+    zoneId: string;
+    departmentId?: string;
   }) {
     return this.prisma.document.create({ data: body });
   }

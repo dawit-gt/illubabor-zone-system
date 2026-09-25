@@ -5,6 +5,8 @@ import { api } from '@/lib/api';
 import { useContent, ContentEntry } from '@/hooks/useContent';
 import { FileUpload } from '@/components/file-upload';
 import { useConfirm } from '@/components/confirm-dialog';
+import { Req } from '@/components/required-mark';
+
 
 type ContentType =
   | 'HISTORICAL_SITE'

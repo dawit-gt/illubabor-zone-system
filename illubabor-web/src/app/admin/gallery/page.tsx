@@ -23,7 +23,7 @@ const CATEGORY_LABELS: Record<typeof CATEGORIES[number], string> = {
 };
 
 export default function AdminGalleryPage() {
-  const { photos, loading, reload } = useGallery();
+  const { photos, loading, reload } = useGallery(1, 500);
   const confirm = useConfirm();
 
   const [zoneId, setZoneId] = useState<string | null>(null);
@@ -90,7 +90,6 @@ export default function AdminGalleryPage() {
       <h1 className="font-display text-2xl font-semibold text-coffee-950">
         Gallery
       </h1>
-
 
       <div className="mt-6 rounded-lg border border-coffee-950/10 bg-white p-4">
         <div className="grid gap-3 sm:grid-cols-2">

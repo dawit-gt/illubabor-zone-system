@@ -21,24 +21,38 @@ export class NewsController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
-  findAll(
+  async findAll(
     @Query('tag') tag?: NewsTag,
     @Query('woredaId') woredaId?: string,
     @Query('page') page = '1',
+    @Query('limit') limit = '12',
   ) {
-    const take = 12;
+    const take = Number(limit);
     const skip = (Number(page) - 1) * take;
 
-    return this.prisma.news.findMany({
-      where: {
-        status: NewsStatus.PUBLISHED,
-        ...(tag && { tags: { has: tag } }),
-        ...(woredaId && { woredaId }),
-      },
-      orderBy: { publishedAt: 'desc' },
-      take,
-      skip,
-    });
+    const where = {
+      status: NewsStatus.PUBLISHED,
+      ...(tag && { tags: { has: tag } }),
+      ...(woredaId && { woredaId }),
+    };
+
+    const [data, total] = await Promise.all([
+      this.prisma.news.findMany({
+        where,
+        orderBy: { publishedAt: 'desc' },
+        take,
+        skip,
+      }),
+      this.prisma.news.count({ where }),
+    ]);
+
+    return {
+      data,
+      total,
+      page: Number(page),
+      limit: take,
+      totalPages: Math.ceil(total / take),
+    };
   }
 
   @Get(':slug')

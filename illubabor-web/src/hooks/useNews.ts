@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { api } from '@/lib/api';
 
 interface NewsItem {
@@ -15,16 +16,26 @@ interface NewsItem {
   publishedAt: string;
 }
 
-export function useNews() {
+export function useNews(page: number = 1) {
   const [news, setNews] = useState<NewsItem[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/news')
-      .then((res) => setNews(res.data))
-      .catch(() => setNews([]))
-      .finally(() => setLoading(false));
-  }, []);
+    setLoading(true);
 
-  return { news, loading };
+    api
+      .get('/news', { params: { page } })
+      .then((res) => {
+        setNews(res.data.data);
+        setTotalPages(res.data.totalPages);
+      })
+      .catch(() => {
+        setNews([]);
+        setTotalPages(1);
+      })
+      .finally(() => setLoading(false));
+  }, [page]);
+
+  return { news, totalPages, loading };
 }
